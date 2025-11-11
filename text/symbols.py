@@ -20,7 +20,6 @@ symbols = (
     + list(_special)
     + list(_punctuation)
     + list(_letters)
-    + _arpabet
     + _silences
     + _japanese
 )
