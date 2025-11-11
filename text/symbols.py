@@ -10,51 +10,17 @@ _pad = "_"
 _punctuation = "!'(),.:;? "
 _special = "-"
 
-# Julius-style Japanese phoneme inventory extracted from the BCCWJ 60k lexicon.
+# Japanese MFA dictionary phoneme inventory (IPA-based).
 _japanese_phonemes = [
-    "N",
-    "a",
-    "a:",
-    "b",
-    "by",
-    "ch",
-    "d",
-    "e",
-    "e:",
-    "f",
-    "g",
-    "gy",
-    "h",
-    "hy",
-    "i",
-    "i:",
-    "j",
-    "k",
-    "ky",
-    "m",
-    "my",
-    "n",
-    "ny",
-    "o",
-    "o:",
-    "p",
-    "py",
-    "q",
-    "r",
-    "ry",
-    "s",
-    "sh",
-    "silB",
-    "silE",
-    "sp",
-    "t",
-    "ts",
-    "u",
-    "u:",
-    "w",
-    "y",
-    "z",
+    "a", "aː", "b", "bʲ", "bʲː", "bː", "c", "cː", "d", "dz", "dzː", "dʑ", "dʑː",
+    "dʲ", "dʲː", "dː", "e", "eː", "h", "hː", "i", "iː", "i̥", "j", "k", "kː",
+    "m", "mʲ", "mʲː", "mː", "n", "nː", "o", "oː", "p", "pʲ", "pʲː", "pː", "s",
+    "sː", "t", "ts", "tsː", "tɕ", "tɕː", "tʲ", "tʲː", "tː", "v", "vʲ", "w",
+    "wː", "z", "ç", "çː", "ŋ", "ɕ", "ɕː", "ɟ", "ɟː", "ɡ", "ɡː", "ɨ", "ɨː",
+    "ɨ̥", "ɯ", "ɯː", "ɯ̥", "ɰ̃", "ɲ", "ɲː", "ɴ", "ɴː", "ɸ", "ɸʲ", "ɸʲː", "ɸː",
+    "ɾ", "ɾʲ", "ɾʲː", "ɾː", "ʑ", "ʔ"
 ]
+
 
 # Export all symbols:
 symbols = [_pad] + list(_special) + list(_punctuation) + _japanese_phonemes
