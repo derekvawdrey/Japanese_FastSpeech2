@@ -24,7 +24,9 @@ def read_lexicon(lex_path):
     Julius-style dictionaries (e.g., BCCWJ 60k) include a bracketed reading
     token and may store pronunciation variants after a log-likelihood weight
     (e.g., '@-2.45') plus a katakana reading. We skip those auxiliary fields so
-    only ASCII phoneme symbols remain.
+    only ASCII phoneme symbols remain. The loaded dictionary exposes both the
+    original “surface+POS” key and a convenience key containing just the surface
+    form (before the first '+').
     """
     lexicon = {}
     is_phone = re.compile(r"^[A-Za-z:]+$").match
@@ -33,7 +35,7 @@ def read_lexicon(lex_path):
             parts = re.split(r"\s+", line.strip())
             if len(parts) < 3:
                 continue
-            word = parts[0].lower()
+            key = parts[0].lower()
             phones = []
             for token in parts[1:]:
                 if token.startswith("[") and token.endswith("]"):
@@ -43,8 +45,15 @@ def read_lexicon(lex_path):
                 if not is_phone(token):
                     continue
                 phones.append(token)
-            if word not in lexicon and phones:
-                lexicon[word] = phones
+            if not phones:
+                continue
+
+            if key not in lexicon:
+                lexicon[key] = phones
+
+            surface = key.split("+", 1)[0]
+            if surface and surface not in lexicon:
+                lexicon[surface] = phones
     return lexicon
 
 
