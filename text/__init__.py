@@ -68,7 +68,11 @@ def _symbols_to_sequence(symbols):
 
 
 def _arpabet_to_sequence(text):
-    return _symbols_to_sequence(["@" + s for s in text.split()])
+    tokens = text.split()
+    prefixed = ["@" + s for s in tokens]
+    if all(token in _symbol_to_id for token in prefixed):
+        return _symbols_to_sequence(prefixed)
+    return _symbols_to_sequence(tokens)
 
 
 def _should_keep_symbol(s):
