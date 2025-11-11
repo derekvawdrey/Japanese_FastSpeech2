@@ -18,14 +18,33 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def read_lexicon(lex_path):
+    """
+    Load a pronunciation lexicon into a {word: [phones]} mapping.
+
+    Julius-style dictionaries (e.g., BCCWJ 60k) include a bracketed reading
+    token and may store pronunciation variants after a log-likelihood weight
+    (e.g., '@-2.45') plus a katakana reading. We skip those auxiliary fields so
+    only ASCII phoneme symbols remain.
+    """
     lexicon = {}
-    with open(lex_path) as f:
+    is_phone = re.compile(r"^[A-Za-z:]+$").match
+    with open(lex_path, encoding="utf-8") as f:
         for line in f:
-            temp = re.split(r"\s+", line.strip("\n"))
-            word = temp[0]
-            phones = temp[1:]
-            if word.lower() not in lexicon:
-                lexicon[word.lower()] = phones
+            parts = re.split(r"\s+", line.strip())
+            if len(parts) < 3:
+                continue
+            word = parts[0].lower()
+            phones = []
+            for token in parts[1:]:
+                if token.startswith("[") and token.endswith("]"):
+                    continue
+                if token.startswith("@"):  # log-prob / weight marker
+                    continue
+                if not is_phone(token):
+                    continue
+                phones.append(token)
+            if word not in lexicon and phones:
+                lexicon[word] = phones
     return lexicon
 
 
