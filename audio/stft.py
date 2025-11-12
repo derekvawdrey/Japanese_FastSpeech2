@@ -39,7 +39,7 @@ class STFT(torch.nn.Module):
             assert filter_length >= win_length
             # get window and zero center pad it to filter_length
             fft_window = get_window(window, win_length, fftbins=True)
-            fft_window = pad_center(fft_window, filter_length)
+            fft_window = pad_center(fft_window, size=filter_length)
             fft_window = torch.from_numpy(fft_window).float()
 
             # window the bases
@@ -64,12 +64,16 @@ class STFT(torch.nn.Module):
         )
         input_data = input_data.squeeze(1)
 
+        if self.forward_basis.is_cuda and not input_data.is_cuda:
+            input_data = input_data.cuda()
         forward_transform = F.conv1d(
-            input_data.cuda(),
-            torch.autograd.Variable(self.forward_basis, requires_grad=False).cuda(),
+            input_data,
+            torch.autograd.Variable(self.forward_basis, requires_grad=False),
             stride=self.hop_length,
             padding=0,
-        ).cpu()
+        )
+        if forward_transform.is_cuda:
+            forward_transform = forward_transform.cpu()
 
         cutoff = int((self.filter_length / 2) + 1)
         real_part = forward_transform[:, :cutoff, :]
@@ -143,7 +147,11 @@ class TacotronSTFT(torch.nn.Module):
         self.sampling_rate = sampling_rate
         self.stft_fn = STFT(filter_length, hop_length, win_length)
         mel_basis = librosa_mel_fn(
-            sampling_rate, filter_length, n_mel_channels, mel_fmin, mel_fmax
+            sr=sampling_rate,
+            n_fft=filter_length,
+            n_mels=n_mel_channels,
+            fmin=mel_fmin,
+            fmax=mel_fmax,
         )
         mel_basis = torch.from_numpy(mel_basis).float()
         self.register_buffer("mel_basis", mel_basis)

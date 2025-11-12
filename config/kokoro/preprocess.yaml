@@ -1,10 +1,10 @@
 dataset: "kokoro"
 
 path:
-  corpus_path: "/home/ming/Data/kokoro"
-  lexicon_path: "lexicon/japanese_mfa.htdic"
-  raw_path: "./raw_data/kokoro"
-  preprocessed_path: "./preprocessed_data/kokoro"
+  corpus_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/raw_data/kokoro"
+  lexicon_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/lexicon/japanese_mfa.htdic"
+  raw_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/raw_data/kokoro"
+  preprocessed_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/preprocessed_data/kokoro"
 
 preprocessing:
   val_size: 512

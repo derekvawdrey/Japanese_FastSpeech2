@@ -65,8 +65,11 @@ class Preprocessor:
         # Compute pitch, energy, duration, and mel-spectrogram
         speakers = {}
         for i, speaker in enumerate(tqdm(os.listdir(self.in_dir))):
+            speaker_dir = os.path.join(self.in_dir, speaker)
+            if not os.path.isdir(speaker_dir):
+                continue
             speakers[speaker] = i
-            for wav_name in os.listdir(os.path.join(self.in_dir, speaker)):
+            for wav_name in os.listdir(speaker_dir):
                 if ".wav" not in wav_name:
                     continue
 
@@ -74,13 +77,15 @@ class Preprocessor:
                 tg_path = os.path.join(
                     self.out_dir, "TextGrid", speaker, "{}.TextGrid".format(basename)
                 )
-                if os.path.exists(tg_path):
-                    ret = self.process_utterance(speaker, basename)
-                    if ret is None:
-                        continue
-                    else:
-                        info, pitch, energy, n = ret
-                    out.append(info)
+                if not os.path.exists(tg_path):
+                    continue
+
+                ret = self.process_utterance(speaker, basename)
+                if ret is None:
+                    continue
+
+                info, pitch, energy, n = ret
+                out.append(info)
 
                 if len(pitch) > 0:
                     pitch_scaler.partial_fit(pitch.reshape((-1, 1)))
@@ -91,14 +96,14 @@ class Preprocessor:
 
         print("Computing statistic quantities ...")
         # Perform normalization if necessary
-        if self.pitch_normalization:
+        if self.pitch_normalization and hasattr(pitch_scaler, "mean_"):
             pitch_mean = pitch_scaler.mean_[0]
             pitch_std = pitch_scaler.scale_[0]
         else:
             # A numerical trick to avoid normalization...
             pitch_mean = 0
             pitch_std = 1
-        if self.energy_normalization:
+        if self.energy_normalization and hasattr(energy_scaler, "mean_"):
             energy_mean = energy_scaler.mean_[0]
             energy_std = energy_scaler.scale_[0]
         else:
@@ -175,7 +180,7 @@ class Preprocessor:
         ].astype(np.float32)
 
         # Read raw text
-        with open(text_path, "r") as f:
+        with open(text_path, "r", encoding="utf-8") as f:
             raw_text = f.readline().strip("\n")
 
         # Compute fundamental frequency
