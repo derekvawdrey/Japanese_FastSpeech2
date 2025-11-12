@@ -2,7 +2,7 @@ dataset: "kokoro"
 
 path:
   corpus_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/raw_data/kokoro"
-  lexicon_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/lexicon/japanese_mfa.htdic"
+  lexicon_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/lexicon/japanese_mfa.dict"
   raw_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/raw_data/kokoro"
   preprocessed_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/preprocessed_data/kokoro"
 
