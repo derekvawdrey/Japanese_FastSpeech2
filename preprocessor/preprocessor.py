@@ -1,6 +1,7 @@
 import os
 import random
 import json
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import tgt
 import librosa
@@ -62,9 +63,10 @@ class Preprocessor:
         pitch_scaler = StandardScaler()
         energy_scaler = StandardScaler()
 
-        # Compute pitch, energy, duration, and mel-spectrogram
+        # Collect utterance tasks
         speakers = {}
-        for i, speaker in enumerate(tqdm(os.listdir(self.in_dir))):
+        tasks = []
+        for i, speaker in enumerate(os.listdir(self.in_dir)):
             speaker_dir = os.path.join(self.in_dir, speaker)
             if not os.path.isdir(speaker_dir):
                 continue
@@ -79,8 +81,41 @@ class Preprocessor:
                 )
                 if not os.path.exists(tg_path):
                     continue
+                tasks.append((speaker, basename))
 
-                ret = self.process_utterance(speaker, basename)
+        if not tasks:
+            print("No valid utterances found.")
+            return out
+
+        max_workers = self.config["preprocessing"].get("num_workers")
+        if not max_workers or max_workers <= 0:
+            max_workers = os.cpu_count() or 1
+
+        # Compute pitch, energy, duration, and mel-spectrogram in parallel
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            future_to_task = {
+                executor.submit(self.process_utterance, speaker, basename): (speaker, basename)
+                for speaker, basename in tasks
+            }
+
+            for future in tqdm(
+                as_completed(future_to_task),
+                total=len(future_to_task),
+                desc="Processing utterances",
+            ):
+                try:
+                    ret = future.result()
+                except Exception as exc:
+                    speaker, basename = future_to_task[future]
+                    print(
+                        "Error processing {}-{}: {}".format(
+                            speaker,
+                            basename,
+                            exc,
+                        )
+                    )
+                    continue
+
                 if ret is None:
                     continue
 
