@@ -64,35 +64,43 @@ class Preprocessor:
 
         # Compute pitch, energy, duration, and mel-spectrogram
         speakers = {}
-        for i, speaker in enumerate(tqdm(os.listdir(self.in_dir))):
-            speaker_dir = os.path.join(self.in_dir, speaker)
-            if not os.path.isdir(speaker_dir):
-                continue
+        speaker_entries = [
+            entry for entry in os.scandir(self.in_dir) if entry.is_dir()
+        ]
+        for i, speaker_entry in enumerate(tqdm(speaker_entries, desc="Speakers")):
+            speaker = speaker_entry.name
+            speaker_dir = speaker_entry.path
             speakers[speaker] = i
-            for wav_name in os.listdir(speaker_dir):
-                if ".wav" not in wav_name:
-                    continue
 
-                basename = wav_name.split(".")[0]
-                tg_path = os.path.join(
-                    self.out_dir, "TextGrid", speaker, "{}.TextGrid".format(basename)
-                )
-                if not os.path.exists(tg_path):
-                    continue
+            with os.scandir(speaker_dir) as wav_iter:
+                for wav_entry in wav_iter:
+                    if not wav_entry.name.endswith(".wav"):
+                        continue
 
-                ret = self.process_utterance(speaker, basename)
-                if ret is None:
-                    continue
+                    basename = os.path.splitext(wav_entry.name)[0]
+                    tg_path = os.path.join(
+                        self.out_dir, "TextGrid", speaker, "{}.TextGrid".format(basename)
+                    )
+                    if not os.path.exists(tg_path):
+                        continue
 
-                info, pitch, energy, n = ret
-                out.append(info)
+                    ret = self.process_utterance(speaker, basename)
+                    if ret is None:
+                        continue
 
-                if len(pitch) > 0:
-                    pitch_scaler.partial_fit(pitch.reshape((-1, 1)))
-                if len(energy) > 0:
-                    energy_scaler.partial_fit(energy.reshape((-1, 1)))
+                    info, pitch, energy, n = ret
+                    out.append(info)
 
-                n_frames += n
+                    if len(pitch) > 0:
+                        pitch_scaler.partial_fit(pitch.reshape((-1, 1)))
+                    if len(energy) > 0:
+                        energy_scaler.partial_fit(energy.reshape((-1, 1)))
+
+                    n_frames += n
+
+        if not out:
+            print("No valid utterances could be processed.")
+            return out
 
         print("Computing statistic quantities ...")
         # Perform normalization if necessary
@@ -174,31 +182,39 @@ class Preprocessor:
             return None
 
         # Read and trim wav files
-        wav, _ = librosa.load(wav_path)
-        wav = wav[
-            int(self.sampling_rate * start) : int(self.sampling_rate * end)
-        ].astype(np.float32)
+        wav, _ = librosa.load(
+            wav_path, sr=self.sampling_rate, mono=True
+        )
+        start_sample = int(np.round(self.sampling_rate * start))
+        end_sample = int(np.round(self.sampling_rate * end))
+        wav = np.ascontiguousarray(
+            wav[start_sample:end_sample], dtype=np.float32
+        )
+        if wav.size == 0:
+            return None
 
         # Read raw text
         with open(text_path, "r", encoding="utf-8") as f:
             raw_text = f.readline().strip("\n")
 
         # Compute fundamental frequency
+        wav64 = wav.astype(np.float64)
         pitch, t = pw.dio(
-            wav.astype(np.float64),
+            wav64,
             self.sampling_rate,
             frame_period=self.hop_length / self.sampling_rate * 1000,
         )
-        pitch = pw.stonemask(wav.astype(np.float64), pitch, t, self.sampling_rate)
+        pitch = pw.stonemask(wav64, pitch, t, self.sampling_rate)
 
-        pitch = pitch[: sum(duration)]
-        if np.sum(pitch != 0) <= 1:
+        duration_sum = int(np.sum(duration))
+        pitch = pitch[:duration_sum]
+        if np.count_nonzero(pitch) <= 1:
             return None
 
         # Compute mel-scale spectrogram and energy
         mel_spectrogram, energy = Audio.tools.get_mel_from_wav(wav, self.STFT)
-        mel_spectrogram = mel_spectrogram[:, : sum(duration)]
-        energy = energy[: sum(duration)]
+        mel_spectrogram = mel_spectrogram[:, :duration_sum]
+        energy = energy[:duration_sum]
 
         if self.pitch_phoneme_averaging:
             # perform linear interpolation
