@@ -107,6 +107,106 @@ _PUNCTUATION_TO_SP = {"。", "、", "，", "．", "！", "？", "…", "・", "�
 _MFA_G2P_CACHE = {}
 
 
+def _mfa_g2p_batch(words, model_path):
+    """Batch process multiple words through MFA G2P for better performance."""
+    if not words:
+        return {}
+    
+    if not shutil.which("mfa"):
+        raise RuntimeError("Could not find the `mfa` executable in PATH.")
+    
+    # Check if model_path is a direct path that exists
+    model = Path(model_path)
+    if model.exists() and model.is_dir():
+        # It's a valid directory path
+        model_arg = str(model)
+    else:
+        # It's likely a model name (e.g., "japanese_mfa"), try to find it or use it directly
+        found_model = _find_mfa_g2p_model(model_path)
+        if found_model:
+            # found_model can be either a path or the model name (if registered with MFA)
+            model_arg = found_model
+        else:
+            # Last resort: try using it as a model name directly (MFA might still recognize it)
+            # or it might be a path that we can't verify but MFA can use
+            model_arg = model_path
+    
+    # Filter out words that are already cached
+    uncached_words = []
+    results = {}
+    for word in words:
+        cache_key = (model_path, word)
+        if cache_key in _MFA_G2P_CACHE:
+            results[word] = _MFA_G2P_CACHE[cache_key]
+        else:
+            uncached_words.append(word)
+    
+    if not uncached_words:
+        return results
+    
+    # Batch process uncached words
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmpdir = Path(tmpdir)
+        input_path = tmpdir / "g2p_input.txt"
+        output_path = tmpdir / "g2p_output.txt"
+        input_path.write_text("\n".join(uncached_words), encoding="utf-8")
+        
+        cmd = [
+            "mfa",
+            "g2p",
+            str(input_path),
+            model_arg,
+            str(output_path),
+        ]
+        
+        result = subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            encoding='utf-8',
+            errors='replace',
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+        )
+        
+        if result.returncode != 0:
+            # Clean up UTF drawing characters from error messages
+            stderr_clean = ""
+            if result.stderr:
+                stderr_clean = "".join(
+                    c for c in result.stderr if ord(c) < 0x2500 or ord(c) > 0x25FF
+                ).strip()
+            stdout_clean = ""
+            if result.stdout:
+                stdout_clean = "".join(
+                    c for c in result.stdout if ord(c) < 0x2500 or ord(c) > 0x25FF
+                ).strip()
+            message = stderr_clean or stdout_clean or "Unknown MFA error"
+            raise RuntimeError(message)
+        
+        if not output_path.exists():
+            raise RuntimeError("MFA G2P did not produce an output file.")
+        
+        # Parse output - each line should be: word\tpronunciation
+        output_lines = [
+            line.strip()
+            for line in output_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        
+        # Map words to pronunciations
+        for line in output_lines:
+            parts = line.split("\t", 1)
+            if len(parts) == 2:
+                word = parts[0].strip()
+                pronunciation = parts[1].strip()
+                tokens = pronunciation.split() if pronunciation else []
+                cache_key = (model_path, word)
+                _MFA_G2P_CACHE[cache_key] = tokens
+                results[word] = tokens
+    
+    return results
+
+
 def _map_openjtalk_tokens(tokens):
     mapped = []
     for token in tokens:
@@ -129,28 +229,30 @@ def _lexicon_lookup(lexicon, key):
 
 
 def _find_mfa_g2p_model(model_name):
-    """Find the path to an MFA G2P model."""
+    """Check if an MFA G2P model exists and return the model identifier (name or path)."""
     # Common locations for MFA models
     possible_locations = [
         Path.home() / "Documents" / "MFA" / "pretrained_models" / "g2p" / model_name,
         Path.home() / ".local" / "share" / "montreal-forced-aligner" / "pretrained_models" / "g2p" / model_name,
     ]
     
+    # First check if a directory path exists
     for location in possible_locations:
-        if location.exists():
+        if location.exists() and location.is_dir():
             return str(location)
     
-    # If not found, try to query MFA for model location
+    # If not found as a directory, check if MFA recognizes it as a registered model
     try:
         result = subprocess.run(
             ["mfa", "model", "list", "g2p"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True,
+            encoding='utf-8',
+            errors='replace',
         )
         if result.returncode == 0 and model_name in result.stdout:
-            # Model is installed, try the first location
-            return str(possible_locations[0])
+            # Model is registered with MFA, use the name directly
+            return model_name
     except Exception:
         pass
     
@@ -167,19 +269,19 @@ def _mfa_g2p_word(word, model_path):
 
     # Check if model_path is a direct path that exists
     model = Path(model_path)
-    if model.exists():
-        # It's a path to the model directory
+    if model.exists() and model.is_dir():
+        # It's a valid directory path
         model_arg = str(model)
     else:
-        # It's likely a model name (e.g., "japanese_mfa"), try to find it
-        found_path = _find_mfa_g2p_model(model_path)
-        if found_path:
-            model_arg = found_path
+        # It's likely a model name (e.g., "japanese_mfa"), try to find it or use it directly
+        found_model = _find_mfa_g2p_model(model_path)
+        if found_model:
+            # found_model can be either a path or the model name (if registered with MFA)
+            model_arg = found_model
         else:
-            raise RuntimeError(
-                f"MFA G2P model '{model_path}' not found. "
-                f"Please ensure it's downloaded with 'mfa model download g2p {model_path}'"
-            )
+            # Last resort: try using it as a model name directly (MFA might still recognize it)
+            # or it might be a path that we can't verify but MFA can use
+            model_arg = model_path
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
@@ -190,8 +292,8 @@ def _mfa_g2p_word(word, model_path):
         cmd = [
             "mfa",
             "g2p",
-            model_arg,
             str(input_path),
+            model_arg,
             str(output_path),
         ]
         # Capture output but strip UTF drawing characters (progress bars)
@@ -199,17 +301,22 @@ def _mfa_g2p_word(word, model_path):
             cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True,
+            encoding='utf-8',
+            errors='replace',  # Replace undecodable bytes instead of failing
             env={**os.environ, "PYTHONIOENCODING": "utf-8"},
         )
         if result.returncode != 0:
             # Clean up UTF drawing characters from error messages
-            stderr_clean = "".join(
-                c for c in result.stderr if ord(c) < 0x2500 or ord(c) > 0x25FF
-            ).strip()
-            stdout_clean = "".join(
-                c for c in result.stdout if ord(c) < 0x2500 or ord(c) > 0x25FF
-            ).strip()
+            stderr_clean = ""
+            if result.stderr:
+                stderr_clean = "".join(
+                    c for c in result.stderr if ord(c) < 0x2500 or ord(c) > 0x25FF
+                ).strip()
+            stdout_clean = ""
+            if result.stdout:
+                stdout_clean = "".join(
+                    c for c in result.stdout if ord(c) < 0x2500 or ord(c) > 0x25FF
+                ).strip()
             message = stderr_clean or stdout_clean or "Unknown MFA error"
             raise RuntimeError(message)
 
@@ -240,25 +347,37 @@ def preprocess_japanese(text, preprocess_config):
     phones = []
     if lexicon or mfa_model_path:
         nodes = pyopenjtalk.run_frontend(text)
+        surfaces = []
+        node_list = []
         for node in nodes:
             surface = (node.get("string") or node.get("orig") or "").strip()
             if not surface:
                 continue
-
+            
             if surface in _PUNCTUATION_TO_SP:
                 phones.append("sp")
                 continue
-
-            # Try MFA G2P first for better context-dependent pronunciation (e.g., は→wa as particle)
-            if mfa_model_path:
-                try:
-                    mfa_tokens = _mfa_g2p_word(surface, mfa_model_path)
-                    if mfa_tokens:
-                        phones.extend(mfa_tokens)
-                        continue
-                except RuntimeError as err:
-                    print(f"[WARN] MFA G2P failed for '{surface}': {err}")
-
+            
+            surfaces.append(surface)
+            node_list.append(node)
+        
+        # Batch process all words through MFA G2P if available
+        mfa_results = {}
+        if mfa_model_path and surfaces:
+            try:
+                mfa_results = _mfa_g2p_batch(surfaces, mfa_model_path)
+            except RuntimeError as err:
+                print(f"[WARN] MFA G2P batch processing failed: {err}")
+        
+        # Process each node with results
+        for surface, node in zip(surfaces, node_list):
+            # Try MFA G2P first
+            if surface in mfa_results:
+                mfa_tokens = mfa_results[surface]
+                if mfa_tokens:
+                    phones.extend(mfa_tokens)
+                    continue
+            
             # Fall back to lexicon lookup if MFA G2P not available or failed
             entry = _lexicon_lookup(lexicon, surface) if lexicon else None
             if not entry and lexicon:
