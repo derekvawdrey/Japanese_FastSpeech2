@@ -201,6 +201,12 @@ def synth_samples(targets, predictions, vocoder, model_config, preprocess_config
 
     mel_predictions = predictions[1].transpose(1, 2)
     lengths = predictions[9] * preprocess_config["preprocessing"]["stft"]["hop_length"]
+    # Add small buffer to prevent cutoff at the end (vocoder may need extra samples)
+    # Add ~10ms of padding (sampling_rate * 0.01)
+    hop_length = preprocess_config["preprocessing"]["stft"]["hop_length"]
+    sampling_rate = preprocess_config["preprocessing"]["audio"]["sampling_rate"]
+    buffer_samples = int(sampling_rate * 0.01)  # 10ms buffer
+    lengths = lengths + buffer_samples
     wav_predictions = vocoder_infer(
         mel_predictions, vocoder, model_config, preprocess_config, lengths=lengths
     )

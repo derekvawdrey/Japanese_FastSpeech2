@@ -87,6 +87,9 @@ def vocoder_infer(mels, vocoder, model_config, preprocess_config, lengths=None):
 
     for i in range(len(mels)):
         if lengths is not None:
-            wavs[i] = wavs[i][: lengths[i]]
+            # Add small padding to prevent cutoff at the end
+            # The vocoder might generate slightly more samples than expected
+            # So we take the minimum of the calculated length and actual wav length
+            wavs[i] = wavs[i][: min(lengths[i], len(wavs[i]))]
 
     return wavs
