@@ -153,7 +153,6 @@ def _mfa_g2p_word(word, model_path):
         cmd = [
             "mfa",
             "g2p",
-            "--no_progress_bar",
             model_arg,
             str(input_path),
             str(output_path),
