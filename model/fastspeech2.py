@@ -89,6 +89,7 @@ class FastSpeech2(nn.Module):
             p_control,
             e_control,
             d_control,
+            texts=texts,  # Pass texts to identify spn positions
         )
 
         output, mel_masks = self.decoder(output, mel_masks)

@@ -200,16 +200,35 @@ def synth_samples(targets, predictions, vocoder, model_config, preprocess_config
     from .model import vocoder_infer
 
     mel_predictions = predictions[1].transpose(1, 2)
-    lengths = predictions[9] * preprocess_config["preprocessing"]["stft"]["hop_length"]
-    # Add small buffer to prevent cutoff at the end (vocoder may need extra samples)
-    # Add ~10ms of padding (sampling_rate * 0.01)
+    # Use full mel predictions without slicing to prevent cutoff
+    # The model's mel_len prediction may be too short, especially for final phonemes
+    # By using the full mel spectrogram, we ensure all generated content is included
+    mel_lens = predictions[9]
     hop_length = preprocess_config["preprocessing"]["stft"]["hop_length"]
-    sampling_rate = preprocess_config["preprocessing"]["audio"]["sampling_rate"]
-    buffer_samples = int(sampling_rate * 0.01)  # 10ms buffer
-    lengths = lengths + buffer_samples
+    
+    # Don't slice - use full mel predictions to prevent any cutoff
+    # The vocoder will handle the actual length, and we'll trim based on expected length
+    
+    # Don't pass lengths - let vocoder generate full audio
     wav_predictions = vocoder_infer(
-        mel_predictions, vocoder, model_config, preprocess_config, lengths=lengths
+        mel_predictions, vocoder, model_config, preprocess_config, lengths=None
     )
+    
+    # Calculate expected length based on predicted mel_len
+    # Add buffer to account for final phoneme and vocoder alignment
+    expected_lengths = (mel_lens + 15) * hop_length  # Add 15 frames buffer (~150ms)
+    sampling_rate = preprocess_config["preprocessing"]["audio"]["sampling_rate"]
+    
+    # Use full generated audio - don't trim to prevent cutoff
+    # The vocoder generates the correct amount based on the mel spectrogram
+    # Only trim if it's way too long (more than 20% longer than expected with buffer)
+    for i in range(len(wav_predictions)):
+        expected_len = expected_lengths[i].item()
+        actual_len = len(wav_predictions[i])
+        # Only trim if actual is more than 20% longer than expected (likely excessive padding)
+        if actual_len > expected_len * 1.2:
+            wav_predictions[i] = wav_predictions[i][:int(expected_len * 1.15)]  # Keep 15% buffer
+        # Otherwise use all generated audio (prevents cutoff)
 
     sampling_rate = preprocess_config["preprocessing"]["audio"]["sampling_rate"]
     for wav, basename in zip(wav_predictions, basenames):

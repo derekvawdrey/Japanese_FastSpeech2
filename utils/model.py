@@ -87,9 +87,11 @@ def vocoder_infer(mels, vocoder, model_config, preprocess_config, lengths=None):
 
     for i in range(len(mels)):
         if lengths is not None:
-            # Add small padding to prevent cutoff at the end
-            # The vocoder might generate slightly more samples than expected
-            # So we take the minimum of the calculated length and actual wav length
-            wavs[i] = wavs[i][: min(lengths[i], len(wavs[i]))]
+            # Only trim if we have significantly more audio than expected
+            # This prevents cutoff - use full generated audio if it's close to expected length
+            if len(wavs[i]) > lengths[i] * 1.1:
+                # Generated audio is more than 10% longer - trim to expected + small buffer
+                wavs[i] = wavs[i][:int(lengths[i] * 1.05)]
+            # Otherwise use all generated audio (prevents cutoff)
 
     return wavs

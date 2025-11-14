@@ -119,6 +119,7 @@ class VarianceAdaptor(nn.Module):
         p_control=1.0,
         e_control=1.0,
         d_control=1.0,
+        texts=None,  # Add texts parameter to identify spn positions
     ):
 
         log_duration_prediction = self.duration_predictor(x, src_mask)
@@ -142,8 +143,42 @@ class VarianceAdaptor(nn.Module):
                 min=0,
             )
             # Ensure no zero durations (causes empty tensors in LengthRegulator)
-            # This is especially important for spn phonemes
             duration_rounded = torch.clamp(duration_rounded, min=1)
+            
+            # Special handling for spn (silence) phonemes
+            # Training data shows spn has mean ~24 frames, so ensure reasonable minimum
+            if texts is not None:
+                # Find spn symbol ID (spn is at index 95 in symbols list)
+                try:
+                    from text.symbols import symbols
+                    spn_id = symbols.index("spn") if "spn" in symbols else None
+                    if spn_id is not None:
+                        # Create mask for spn positions: texts == spn_id
+                        spn_mask = (texts == spn_id)
+                        # Apply minimum duration of 10 frames for spn (based on training data)
+                        spn_min_duration = 10
+                        duration_rounded = torch.where(
+                            spn_mask,
+                            torch.clamp(duration_rounded, min=spn_min_duration),
+                            duration_rounded
+                        )
+                except:
+                    # Fallback: apply minimum to very short durations that might be spn
+                    spn_min_duration = 10
+                    duration_rounded = torch.where(
+                        duration_rounded < 5,
+                        torch.clamp(duration_rounded, min=spn_min_duration),
+                        duration_rounded
+                    )
+            else:
+                # Fallback heuristic: very short durations might be spn
+                spn_min_duration = 10
+                duration_rounded = torch.where(
+                    duration_rounded < 5,
+                    torch.clamp(duration_rounded, min=spn_min_duration),
+                    duration_rounded
+                )
+            
             x, mel_len = self.length_regulator(x, duration_rounded, max_len)
             mel_mask = get_mask_from_lengths(mel_len)
 
