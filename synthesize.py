@@ -1,8 +1,5 @@
 import argparse
-import shutil
-import subprocess
-import tempfile
-from pathlib import Path
+import re
 
 import numpy as np
 import pyopenjtalk
@@ -17,206 +14,86 @@ from text import text_to_sequence
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+# Mapping from OpenJTalk phonemes to IPA (matching training data format)
+_OPENJTALK_TO_IPA = {
+    "a": "a",
+    "i": "i",
+    "u": "ɯ",
+    "U": "ɯ̥",
+    "e": "e",
+    "o": "o",
+    "N": "ɴ",
+    "m": "m",
+    "n": "n",
+    "p": "p",
+    "b": "b",
+    "by": "bʲ",
+    "f": "ɸ",
+    "v": "v",
+    "t": "t",
+    "ts": "ts",
+    "d": "d",
+    "s": "s",
+    "sh": "ɕ",
+    "z": "z",
+    "j": "dʑ",
+    "k": "k",
+    "ky": "c",
+    "g": "ɡ",
+    "gy": "ɟ",
+    "h": "h",
+    "hy": "ç",
+    "r": "ɾ",
+    "ry": "ɾʲ",
+    "w": "w",
+    "y": "j",
+    "ch": "tɕ",
+    "cl": "spn",
+    "pau": "spn",
+    "sil": "spn",
+}
 
-_MFA_G2P_CACHE = {}
 
-
-def _mfa_g2p_word(word, model_path):
-    cache_key = (model_path, word)
-    if cache_key in _MFA_G2P_CACHE:
-        return _MFA_G2P_CACHE[cache_key]
-
-    if not shutil.which("mfa"):
-        raise RuntimeError("Could not find the `mfa` executable in PATH.")
-
-    # Handle model path - could be a name, directory, or zip file
-    model = Path(model_path)
-    zip_tmpdir = None
-    
-    # If it's a zip file, extract it to a temp directory
-    if model.suffix == ".zip" and model.exists():
-        import zipfile
-        zip_tmpdir = tempfile.mkdtemp()
-        zip_tmpdir = Path(zip_tmpdir)
-        with zipfile.ZipFile(model, 'r') as zip_ref:
-            zip_ref.extractall(zip_tmpdir)
-        # Find the model directory inside (usually the zip contains one folder)
-        extracted_dirs = [d for d in zip_tmpdir.iterdir() if d.is_dir()]
-        if extracted_dirs:
-            model_path = str(extracted_dirs[0])
-        else:
-            model_path = str(zip_tmpdir)
-    elif model.exists() and model.is_dir():
-        # It's a directory, use it directly
-        model_path = str(model)
-    elif model.exists() and model.is_file() and model.suffix != ".zip":
-        # It's a file but not a zip, might be a model file
-        model_path = str(model)
-    else:
-        # Assume it's a model name that MFA knows about (e.g., "japanese_mfa")
-        # MFA will look it up in its model cache, or it might be a path to a zip
-        # that we need to check
-        if not model.exists():
-            # Try as model name first - MFA will handle it
-            model_path = str(model_path)
-        else:
-            model_path = str(model)
-
-    with tempfile.TemporaryDirectory() as tmpdir:
-        tmpdir = Path(tmpdir)
-        input_path = tmpdir / "g2p_input.txt"
-        output_path = tmpdir / "g2p_output.txt"
-        input_path.write_text(word + "\n", encoding="utf-8")
-
-        cmd = [
-            "mfa",
-            "g2p",
-            str(input_path),
-            model_path,
-            str(output_path),
-        ]
-        result = subprocess.run(
-            cmd,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True,
-        )
-        if result.returncode != 0:
-            message = result.stderr.strip() or result.stdout.strip() or "Unknown MFA error"
-            raise RuntimeError(f"MFA G2P command failed: {message}\nCommand: {' '.join(cmd)}")
-
-        if not output_path.exists():
-            raise RuntimeError("MFA G2P did not produce an output file.")
-
-        lines = [
-            line.strip()
-            for line in output_path.read_text(encoding="utf-8").splitlines()
-            if line.strip()
-        ]
-
-    tokens = []
-    if lines:
-        parts = lines[0].split("\t")
-        pronunciation = parts[-1] if parts else ""
-        tokens = pronunciation.split()
-
-    # Clean up extracted zip directory if we created one
-    if zip_tmpdir and zip_tmpdir.exists():
-        import shutil as shutil_cleanup
-        shutil_cleanup.rmtree(zip_tmpdir, ignore_errors=True)
-
-    _MFA_G2P_CACHE[cache_key] = tokens
-    return tokens
+def _map_openjtalk_to_ipa(tokens):
+    """Convert OpenJTalk phonemes to IPA format matching training data."""
+    mapped = []
+    for token in tokens:
+        ipa = _OPENJTALK_TO_IPA.get(token)
+        if ipa is None:
+            # If token starts with special IPA characters, keep it as is
+            if token and token[0] in {"@", "ɕ", "ɟ", "ɲ"}:
+                ipa = token
+            else:
+                # Unknown token, map to spn
+                ipa = "spn"
+        mapped.append(ipa)
+    return mapped
 
 
 def preprocess_japanese(text, preprocess_config):
     """
-    Convert Japanese text to phonemes using MFA G2P (same as training).
-    Segments text into words and calls MFA G2P on each word.
+    Convert Japanese text to phonemes using pyopenjtalk G2P.
     """
-    mfa_model_path = preprocess_config["preprocessing"]["text"].get("mfa_g2p_model_path")
-    
-    if not mfa_model_path:
-        raise RuntimeError("MFA G2P model path not found in config. Please set preprocessing.text.mfa_g2p_model_path")
-
     # Punctuation that should become spn
     punctuation_to_spn = {"。", "、", "，", "．", "！", "？", "…", "・", "「", "」", "『", "』"}
     
     phones = []
     
-    # Use pyopenjtalk to segment text into words
-    nodes = pyopenjtalk.run_frontend(text)
+    # Use pyopenjtalk to get phonemes for the full text
+    # pyopenjtalk.g2p returns space-separated phonemes
+    openjtalk_phones = pyopenjtalk.g2p(text, join=False)
     
-    # Collect all nodes first
-    node_list = []
-    for node in nodes:
-        surface = (node.get("string") or node.get("orig") or "").strip()
-        if not surface:
-            continue
-        node_list.append(node)
+    # Map OpenJTalk phonemes to IPA format
+    phones = _map_openjtalk_to_ipa(openjtalk_phones)
     
-    i = 0
-    while i < len(node_list):
-        node = node_list[i]
-        surface = (node.get("string") or node.get("orig") or "").strip()
-        
-        # Handle punctuation as silence (but not at the very end)
-        if surface in punctuation_to_spn:
-            # Only add spn if there are more nodes after this (not the last element)
-            if i < len(node_list) - 1:
-                phones.append("spn")
-            i += 1
-            continue
-        
-        # Try to combine with next word if it's a single character particle/auxiliary
-        # This helps with compounds like "何か" (nanka)
-        # But be careful - only combine very short particles (1-2 chars) that are likely auxiliaries
-        combined_surface = surface
-        combined_reading = (node.get("read") or node.get("pron") or surface).strip()
-        j = i + 1
-        
-        # Only combine with single-character particles/auxiliaries (not longer words)
-        # Common particles: か, が, の, を, に, は, へ, と, で, ば, など
-        single_char_particles = {"か", "が", "の", "を", "に", "は", "へ", "と", "で", "ば", "も", "や", "から", "まで", "より"}
-        
-        while j < len(node_list):
-            next_node = node_list[j]
-            next_surface = (next_node.get("string") or next_node.get("orig") or "").strip()
-            
-            # Stop if we hit punctuation
-            if next_surface in punctuation_to_spn:
-                break
-            
-            # Only combine if it's a single character AND a known particle
-            # Don't combine longer words as this can break compounds
-            if len(next_surface) == 1 and next_surface in single_char_particles:
-                combined_surface += next_surface
-                next_reading = (next_node.get("read") or next_node.get("pron") or next_surface).strip()
-                combined_reading += next_reading
-                j += 1
-            else:
-                break
-        
-        # Try MFA G2P in order of preference:
-        # 1. Combined surface form (e.g., "何か") - MFA might handle compounds better
-        # 2. Combined reading (e.g., "ナニカ") 
-        # 3. Individual word reading
-        word_phones = None
-        
-        # First try combined surface form (works better for compounds)
-        if len(combined_surface) > len(surface):
-            try:
-                word_phones = _mfa_g2p_word(combined_surface, mfa_model_path)
-            except RuntimeError:
-                pass
-        
-        # If that didn't work, try combined reading
-        if not word_phones and combined_reading and len(combined_reading) > len((node.get("read") or node.get("pron") or surface).strip()):
-            try:
-                word_phones = _mfa_g2p_word(combined_reading, mfa_model_path)
-            except RuntimeError:
-                pass
-        
-        # If still no result, try individual word reading
-        if not word_phones:
-            individual_reading = (node.get("read") or node.get("pron") or surface).strip()
-            try:
-                word_phones = _mfa_g2p_word(individual_reading, mfa_model_path)
-            except RuntimeError:
-                pass
-        
-        # Last resort: try surface form
-        if not word_phones:
-            try:
-                word_phones = _mfa_g2p_word(surface, mfa_model_path)
-            except RuntimeError as e:
-                raise RuntimeError(f"MFA G2P failed for word '{combined_surface}' (reading: '{combined_reading}'): {e}")
-        
-        if word_phones:
-            phones.extend(word_phones)
-        
-        # Move to next unprocessed node
-        i = j
+    # Handle punctuation - replace with spn (but not at the very end)
+    # Since pyopenjtalk might not handle punctuation, we process the text to add spn
+    # But first, let's see what pyopenjtalk gives us
+    
+    # Actually, pyopenjtalk should handle punctuation, but let's ensure spn is used
+    # and remove trailing spn if present
+    if phones and phones[-1] == "spn":
+        phones = phones[:-1]
 
     if not phones:
         phones = ["spn"]

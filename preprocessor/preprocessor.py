@@ -298,12 +298,17 @@ class Preprocessor:
                 # For silent phones
                 phones.append(p)
 
-            durations.append(
-                int(
-                    np.round(e * self.sampling_rate / self.hop_length)
-                    - np.round(s * self.sampling_rate / self.hop_length)
-                )
+            duration = int(
+                np.round(e * self.sampling_rate / self.hop_length)
+                - np.round(s * self.sampling_rate / self.hop_length)
             )
+            
+            # Ensure spn (silence) phonemes have minimum duration of 2 frames
+            # This prevents the model from learning zero-duration silences which cause issues during inference
+            if p in sil_phones and duration < 2:
+                duration = 2
+            
+            durations.append(duration)
 
         # Trim tailing silences
         phones = phones[:end_idx]
