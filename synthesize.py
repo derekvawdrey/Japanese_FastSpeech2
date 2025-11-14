@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+import argparse
+>>>>>>> Stashed changes
 import re
 import argparse
 from string import punctuation
@@ -36,6 +40,7 @@ def preprocess_english(text, preprocess_config):
     text = text.rstrip(punctuation)
     lexicon = read_lexicon(preprocess_config["path"]["lexicon_path"])
 
+<<<<<<< Updated upstream
     g2p = G2p()
     phones = []
     words = re.split(r"([,;.\-\?\!\s+])", text)
@@ -74,6 +79,126 @@ def preprocess_mandarin(text, preprocess_config):
             phones += lexicon[p]
         else:
             phones.append("sp")
+=======
+_PUNCTUATION_TO_SP = {"。", "、", "，", "．", "！", "？", "…", "・", "「", "」", "『", "』"}
+
+_MFA_G2P_CACHE = {}
+
+
+def _map_openjtalk_tokens(tokens):
+    mapped = []
+    for token in tokens:
+        ipa = _OPENJTALK_TO_IPA.get(token)
+        if ipa is None:
+            ipa = token if token and token[0] in {"@", "ɕ", "ɟ", "ɲ"} else "sp"
+        mapped.append(ipa)
+    return mapped
+
+
+def _lexicon_lookup(lexicon, key):
+    if not key:
+        return None
+    if key in lexicon:
+        return lexicon[key]
+    lowered = key.lower()
+    if lowered in lexicon:
+        return lexicon[lowered]
+    return None
+
+
+def _mfa_g2p_word(word, model_path):
+    cache_key = (model_path, word)
+    if cache_key in _MFA_G2P_CACHE:
+        return _MFA_G2P_CACHE[cache_key]
+
+    if not shutil.which("mfa"):
+        raise RuntimeError("Could not find the `mfa` executable in PATH.")
+
+    model = Path(model_path)
+    if not model.exists():
+        raise RuntimeError(f"MFA G2P model not found at: {model_path}")
+
+    with tempfile.TemporaryDirectory() as tmpdir:
+        tmpdir = Path(tmpdir)
+        input_path = tmpdir / "g2p_input.txt"
+        output_path = tmpdir / "g2p_output.txt"
+        input_path.write_text(word + "\n", encoding="utf-8")
+
+        cmd = [
+            "mfa",
+            "g2p",
+            "--no_progress_bar",
+            str(model),
+            str(input_path),
+            str(output_path),
+        ]
+        result = subprocess.run(
+            cmd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if result.returncode != 0:
+            message = result.stderr.strip() or result.stdout.strip() or "Unknown MFA error"
+            raise RuntimeError(message)
+
+        if not output_path.exists():
+            raise RuntimeError("MFA G2P did not produce an output file.")
+
+        lines = [
+            line.strip()
+            for line in output_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+
+    tokens = []
+    if lines:
+        parts = lines[0].split("\t")
+        pronunciation = parts[-1] if parts else ""
+        tokens = pronunciation.split()
+
+    _MFA_G2P_CACHE[cache_key] = tokens
+    return tokens
+
+
+def preprocess_japanese(text, preprocess_config):
+    lexicon_path = preprocess_config["path"].get("lexicon_path")
+    lexicon = read_lexicon(lexicon_path) if lexicon_path else {}
+    mfa_model_path = preprocess_config["preprocessing"]["text"].get("mfa_g2p_model_path")
+
+    phones = []
+    if lexicon or mfa_model_path:
+        nodes = pyopenjtalk.run_frontend(text)
+        for node in nodes:
+            surface = (node.get("string") or node.get("orig") or "").strip()
+            if not surface:
+                continue
+
+            if surface in _PUNCTUATION_TO_SP:
+                phones.append("sp")
+                continue
+            # Fall back to lexicon lookup if MFA G2P not available or failed
+            entry = _lexicon_lookup(lexicon, surface) if lexicon else None
+            if not entry and lexicon:
+                for candidate in filter(None, (node.get("orig"), node.get("read"), node.get("pron"))):
+                    entry = _lexicon_lookup(lexicon, candidate)
+                    if entry:
+                        break
+            if entry:
+                phones.extend(entry)
+                continue
+
+            # Final fallback to pyopenjtalk
+            fallback_tokens = pyopenjtalk.g2p(surface, join=False)
+            phones.extend(_map_openjtalk_tokens(fallback_tokens))
+    else:
+        fallback_tokens = pyopenjtalk.g2p(text, join=False)
+        phones.extend(_map_openjtalk_tokens(fallback_tokens))
+
+    phones = [p for p in phones if p]
+    if not phones:
+        phones = ["sp"]
+>>>>>>> Stashed changes
 
     phones = "{" + " ".join(phones) + "}"
     print("Raw Text Sequence: {}".format(text))
