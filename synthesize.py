@@ -48,7 +48,7 @@ _OPENJTALK_TO_IPA = {
     "w": "w",
     "y": "j",
     "ch": "tɕ",
-    "cl": "spn",
+    # "cl" is handled specially in post-processing (gemination marker)
     "pau": "spn",
     "sil": "spn",
 }
@@ -64,25 +64,47 @@ def _map_openjtalk_to_ipa(tokens):
             if token and token[0] in {"@", "ɕ", "ɟ", "ɲ"}:
                 ipa = token
             else:
-                # Unknown token, map to spn
-                ipa = "spn"
+                # Unknown token, keep as is for now (will handle "cl" specially)
+                ipa = token
         mapped.append(ipa)
     
-    # Post-process: convert consecutive identical vowels to long vowels
-    # e.g., "o o" -> "oː", "a a" -> "aː"
-    vowels = {"a", "i", "u", "e", "o", "ɯ", "ɨ"}
-    long_vowel_map = {
-        "a": "aː", "i": "iː", "u": "uː", "e": "eː", "o": "oː",
-        "ɯ": "ɯː", "ɨ": "ɨː"
+    # Post-process: handle gemination (small っ) - "cl" followed by consonant becomes long consonant
+    # e.g., "cl" + "t" -> "tː", "cl" + "ch" -> "tɕː"
+    # Map both OpenJTalk tokens and IPA tokens to long consonants
+    gemination_map = {
+        # OpenJTalk tokens
+        "t": "tː", "k": "kː", "p": "pː", "s": "sː", "ts": "tsː",
+        "ch": "tɕː", "sh": "ɕː", "j": "dʑː", "d": "dː", "b": "bː",
+        "g": "ɡː", "z": "zː", "r": "ɾː", "m": "mː", "n": "nː",
+        "h": "hː", "f": "ɸː", "v": "vː",
+        # IPA tokens (already converted)
+        "tɕ": "tɕː", "ɕ": "ɕː", "dʑ": "dʑː", "ts": "tsː",
+        "ɾ": "ɾː", "ɸ": "ɸː", "ɡ": "ɡː"
     }
     
     result = []
     i = 0
     while i < len(mapped):
         current = mapped[i]
-        # Check if current is a vowel and next is the same vowel
-        if current in vowels and i + 1 < len(mapped) and mapped[i + 1] == current:
-            # Convert to long vowel
+        
+        # Handle "cl" (closure/gemination marker) - convert to long consonant
+        if current == "cl" and i + 1 < len(mapped):
+            next_token = mapped[i + 1]
+            # Map the next consonant to its long form (works for both OpenJTalk and IPA)
+            long_consonant = gemination_map.get(next_token)
+            if long_consonant:
+                result.append(long_consonant)
+                i += 2  # Skip both "cl" and the consonant
+            else:
+                # If we can't map it, use glottal stop ʔ (common in training data for gemination)
+                result.append("ʔ")
+                i += 1
+        # Handle consecutive identical vowels -> long vowels
+        elif current in {"a", "i", "u", "e", "o", "ɯ", "ɨ"} and i + 1 < len(mapped) and mapped[i + 1] == current:
+            long_vowel_map = {
+                "a": "aː", "i": "iː", "u": "uː", "e": "eː", "o": "oː",
+                "ɯ": "ɯː", "ɨ": "ɨː"
+            }
             long_vowel = long_vowel_map.get(current, current + "ː")
             result.append(long_vowel)
             i += 2  # Skip both vowels
