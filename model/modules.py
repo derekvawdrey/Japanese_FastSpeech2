@@ -80,23 +80,31 @@ class VarianceAdaptor(nn.Module):
     def get_pitch_embedding(self, x, target, mask, control):
         prediction = self.pitch_predictor(x, mask)
         if target is not None:
-            embedding = self.pitch_embedding(torch.bucketize(target, self.pitch_bins))
+            # Clamp bucketized values to valid range [0, n_bins-1]
+            bucketized = torch.bucketize(target, self.pitch_bins)
+            bucketized = torch.clamp(bucketized, 0, self.pitch_embedding.num_embeddings - 1)
+            embedding = self.pitch_embedding(bucketized)
         else:
             prediction = prediction * control
-            embedding = self.pitch_embedding(
-                torch.bucketize(prediction, self.pitch_bins)
-            )
+            # Clamp bucketized values to valid range [0, n_bins-1]
+            bucketized = torch.bucketize(prediction, self.pitch_bins)
+            bucketized = torch.clamp(bucketized, 0, self.pitch_embedding.num_embeddings - 1)
+            embedding = self.pitch_embedding(bucketized)
         return prediction, embedding
 
     def get_energy_embedding(self, x, target, mask, control):
         prediction = self.energy_predictor(x, mask)
         if target is not None:
-            embedding = self.energy_embedding(torch.bucketize(target, self.energy_bins))
+            # Clamp bucketized values to valid range [0, n_bins-1]
+            bucketized = torch.bucketize(target, self.energy_bins)
+            bucketized = torch.clamp(bucketized, 0, self.energy_embedding.num_embeddings - 1)
+            embedding = self.energy_embedding(bucketized)
         else:
             prediction = prediction * control
-            embedding = self.energy_embedding(
-                torch.bucketize(prediction, self.energy_bins)
-            )
+            # Clamp bucketized values to valid range [0, n_bins-1]
+            bucketized = torch.bucketize(prediction, self.energy_bins)
+            bucketized = torch.clamp(bucketized, 0, self.energy_embedding.num_embeddings - 1)
+            embedding = self.energy_embedding(bucketized)
         return prediction, embedding
 
     def forward(
@@ -133,6 +141,9 @@ class VarianceAdaptor(nn.Module):
                 (torch.round(torch.exp(log_duration_prediction) - 1) * d_control),
                 min=0,
             )
+            # Ensure no zero durations (causes empty tensors in LengthRegulator)
+            # This is especially important for spn phonemes
+            duration_rounded = torch.clamp(duration_rounded, min=1)
             x, mel_len = self.length_regulator(x, duration_rounded, max_len)
             mel_mask = get_mask_from_lengths(mel_len)
 

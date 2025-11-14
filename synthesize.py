@@ -67,7 +67,30 @@ def _map_openjtalk_to_ipa(tokens):
                 # Unknown token, map to spn
                 ipa = "spn"
         mapped.append(ipa)
-    return mapped
+    
+    # Post-process: convert consecutive identical vowels to long vowels
+    # e.g., "o o" -> "oː", "a a" -> "aː"
+    vowels = {"a", "i", "u", "e", "o", "ɯ", "ɨ"}
+    long_vowel_map = {
+        "a": "aː", "i": "iː", "u": "uː", "e": "eː", "o": "oː",
+        "ɯ": "ɯː", "ɨ": "ɨː"
+    }
+    
+    result = []
+    i = 0
+    while i < len(mapped):
+        current = mapped[i]
+        # Check if current is a vowel and next is the same vowel
+        if current in vowels and i + 1 < len(mapped) and mapped[i + 1] == current:
+            # Convert to long vowel
+            long_vowel = long_vowel_map.get(current, current + "ː")
+            result.append(long_vowel)
+            i += 2  # Skip both vowels
+        else:
+            result.append(current)
+            i += 1
+    
+    return result
 
 
 def preprocess_japanese(text, preprocess_config):

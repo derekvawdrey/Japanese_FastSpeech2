@@ -219,13 +219,15 @@ class Preprocessor:
         if self.pitch_phoneme_averaging:
             # perform linear interpolation
             nonzero_ids = np.where(pitch != 0)[0]
-            interp_fn = interp1d(
-                nonzero_ids,
-                pitch[nonzero_ids],
-                fill_value=(pitch[nonzero_ids[0]], pitch[nonzero_ids[-1]]),
-                bounds_error=False,
-            )
-            pitch = interp_fn(np.arange(0, len(pitch)))
+            if len(nonzero_ids) > 0:
+                interp_fn = interp1d(
+                    nonzero_ids,
+                    pitch[nonzero_ids],
+                    fill_value=(pitch[nonzero_ids[0]], pitch[nonzero_ids[-1]]),
+                    bounds_error=False,
+                )
+                pitch = interp_fn(np.arange(0, len(pitch)))
+            # If all pitch values are zero, keep them as zero (no interpolation needed)
 
             # Phoneme-level average
             pos = 0
@@ -303,10 +305,11 @@ class Preprocessor:
                 - np.round(s * self.sampling_rate / self.hop_length)
             )
             
-            # Ensure spn (silence) phonemes have minimum duration of 2 frames
+            # Ensure spn (silence) phonemes have minimum duration of 1 frame (not 0)
             # This prevents the model from learning zero-duration silences which cause issues during inference
-            if p in sil_phones and duration < 2:
-                duration = 2
+            # We use 1 frame minimum (not 2) to preserve very short pauses while preventing empty tensors
+            if p in sil_phones and duration == 0:
+                duration = 1
             
             durations.append(duration)
 
