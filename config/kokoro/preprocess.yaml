@@ -1,16 +1,17 @@
 dataset: "kokoro"
 
 path:
-  corpus_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/raw_data/kokoro"
-  lexicon_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/lexicon/japanese_mfa.dict"
-  raw_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/raw_data/kokoro"
-  preprocessed_path: "C:/Users/PC/Documents/GitHub/Japanese_FastSpeech2/preprocessed_data/kokoro"
+  corpus_path: "/Users/derekvawdrey/Workspace/School/CS479FinalProject/fast-speech-2/raw_data"
+  lexicon_path: "/Users/derekvawdrey/Workspace/School/CS479FinalProject/fast-speech-2/lexicon/japanese_mfa.dict"
+  raw_path: "/Users/derekvawdrey/Workspace/School/CS479FinalProject/fast-speech-2/raw_data"
+  preprocessed_path: "/Users/derekvawdrey/Workspace/School/CS479FinalProject/fast-speech-2/preprocessed_data/kokoro"
 
 preprocessing:
   val_size: 512
   text:
     text_cleaners: []
     language: "ja"
+    mfa_g2p_model_path: "japanese_mfa"
   audio:
     sampling_rate: 22050
     max_wav_value: 32768.0
