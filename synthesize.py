@@ -135,9 +135,14 @@ def _mfa_g2p_word(word, model_path):
     if not shutil.which("mfa"):
         raise RuntimeError("Could not find the `mfa` executable in PATH.")
 
+    # Check if model_path is a direct path that exists, otherwise treat it as a model name
     model = Path(model_path)
-    if not model.exists():
-        raise RuntimeError(f"MFA G2P model not found at: {model_path}")
+    if model.exists():
+        # It's a path to the model directory
+        model_arg = str(model)
+    else:
+        # It's likely a model name (e.g., "japanese_mfa"), let MFA resolve it
+        model_arg = model_path
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
@@ -149,7 +154,7 @@ def _mfa_g2p_word(word, model_path):
             "mfa",
             "g2p",
             "--no_progress_bar",
-            str(model),
+            model_arg,
             str(input_path),
             str(output_path),
         ]
