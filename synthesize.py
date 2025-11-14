@@ -1,4 +1,5 @@
 import argparse
+import os
 import re
 import shutil
 import subprocess
@@ -127,6 +128,35 @@ def _lexicon_lookup(lexicon, key):
     return None
 
 
+def _find_mfa_g2p_model(model_name):
+    """Find the path to an MFA G2P model."""
+    # Common locations for MFA models
+    possible_locations = [
+        Path.home() / "Documents" / "MFA" / "pretrained_models" / "g2p" / model_name,
+        Path.home() / ".local" / "share" / "montreal-forced-aligner" / "pretrained_models" / "g2p" / model_name,
+    ]
+    
+    for location in possible_locations:
+        if location.exists():
+            return str(location)
+    
+    # If not found, try to query MFA for model location
+    try:
+        result = subprocess.run(
+            ["mfa", "model", "list", "g2p"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if result.returncode == 0 and model_name in result.stdout:
+            # Model is installed, try the first location
+            return str(possible_locations[0])
+    except Exception:
+        pass
+    
+    return None
+
+
 def _mfa_g2p_word(word, model_path):
     cache_key = (model_path, word)
     if cache_key in _MFA_G2P_CACHE:
@@ -135,14 +165,21 @@ def _mfa_g2p_word(word, model_path):
     if not shutil.which("mfa"):
         raise RuntimeError("Could not find the `mfa` executable in PATH.")
 
-    # Check if model_path is a direct path that exists, otherwise treat it as a model name
+    # Check if model_path is a direct path that exists
     model = Path(model_path)
     if model.exists():
         # It's a path to the model directory
         model_arg = str(model)
     else:
-        # It's likely a model name (e.g., "japanese_mfa"), let MFA resolve it
-        model_arg = model_path
+        # It's likely a model name (e.g., "japanese_mfa"), try to find it
+        found_path = _find_mfa_g2p_model(model_path)
+        if found_path:
+            model_arg = found_path
+        else:
+            raise RuntimeError(
+                f"MFA G2P model '{model_path}' not found. "
+                f"Please ensure it's downloaded with 'mfa model download g2p {model_path}'"
+            )
 
     with tempfile.TemporaryDirectory() as tmpdir:
         tmpdir = Path(tmpdir)
@@ -157,14 +194,23 @@ def _mfa_g2p_word(word, model_path):
             str(input_path),
             str(output_path),
         ]
+        # Capture output but strip UTF drawing characters (progress bars)
         result = subprocess.run(
             cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"},
         )
         if result.returncode != 0:
-            message = result.stderr.strip() or result.stdout.strip() or "Unknown MFA error"
+            # Clean up UTF drawing characters from error messages
+            stderr_clean = "".join(
+                c for c in result.stderr if ord(c) < 0x2500 or ord(c) > 0x25FF
+            ).strip()
+            stdout_clean = "".join(
+                c for c in result.stdout if ord(c) < 0x2500 or ord(c) > 0x25FF
+            ).strip()
+            message = stderr_clean or stdout_clean or "Unknown MFA error"
             raise RuntimeError(message)
 
         if not output_path.exists():
