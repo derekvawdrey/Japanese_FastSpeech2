@@ -199,6 +199,17 @@ def preprocess_japanese(text, preprocess_config):
                 phones.append("sp")
                 continue
 
+            # Try MFA G2P first for better context-dependent pronunciation (e.g., は→wa as particle)
+            if mfa_model_path:
+                try:
+                    mfa_tokens = _mfa_g2p_word(surface, mfa_model_path)
+                    if mfa_tokens:
+                        phones.extend(mfa_tokens)
+                        continue
+                except RuntimeError as err:
+                    print(f"[WARN] MFA G2P failed for '{surface}': {err}")
+
+            # Fall back to lexicon lookup if MFA G2P not available or failed
             entry = _lexicon_lookup(lexicon, surface) if lexicon else None
             if not entry and lexicon:
                 for candidate in filter(None, (node.get("orig"), node.get("read"), node.get("pron"))):
@@ -209,15 +220,7 @@ def preprocess_japanese(text, preprocess_config):
                 phones.extend(entry)
                 continue
 
-            if mfa_model_path:
-                try:
-                    mfa_tokens = _mfa_g2p_word(surface, mfa_model_path)
-                    if mfa_tokens:
-                        phones.extend(mfa_tokens)
-                        continue
-                except RuntimeError as err:
-                    print(f"[WARN] MFA G2P failed for '{surface}': {err}")
-
+            # Final fallback to pyopenjtalk
             fallback_tokens = pyopenjtalk.g2p(surface, join=False)
             phones.extend(_map_openjtalk_tokens(fallback_tokens))
     else:
