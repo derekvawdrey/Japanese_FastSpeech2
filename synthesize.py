@@ -49,8 +49,7 @@ _OPENJTALK_TO_IPA = {
     "y": "j",
     "ch": "tɕ",
     # "cl" is handled specially in post-processing (gemination marker)
-    "pau": "spn",
-    "sil": "spn",
+    "spn": "",
 }
 
 
@@ -119,9 +118,7 @@ def preprocess_japanese(text, preprocess_config):
     """
     Convert Japanese text to phonemes using pyopenjtalk G2P.
     """
-    # Punctuation that should become spn
-    punctuation_to_spn = {"。", "、", "，", "．", "！", "？", "…", "・", "「", "」", "『", "』"}
-    
+
     phones = []
     
     # Use pyopenjtalk to get phonemes for the full text
@@ -130,13 +127,7 @@ def preprocess_japanese(text, preprocess_config):
     
     # Map OpenJTalk phonemes to IPA format
     phones = _map_openjtalk_to_ipa(openjtalk_phones)
-    
-    # Handle punctuation - replace with spn (but not at the very end)
-    # Since pyopenjtalk might not handle punctuation, we process the text to add spn
-    # But first, let's see what pyopenjtalk gives us
-    
-    # Actually, pyopenjtalk should handle punctuation, but let's ensure spn is used
-    # and remove trailing spn if present
+
     if phones and phones[-1] == "spn":
         phones = phones[:-1]
 
@@ -180,7 +171,6 @@ def synthesize(model, step, configs, vocoder, batchs, control_values):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--restore_step", type=int, required=True)
     parser.add_argument(
