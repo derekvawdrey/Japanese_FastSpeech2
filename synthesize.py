@@ -50,6 +50,7 @@ _OPENJTALK_TO_IPA = {
     "ch": "tɕ",
     # "cl" is handled specially in post-processing (gemination marker)
     "spn": "",
+    "pau": "",
 }
 
 
