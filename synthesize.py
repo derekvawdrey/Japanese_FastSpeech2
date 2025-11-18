@@ -49,8 +49,8 @@ _OPENJTALK_TO_IPA = {
     "y": "j",
     "ch": "tɕ",
     # "cl" is handled specially in post-processing (gemination marker)
-    "spn": "",
-    "pau": "", # This is what the synthesizer uses for pauses
+    "spn": "spn",
+    "pau": "pau", # This is what the synthesizer uses for pauses
 }
 
 
