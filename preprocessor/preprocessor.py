@@ -274,7 +274,7 @@ class Preprocessor:
         )
 
     def get_alignment(self, tier):
-        sil_phones = ["sil", "sp", "spn"]
+        sil_phones = ["sil", "sp", "spn", "pau"]
 
         phones = []
         durations = []
