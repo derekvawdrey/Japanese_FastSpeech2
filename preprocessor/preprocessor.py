@@ -250,6 +250,20 @@ class Preprocessor:
                 pos += d
             energy = energy[: len(duration)]
 
+        # Validate that all sequences have matching lengths
+        assert len(phone) == len(duration), (
+            f"Mismatch: phone length ({len(phone)}) != duration length ({len(duration)}) "
+            f"for {basename}. Phones: {phone[:10]}... Durations: {duration[:10]}..."
+        )
+        assert len(pitch) == len(duration), (
+            f"Mismatch: pitch length ({len(pitch)}) != duration length ({len(duration)}) "
+            f"for {basename}"
+        )
+        assert len(energy) == len(duration), (
+            f"Mismatch: energy length ({len(energy)}) != duration length ({len(duration)}) "
+            f"for {basename}"
+        )
+
         # Save files
         dur_filename = "{}-duration-{}.npy".format(speaker, basename)
         np.save(os.path.join(self.out_dir, "duration", dur_filename), duration)
