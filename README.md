@@ -86,6 +86,8 @@ Prepare data for Montreal Forced Aligner (MFA):
 python prepare_align.py config/kokoro/preprocess.yaml
 ```
 
+You will need to modify the preprocess.yaml file to specify where the files are, and where you want the files output.
+
 ### 3. Run MFA Alignment
 
 Use Montreal Forced Aligner to generate phoneme alignments:
