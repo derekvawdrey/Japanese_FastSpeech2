@@ -61,14 +61,12 @@ fast-speech-2/
 
 I have provided a script to setup the environment for both GPU and CPU environments. If you are going to manually setup the environment, you MUST use conda. If you do not use conda you will have issues with MFA (Montreal Force Aligner).
 
-The automatic setup will also install the required models for running the trained model.
+The automatic setup will also install the required models for running the trained model, and the required data to train a new model.
 
 #### Manual Setup
 
 For CPU Only installation, the documentation is found in `docs/CPU_INSTALLATION.md`.
-
 For GPU Only installation, the documentation is found in `docs/GPU_INSTALLATION.md`
-
 
 ## Usage
 
@@ -99,6 +97,9 @@ mfa align raw_data/kokoro lexicon/japanese_mfa.dict japanese_mfa preprocessed_da
 ### 4. Preprocess Data
 
 Extract features (mel-spectrograms, pitch, energy, duration):
+
+Ensure you modify the preprocess.yaml to modify the locations of the data, and output.
+
 
 ```bash
 python preprocess.py config/kokoro/preprocess.yaml
