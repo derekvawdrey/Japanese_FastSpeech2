@@ -1,9 +1,9 @@
-1. Create a conda environment and run the following, this allows oyu to preprocess
+1. Create a conda environment and run the following, this allows you to preprocess
 ```
 conda create -n fastspeech python=3.10
 conda activate fastspeech
 conda install -c conda-forge numpy=1.26.4 scipy=1.13.1 numba=0.59
-conda install -c pytorch pytorch torchvision torchaudio cpuonly
+conda install -c pytorch pytorch torchvision torchaudio
 conda install -c conda-forge \
   absl-py audioread cachetools certifi cffi charset-normalizer click contourpy \
   cycler dataclassy decorator Distance filelock fonttools fsspec g2p-en \
@@ -16,9 +16,7 @@ conda install -c conda-forge \
    SQLAlchemy sympy tensorboard tensorboard-plugin-wit threadpoolctl \
   tqdm typing_extensions tzdata Unidecode werkzeug zipp
 
-pip installtgt
+pip install tgt
 
 conda install -c conda-forge pyworld
-
-
 ```
