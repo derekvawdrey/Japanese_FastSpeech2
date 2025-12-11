@@ -6,7 +6,7 @@ optimizer:
   batch_size: 32
   betas: [0.9, 0.98]
   eps: 0.000000001
-  weight_decay: 0.01  # Added weight decay for L2 regularization
+  weight_decay: 0.0
   grad_clip_thresh: 1.0
   grad_acc_step: 1
   warm_up_step: 4000
