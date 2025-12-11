@@ -10,22 +10,26 @@ This was due to GPU underutilization.
 ## Changes Made
 
 ### 1. DataLoader Optimization
-**File**: `train.py` line 33-38
+**File**: `train.py` line 33-41
 
 Added efficient data loading to prevent GPU starvation:
-- `num_workers=8`: Use 8 CPU cores for parallel data loading
+- `num_workers=4`: Use 4 CPU cores (balanced for disk I/O - dataset loads 5 .npy files per sample)
 - `pin_memory=True`: Speed up CPU → GPU data transfer
 - `persistent_workers=True`: Keep workers alive between epochs (reduces overhead)
+- `prefetch_factor=2`: Each worker prefetches 2 batches ahead
+- `multiprocessing_context='fork'`: Prevents worker reinitialization overhead
 
 ### 2. Batch Size Increase
 **File**: `config/kokoro/train.yaml` line 6
 
 ```yaml
 batch_size: 16  # OLD - too small for H200
-batch_size: 64  # NEW - better GPU utilization
+batch_size: 48  # NEW - balanced for GPU utilization and disk I/O
 ```
 
-With 141GB of memory, H200 can handle 4x larger batches than before. You may be able to increase even further to 96 or 128 if memory allows.
+With 141GB of memory, H200 can handle larger batches. Set to 48 to balance GPU compute with disk I/O (dataset loads 5 files per sample). Each batch processes 192 samples (48 × group_size=4), requiring ~960 file reads.
+
+**Note**: If you have fast NVMe storage or the data is cached in RAM, you can increase to 64 or higher.
 
 ### 3. Mixed Precision Training (FP16)
 **File**: `train.py`
@@ -96,13 +100,21 @@ Monitor GPU memory with `nvidia-smi`. If you see OOM errors, reduce batch size.
 
 ### Out of Memory (OOM)
 - Reduce batch size in `config/kokoro/train.yaml`
-- Try batch_size: 48 or 32
+- Try batch_size: 32 or 24
+
+### Speed Fluctuates (8 it/s → 1 it/s → 8 it/s)
+This indicates **disk I/O bottleneck**:
+- **Reduce `num_workers`**: Try 2 or 3 in `train.py`
+- **Reduce `batch_size`**: Try 32 in `config/kokoro/train.yaml`
+- **Check disk speed**: Run `iostat -x 1` during training
+- **Move data to faster storage**: Copy `preprocessed_data/` to NVMe or local SSD
+- **Increase system cache**: Data might not fit in RAM
 
 ### Still Slow
 - Check `nvidia-smi` for GPU utilization
 - Ensure you're on GPU node (not CPU)
 - Check if other processes are using GPU
-- Increase `num_workers` if CPU is bottleneck
+- Check disk I/O with `iostat -x 1`
 
 ### Numerical Issues
 - Mixed precision is generally safe, but if you see NaN losses:

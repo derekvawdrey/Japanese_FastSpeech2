@@ -36,10 +36,10 @@ def main(args, configs):
         batch_size=batch_size * group_size,
         shuffle=True,
         collate_fn=dataset.collate_fn,
-        num_workers=4,  # Reduced from 8 - sweet spot for disk I/O
+        num_workers=2,  # Reduced to 2 for slow network storage
         pin_memory=True,  # Speed up data transfer to GPU
         persistent_workers=True,  # Keep workers alive between epochs
-        prefetch_factor=2,  # Prefetch 2 batches per worker
+        prefetch_factor=4,  # Increased prefetch to compensate for fewer workers
         multiprocessing_context='fork',  # Prevent worker reinitialization
     )
 
