@@ -34,9 +34,9 @@ def main(args, configs):
     loader = DataLoader(
         dataset,
         batch_size=batch_size * group_size,
-        shuffle=False,
+        shuffle=True,  # CRITICAL: Must be True for proper training
         collate_fn=dataset.collate_fn,
-        num_workers=14, 
+        num_workers=14,  # Testing high worker count
         pin_memory=True,  # Speed up data transfer to GPU
         persistent_workers=True,  # Keep workers alive between epochs
         prefetch_factor=4,  # Increased prefetch to compensate for fewer workers
