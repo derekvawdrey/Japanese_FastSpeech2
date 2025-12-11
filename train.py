@@ -6,6 +6,7 @@ import yaml
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
+from torch.cuda.amp import autocast, GradScaler
 from tqdm import tqdm
 
 from utils.model import get_model, get_vocoder, get_param_num
@@ -35,6 +36,9 @@ def main(args, configs):
         batch_size=batch_size * group_size,
         shuffle=True,
         collate_fn=dataset.collate_fn,
+        num_workers=8,  # Use 8 CPU cores for data loading
+        pin_memory=True,  # Speed up data transfer to GPU
+        persistent_workers=True,  # Keep workers alive between epochs
     )
 
     # Prepare model
@@ -43,6 +47,9 @@ def main(args, configs):
     num_param = get_param_num(model)
     Loss = FastSpeech2Loss(preprocess_config, model_config).to(device)
     print("Number of FastSpeech2 Parameters:", num_param)
+    
+    # Initialize mixed precision scaler for H200
+    scaler = GradScaler()
 
     # Load vocoder
     vocoder = get_vocoder(model_config, device)
@@ -78,22 +85,25 @@ def main(args, configs):
             for batch in batchs:
                 batch = to_device(batch, device)
 
-                # Forward
-                output = model(*(batch[2:]))
-
-                # Cal Loss
-                losses = Loss(batch, output)
-                total_loss = losses[0]
+                # Forward with mixed precision
+                with autocast():
+                    output = model(*(batch[2:]))
+                    losses = Loss(batch, output)
+                    total_loss = losses[0]
+                    total_loss = total_loss / grad_acc_step
 
                 # Backward
-                total_loss = total_loss / grad_acc_step
-                total_loss.backward()
+                scaler.scale(total_loss).backward()
+                
                 if step % grad_acc_step == 0:
                     # Clipping gradients to avoid gradient explosion
+                    scaler.unscale_(optimizer._optimizer)
                     nn.utils.clip_grad_norm_(model.parameters(), grad_clip_thresh)
 
                     # Update weights
-                    optimizer.step_and_update_lr()
+                    scaler.step(optimizer._optimizer)
+                    scaler.update()
+                    optimizer._update_learning_rate()
                     optimizer.zero_grad()
 
                 if step % log_step == 0:

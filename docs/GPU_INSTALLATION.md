@@ -20,3 +20,8 @@ pip install tgt
 
 conda install -c conda-forge pyworld
 ```
+
+2. Install MFA stuff
+```
+mfa model download acoustic japanese_mfa
+```
