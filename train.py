@@ -36,9 +36,11 @@ def main(args, configs):
         batch_size=batch_size * group_size,
         shuffle=True,
         collate_fn=dataset.collate_fn,
-        num_workers=8,  # Use 8 CPU cores for data loading
+        num_workers=4,  # Reduced from 8 - sweet spot for disk I/O
         pin_memory=True,  # Speed up data transfer to GPU
         persistent_workers=True,  # Keep workers alive between epochs
+        prefetch_factor=2,  # Prefetch 2 batches per worker
+        multiprocessing_context='fork',  # Prevent worker reinitialization
     )
 
     # Prepare model
@@ -50,6 +52,17 @@ def main(args, configs):
     
     # Initialize mixed precision scaler for H200
     scaler = GradScaler()
+    
+    # Restore scaler state if resuming training
+    if args.restore_step:
+        ckpt_path = os.path.join(
+            train_config["path"]["ckpt_path"],
+            "{}.pth.tar".format(args.restore_step),
+        )
+        ckpt = torch.load(ckpt_path, map_location=device)
+        if "scaler" in ckpt:
+            scaler.load_state_dict(ckpt["scaler"])
+            print(f"Restored scaler state from step {args.restore_step}")
 
     # Load vocoder
     vocoder = get_vocoder(model_config, device)
@@ -163,6 +176,7 @@ def main(args, configs):
                         {
                             "model": model.module.state_dict(),
                             "optimizer": optimizer._optimizer.state_dict(),
+                            "scaler": scaler.state_dict(),
                         },
                         os.path.join(
                             train_config["path"]["ckpt_path"],
