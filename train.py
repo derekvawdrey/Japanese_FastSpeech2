@@ -88,6 +88,14 @@ def main(args, configs):
     synth_step = train_config["step"]["synth_step"]
     val_step = train_config["step"]["val_step"]
 
+    # Early stopping and best model tracking
+    best_val_loss = float('inf')
+    patience_counter = 0
+    early_stop_config = train_config.get("early_stopping", {})
+    patience = early_stop_config.get("patience", None)
+    min_delta = early_stop_config.get("min_delta", 0.001)
+    best_model_path = os.path.join(train_config["path"]["ckpt_path"], "best_model.pth.tar")
+
     outer_bar = tqdm(total=total_step, desc="Training", position=0)
     outer_bar.n = args.restore_step
     outer_bar.update()
@@ -164,10 +172,37 @@ def main(args, configs):
 
                 if step % val_step == 0:
                     model.eval()
-                    message = evaluate(model, step, configs, val_logger, vocoder)
+                    message, val_loss = evaluate(model, step, configs, val_logger, vocoder)
                     with open(os.path.join(val_log_path, "log.txt"), "a") as f:
                         f.write(message + "\n")
                     outer_bar.write(message)
+
+                    # Check if this is the best model so far
+                    if val_loss < best_val_loss - min_delta:
+                        best_val_loss = val_loss
+                        patience_counter = 0
+                        # Save best model
+                        torch.save(
+                            {
+                                "model": model.module.state_dict(),
+                                "optimizer": optimizer._optimizer.state_dict(),
+                                "scaler": scaler.state_dict(),
+                                "step": step,
+                                "val_loss": val_loss,
+                            },
+                            best_model_path,
+                        )
+                        outer_bar.write(f"New best model saved! Val Loss: {val_loss:.4f}")
+                    else:
+                        if patience is not None:
+                            patience_counter += val_step
+                            outer_bar.write(f"No improvement. Patience: {patience_counter}/{patience}")
+                            
+                            # Early stopping check
+                            if patience_counter >= patience:
+                                outer_bar.write(f"Early stopping triggered! No improvement for {patience} steps.")
+                                outer_bar.write(f"Best validation loss: {best_val_loss:.4f}")
+                                return
 
                     model.train()
 

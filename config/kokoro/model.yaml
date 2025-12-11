@@ -7,8 +7,8 @@ transformer:
   decoder_hidden: 256
   conv_filter_size: 1024
   conv_kernel_size: [9, 1]
-  encoder_dropout: 0.2
-  decoder_dropout: 0.2
+  encoder_dropout: 0.3  # Increased from 0.2 for better regularization
+  decoder_dropout: 0.3  # Increased from 0.2 for better regularization
 
 variance_predictor:
   filter_size: 256
@@ -28,7 +28,7 @@ variance_embedding:
 #   n_style_token: 10
 #   attn_head: 4
 
-multi_speaker: True
+multi_speaker: False
 
 max_seq_len: 1000
 

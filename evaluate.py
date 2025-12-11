@@ -83,7 +83,7 @@ def evaluate(model, step, configs, logger=None, vocoder=None):
             tag="Validation/step_{}_{}_synthesized".format(step, tag),
         )
 
-    return message
+    return message, loss_means[0]  # Return both message and total validation loss
 
 
 if __name__ == "__main__":
@@ -116,5 +116,6 @@ if __name__ == "__main__":
     # Get model
     model = get_model(args, configs, device, train=False).to(device)
 
-    message = evaluate(model, args.restore_step, configs)
+    message, val_loss = evaluate(model, args.restore_step, configs)
     print(message)
+    print(f"Total Validation Loss: {val_loss:.4f}")
