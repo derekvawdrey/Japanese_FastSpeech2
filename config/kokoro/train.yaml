@@ -3,7 +3,7 @@ path:
   log_path: "./output/log/kokoro"
   result_path: "./output/result/kokoro"
 optimizer:
-  batch_size: 128
+  batch_size: 32
   betas: [0.9, 0.98]
   eps: 0.000000001
   weight_decay: 0.0
