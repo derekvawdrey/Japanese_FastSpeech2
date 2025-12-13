@@ -4,7 +4,7 @@ path:
   corpus_path: "/Users/derekvawdrey/Workspace/School/Japanese_FastSpeech2/raw_data"
   lexicon_path: "/Users/derekvawdrey/Workspace/School/Japanese_FastSpeech2/lexicon/japanese_mfa.dict"
   raw_path: "/Users/derekvawdrey/Workspace/School/Japanese_FastSpeech2/raw_data"
-  preprocessed_path: "/Users/derekvawdrey/Workspace/School/Japanese_FastSpeech2/preprocessed_data/kokoro"
+  preprocessed_path: "/Users/derekvawdrey/Workspace/School/Japanese_FastSpeech2/preprocessed_data/female"
 
 preprocessing:
   val_size: 512

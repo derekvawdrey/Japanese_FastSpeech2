@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japanese TTS Quality Survey (Email Version)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            margin-top: 20px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .sentence-group {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .sentence-text {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .audio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .audio-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .audio-label {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 12px;
+            text-transform: capitalize;
+            font-size: 0.95em;
+        }
+
+        audio {
+            width: 100%;
+            margin-bottom: 15px;
+            height: 40px;
+        }
+
+        .rating-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rating-scale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rating-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85em;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .rating-label-left {
+            text-align: left;
+            flex: 1;
+        }
+
+        .rating-label-right {
+            text-align: right;
+            flex: 1;
+        }
+
+        .rating-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+            font-size: 1em;
+            color: #4a5568;
+        }
+
+        .rating-btn:hover {
+            border-color: #667eea;
+            background: #f7fafc;
+        }
+
+        .rating-btn.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .submit-container {
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .email-input {
+            padding: 15px;
+            font-size: 1em;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 18px 60px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .warning {
+            color: #e53e3e;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .success {
+            color: #38a169;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .instructions h2 {
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            list-style-position: inside;
+            color: #4a5568;
+            line-height: 1.8;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .audio-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 30px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎙️ Japanese TTS Quality Survey</h1>
+            <p class="subtitle">Rate the naturalness of each audio sample from 1 (Robotic) to 5 (Human)</p>
+            <div class="badge">📧 Results sent to your email</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </header>
+
+        <div class="content">
+            <div class="instructions">
+                <h2>📋 Instructions</h2>
+                <ul>
+                    <li>Listen to each audio sample carefully</li>
+                    <li>Rate how human/natural each sample sounds on a scale of 1-5</li>
+                    <li><strong>1</strong> = Very Robotic/Mechanical</li>
+                    <li><strong>5</strong> = Very Human/Natural</li>
+                    <li>You can replay the audio as many times as needed</li>
+                    <li>Please rate all samples before submitting</li>
+                    <li><strong>Enter your email to receive a copy of your responses</strong></li>
+                </ul>
+            </div>
+
+            <div id="surveyContainer"></div>
+
+            <div class="submit-container">
+                <input 
+                    type="email" 
+                    id="emailInput" 
+                    class="email-input" 
+                    placeholder="your.email@example.com (optional)"
+                    aria-label="Email address"
+                />
+                <br>
+                <button class="submit-btn" id="submitBtn" onclick="submitSurvey()">
+                    Submit Survey
+                </button>
+                <div id="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 🔧 CONFIGURATION: Replace with your email address to receive responses
+        const YOUR_EMAIL = 'your.email@example.com'; // Change this to your email
+        
+        const sentences = [
+            "テニスにもあるけど、４大大会って何。",
+            "ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。",
+            "人犯は、もうすぐ自分の罪を白状するだろう。",
+            "今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。",
+            "北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。",
+            "居酒屋で、変なおっさんにからまれた。",
+            "母の死は、私の生涯に、大きな空白を残した。",
+            "母は私の望むものは、何でも言わなくてもかなえてくれる。",
+            "目先の利益だけにとらわれてはいけない。",
+            "私もパーティーに来るべきだ、と、彼はつけ加えた。",
+            "自制できるようにならねばならない。",
+            "身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。",
+            "運転するときは、いくら注意してもしすぎることはありません。",
+            "長所が多いのに、彼女は自慢したがらなかった。",
+            "雲がだんだん黒くなって、雨が降りそうです。"
+        ];
+
+        const sources = [
+            { name: "Mine", folder: "mine", ext: "wav" },
+            { name: "Sample", folder: "sample", ext: "wav" },
+            { name: "Google Translate", folder: "google translate", ext: "mp3" },
+            { name: "Ondoku", folder: "ondoku", ext: "mp3" }
+        ];
+
+        let ratings = {};
+
+        function initializeSurvey() {
+            const container = document.getElementById('surveyContainer');
+            
+            sentences.forEach((sentence, index) => {
+                const group = document.createElement('div');
+                group.className = 'sentence-group';
+                
+                const sentenceText = document.createElement('div');
+                sentenceText.className = 'sentence-text';
+                sentenceText.textContent = `${index + 1}. ${sentence}`;
+                group.appendChild(sentenceText);
+                
+                const audioGrid = document.createElement('div');
+                audioGrid.className = 'audio-grid';
+                
+                sources.forEach(source => {
+                    const audioItem = document.createElement('div');
+                    audioItem.className = 'audio-item';
+                    
+                    const label = document.createElement('div');
+                    label.className = 'audio-label';
+                    label.textContent = source.name;
+                    audioItem.appendChild(label);
+                    
+                    const audio = document.createElement('audio');
+                    audio.controls = true;
+                    audio.preload = 'metadata';
+                    audio.src = `${source.folder}/${sentence}.${source.ext}`;
+                    audioItem.appendChild(audio);
+                    
+                    const ratingContainer = document.createElement('div');
+                    ratingContainer.className = 'rating-container';
+                    
+                    const ratingScale = document.createElement('div');
+                    ratingScale.className = 'rating-scale';
+                    
+                    for (let i = 1; i <= 5; i++) {
+                        const btn = document.createElement('button');
+                        btn.className = 'rating-btn';
+                        btn.textContent = i;
+                        btn.onclick = () => selectRating(sentence, source.name, i, btn);
+                        ratingScale.appendChild(btn);
+                    }
+                    
+                    ratingContainer.appendChild(ratingScale);
+                    
+                    const ratingLabels = document.createElement('div');
+                    ratingLabels.className = 'rating-labels';
+                    ratingLabels.innerHTML = `
+                        <span class="rating-label-left">🤖 Robotic</span>
+                        <span class="rating-label-right">Human 👤</span>
+                    `;
+                    ratingContainer.appendChild(ratingLabels);
+                    
+                    audioItem.appendChild(ratingContainer);
+                    audioGrid.appendChild(audioItem);
+                });
+                
+                group.appendChild(audioGrid);
+                container.appendChild(group);
+            });
+        }
+
+        function selectRating(sentence, source, rating, button) {
+            const key = `${sentence}_${source}`;
+            ratings[key] = rating;
+            
+            // Remove selected class from siblings
+            const siblings = button.parentElement.children;
+            for (let sibling of siblings) {
+                sibling.classList.remove('selected');
+            }
+            
+            // Add selected class to clicked button
+            button.classList.add('selected');
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalRatings = sentences.length * sources.length;
+            const completedRatings = Object.keys(ratings).length;
+            const percentage = (completedRatings / totalRatings) * 100;
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        async function submitSurvey() {
+            const totalRatings = sentences.length * sources.length;
+            const completedRatings = Object.keys(ratings).length;
+            
+            const messageDiv = document.getElementById('message');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            if (completedRatings < totalRatings) {
+                messageDiv.innerHTML = `<p class="warning">⚠️ Please rate all samples before submitting (${completedRatings}/${totalRatings} completed)</p>`;
+                return;
+            }
+            
+            const participantEmail = document.getElementById('emailInput').value || 'anonymous';
+            
+            // Prepare results
+            const participantId = 'P' + Date.now();
+            const results = {
+                timestamp: new Date().toISOString(),
+                participantId: participantId,
+                email: participantEmail,
+                totalSamples: totalRatings,
+                ratings: ratings,
+                summary: calculateSummary()
+            };
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            messageDiv.innerHTML = `<p style="color: #4299e1;">⏳ Sending your responses...</p>`;
+            
+            // Send via FormSubmit
+            try {
+                const formData = new FormData();
+                formData.append('email', participantEmail);
+                formData.append('participantId', participantId);
+                formData.append('timestamp', results.timestamp);
+                formData.append('results', JSON.stringify(results, null, 2));
+                formData.append('summary', JSON.stringify(results.summary, null, 2));
+                
+                const response = await fetch(`https://formsubmit.co/${YOUR_EMAIL}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    messageDiv.innerHTML = `<p class="success">✅ Thank you! Your responses have been sent successfully!<br>Participant ID: ${participantId}<br>A backup has also been downloaded.</p>`;
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            } catch (error) {
+                console.error('Error sending form:', error);
+                messageDiv.innerHTML = `<p class="warning">⚠️ Could not send via email, but your responses have been downloaded.<br>Participant ID: ${participantId}</p>`;
+            }
+            
+            // Always download results as backup
+            downloadResults(results);
+            
+            submitBtn.textContent = 'Submitted ✓';
+        }
+
+        function calculateSummary() {
+            const summary = {};
+            
+            sources.forEach(source => {
+                const sourceRatings = [];
+                sentences.forEach(sentence => {
+                    const key = `${sentence}_${source.name}`;
+                    if (ratings[key]) {
+                        sourceRatings.push(ratings[key]);
+                    }
+                });
+                
+                if (sourceRatings.length > 0) {
+                    const avg = sourceRatings.reduce((a, b) => a + b, 0) / sourceRatings.length;
+                    summary[source.name] = {
+                        average: avg.toFixed(2),
+                        min: Math.min(...sourceRatings),
+                        max: Math.max(...sourceRatings),
+                        count: sourceRatings.length
+                    };
+                }
+            });
+            
+            return summary;
+        }
+
+        function downloadResults(results) {
+            // Download as JSON
+            const jsonStr = JSON.stringify(results, null, 2);
+            const jsonBlob = new Blob([jsonStr], { type: 'application/json' });
+            const jsonUrl = URL.createObjectURL(jsonBlob);
+            const jsonLink = document.createElement('a');
+            jsonLink.href = jsonUrl;
+            jsonLink.download = `tts_survey_results_${Date.now()}.json`;
+            jsonLink.click();
+            
+            // Also create CSV
+            const csv = generateCSV(results);
+            const csvBlob = new Blob([csv], { type: 'text/csv' });
+            const csvUrl = URL.createObjectURL(csvBlob);
+            const csvLink = document.createElement('a');
+            csvLink.href = csvUrl;
+            csvLink.download = `tts_survey_results_${Date.now()}.csv`;
+            csvLink.click();
+        }
+
+        function generateCSV(results) {
+            let csv = 'Participant ID,Timestamp,Email,Sentence,Source,Rating\n';
+            
+            for (let [key, rating] of Object.entries(results.ratings)) {
+                const parts = key.split('_');
+                const source = parts.pop();
+                const sentence = parts.join('_');
+                csv += `"${results.participantId}","${results.timestamp}","${results.email}","${sentence}","${source}",${rating}\n`;
+            }
+            
+            return csv;
+        }
+
+        // Initialize the survey on page load
+        initializeSurvey();
+    </script>
+</body>
+</html>
