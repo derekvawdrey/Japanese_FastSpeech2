@@ -5,12 +5,55 @@ Generate visualization graphs for pitch accent comparison results.
 
 import json
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import numpy as np
 from pathlib import Path
 
-# Set style
+# Set style first
 plt.style.use('seaborn-v0_8-darkgrid')
 colors = ['#2ecc71', '#3498db', '#e74c3c']
+
+# Configure matplotlib to display Japanese characters AFTER setting style
+# Try to find a Japanese-compatible font
+def setup_japanese_font():
+    """Find and set a Japanese font for matplotlib."""
+    # List of potential Japanese fonts (macOS, Linux, Windows)
+    japanese_fonts = [
+        'Hiragino Sans',           # macOS
+        'Hiragino Kaku Gothic Pro', # macOS
+        'Hiragino Maru Gothic Pro', # macOS
+        'Yu Gothic',                # Windows
+        'MS Gothic',                # Windows
+        'Meiryo',                   # Windows
+        'IPAGothic',                # Linux
+        'IPAPGothic',               # Linux
+        'Noto Sans CJK JP',         # Cross-platform
+        'Noto Sans JP',             # Cross-platform
+        'TakaoPGothic',             # Linux
+    ]
+    
+    # Get list of available fonts
+    available_fonts = [f.name for f in fm.fontManager.ttflist]
+    
+    # Try to find a Japanese font
+    for font in japanese_fonts:
+        if font in available_fonts:
+            # Set font in multiple ways to ensure it takes effect
+            plt.rcParams['font.family'] = font
+            plt.rcParams['font.sans-serif'] = [font]
+            print(f"✓ Using font: {font}")
+            return font
+    
+    # Fallback: use sans-serif with negative unicode settings
+    print("⚠ Warning: No Japanese font found. Japanese characters may not display correctly.")
+    print("Available fonts include:", ", ".join(sorted(set(available_fonts))[:10]), "...")
+    return None
+
+# Setup Japanese font support
+japanese_font = setup_japanese_font()
+
+# Prevent negative sign display issues
+plt.rcParams['axes.unicode_minus'] = False
 
 # Load results
 with open('comparison/comparison_results.json', 'r', encoding='utf-8') as f:
@@ -91,7 +134,11 @@ ax.set_ylabel('DTW Distance', fontsize=12, fontweight='bold')
 ax.set_title('Pitch Accent Comparison by Sentence\n(Gold border = Best for that sentence)', 
              fontsize=16, fontweight='bold', pad=20)
 ax.set_xticks(x)
-ax.set_xticklabels(sentences, rotation=45, ha='right', fontsize=8)
+# Set Japanese text labels with explicit font
+if japanese_font:
+    ax.set_xticklabels(sentences, rotation=45, ha='right', fontsize=8, fontfamily=japanese_font)
+else:
+    ax.set_xticklabels(sentences, rotation=45, ha='right', fontsize=8)
 ax.legend(fontsize=11, loc='upper right')
 ax.grid(axis='y', alpha=0.3)
 
@@ -183,7 +230,11 @@ im = ax.imshow(score_matrix, cmap='RdYlGn_r', aspect='auto', vmin=0, vmax=2.5)
 ax.set_xticks(np.arange(3))
 ax.set_yticks(np.arange(len(sentences)))
 ax.set_xticklabels(['Your Recordings', 'Ondoku', 'Google Translate'], fontsize=11)
-ax.set_yticklabels(sentences, fontsize=9)
+# Set Japanese text labels with explicit font
+if japanese_font:
+    ax.set_yticklabels(sentences, fontsize=9, fontfamily=japanese_font)
+else:
+    ax.set_yticklabels(sentences, fontsize=9)
 
 # Rotate the tick labels
 plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")

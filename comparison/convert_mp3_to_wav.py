@@ -44,6 +44,7 @@ if __name__ == "__main__":
     # Convert ondoku and google translate MP3s to WAV
     convert_mp3_folder("voice_splits/ondoku", "voice_splits/ondoku_wav")
     convert_mp3_folder("voice_splits/google translate", "voice_splits/google_translate_wav")
+    convert_mp3_folder("voice_splits/eleven_labs_eiko", "voice_splits/eleven_labs_eiko_wav")
     
     print("\nConversion complete! Now run the comparison:")
     print("python comparison/pitch_accent_compare.py")

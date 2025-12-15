@@ -313,7 +313,8 @@ def main():
     comparison_dirs = [
         "voice_splits/mine",
         "voice_splits/ondoku_wav",
-        "voice_splits/google_translate_wav"
+        "voice_splits/google_translate_wav",
+        "voice_splits/eleven_labs_eiko_wav"
     ]
     
     # Create comparison directory if it doesn't exist
