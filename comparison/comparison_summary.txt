@@ -4,9 +4,10 @@ PITCH ACCENT COMPARISON SUMMARY
 
 OVERALL RANKINGS (lower score = better pitch accent match):
 --------------------------------------------------------------------------------
-1. google_translate_wav - Average Score: 1.370 (13 sentences)
-2. mine                 - Average Score: 1.444 (13 sentences)
-3. ondoku_wav           - Average Score: 1.502 (13 sentences)
+1. google_translate_wav - Average Score: 1.493 (13 sentences)
+2. ondoku_wav           - Average Score: 1.556 (13 sentences)
+3. mine                 - Average Score: 1.779 (13 sentences)
+4. eleven_labs_eiko_wav - Average Score: 1.905 (13 sentences)
 
 ================================================================================
 DETAILED RESULTS BY SENTENCE
@@ -15,16 +16,18 @@ DETAILED RESULTS BY SENTENCE
 
 テニスにもあるけど、４大大会って何。
 ------------------
-  1. google_translate_wav - Score: 1.786 (DTW: 1.786)
-  2. mine            - Score: 1.954 (DTW: 1.954)
-  3. ondoku_wav      - Score: 2.384 (DTW: 2.384)
+  1. google_translate_wav - Score: 1.846 (DTW: 1.846)
+  2. mine            - Score: 2.018 (DTW: 2.018)
+  3. eleven_labs_eiko_wav - Score: 2.084 (DTW: 2.084)
+  4. ondoku_wav      - Score: 2.309 (DTW: 2.309)
 
 
 ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。
 -----------------------------
-  1. google_translate_wav - Score: 1.060 (DTW: 1.060)
-  2. ondoku_wav      - Score: 1.399 (DTW: 1.399)
-  3. mine            - Score: 1.446 (DTW: 1.446)
+  1. google_translate_wav - Score: 1.407 (DTW: 1.407)
+  2. ondoku_wav      - Score: 1.723 (DTW: 1.723)
+  3. mine            - Score: 1.856 (DTW: 1.856)
+  4. eleven_labs_eiko_wav - Score: 2.140 (DTW: 2.140)
 
 
 私もパーティーに来るべきだ、と、彼はつけ加えた。
@@ -37,79 +40,90 @@ DETAILED RESULTS BY SENTENCE
 
 今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。
 --------------------------------------
-  1. google_translate_wav - Score: 1.153 (DTW: 1.153)
-  2. mine            - Score: 1.295 (DTW: 1.295)
-  3. ondoku_wav      - Score: 1.574 (DTW: 1.574)
+  1. ondoku_wav      - Score: 0.953 (DTW: 0.953)
+  2. google_translate_wav - Score: 1.055 (DTW: 1.055)
+  3. eleven_labs_eiko_wav - Score: 1.371 (DTW: 1.371)
+  4. mine            - Score: 1.489 (DTW: 1.489)
 
 
 北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。
 -------------------------------------
-  1. ondoku_wav      - Score: 1.635 (DTW: 1.635)
-  2. google_translate_wav - Score: 1.662 (DTW: 1.662)
-  3. mine            - Score: 1.917 (DTW: 1.917)
+  1. google_translate_wav - Score: 1.650 (DTW: 1.650)
+  2. ondoku_wav      - Score: 1.711 (DTW: 1.711)
+  3. mine            - Score: 2.154 (DTW: 2.154)
+  4. eleven_labs_eiko_wav - Score: 2.482 (DTW: 2.482)
 
 
 居酒屋で、変なおっさんにからまれた。
 ------------------
-  1. google_translate_wav - Score: 1.139 (DTW: 1.139)
-  2. mine            - Score: 1.276 (DTW: 1.276)
-  3. ondoku_wav      - Score: 1.406 (DTW: 1.406)
+  1. google_translate_wav - Score: 1.480 (DTW: 1.480)
+  2. ondoku_wav      - Score: 1.692 (DTW: 1.692)
+  3. eleven_labs_eiko_wav - Score: 1.783 (DTW: 1.783)
+  4. mine            - Score: 1.793 (DTW: 1.793)
 
 
 母の死は、私の生涯に、大きな空白を残した。
 ---------------------
-  1. google_translate_wav - Score: 0.810 (DTW: 0.810)
-  2. mine            - Score: 0.827 (DTW: 0.827)
-  3. ondoku_wav      - Score: 1.148 (DTW: 1.148)
+  1. google_translate_wav - Score: 0.942 (DTW: 0.942)
+  2. ondoku_wav      - Score: 1.202 (DTW: 1.202)
+  3. mine            - Score: 1.350 (DTW: 1.350)
+  4. eleven_labs_eiko_wav - Score: 1.423 (DTW: 1.423)
 
 
 母は私の望むものは、何でも言わなくてもかなえてくれる。
 ---------------------------
-  1. mine            - Score: 0.531 (DTW: 0.531)
-  2. ondoku_wav      - Score: 1.034 (DTW: 1.034)
-  3. google_translate_wav - Score: 1.043 (DTW: 1.043)
+  1. google_translate_wav - Score: 1.412 (DTW: 1.412)
+  2. ondoku_wav      - Score: 1.555 (DTW: 1.555)
+  3. mine            - Score: 1.575 (DTW: 1.575)
+  4. eleven_labs_eiko_wav - Score: 1.610 (DTW: 1.610)
 
 
 目先の利益だけにとらわれてはいけない。
 -------------------
-  1. google_translate_wav - Score: 1.201 (DTW: 1.201)
-  2. ondoku_wav      - Score: 1.413 (DTW: 1.413)
-  3. mine            - Score: 1.429 (DTW: 1.429)
+  1. google_translate_wav - Score: 1.241 (DTW: 1.241)
+  2. ondoku_wav      - Score: 1.327 (DTW: 1.327)
+  3. mine            - Score: 1.590 (DTW: 1.590)
+  4. eleven_labs_eiko_wav - Score: 1.710 (DTW: 1.710)
 
 
 自制できるようにならねばならない。
 -----------------
-  1. ondoku_wav      - Score: 0.955 (DTW: 0.955)
-  2. google_translate_wav - Score: 1.345 (DTW: 1.345)
-  3. mine            - Score: 1.468 (DTW: 1.468)
+  1. ondoku_wav      - Score: 0.904 (DTW: 0.904)
+  2. google_translate_wav - Score: 1.332 (DTW: 1.332)
+  3. mine            - Score: 1.342 (DTW: 1.342)
+  4. eleven_labs_eiko_wav - Score: 1.744 (DTW: 1.744)
 
 
 身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。
 -----------------------------
-  1. ondoku_wav      - Score: 1.320 (DTW: 1.320)
-  2. google_translate_wav - Score: 1.558 (DTW: 1.558)
-  3. mine            - Score: 1.760 (DTW: 1.760)
+  1. google_translate_wav - Score: 1.518 (DTW: 1.518)
+  2. ondoku_wav      - Score: 1.530 (DTW: 1.530)
+  3. eleven_labs_eiko_wav - Score: 2.040 (DTW: 2.040)
+  4. mine            - Score: 2.066 (DTW: 2.066)
 
 
 運転するときは、いくら注意してもしすぎることはありません。
 -----------------------------
-  1. google_translate_wav - Score: 1.597 (DTW: 1.597)
-  2. ondoku_wav      - Score: 1.640 (DTW: 1.640)
-  3. mine            - Score: 1.857 (DTW: 1.857)
+  1. google_translate_wav - Score: 1.695 (DTW: 1.695)
+  2. ondoku_wav      - Score: 1.714 (DTW: 1.714)
+  3. mine            - Score: 1.940 (DTW: 1.940)
+  4. eleven_labs_eiko_wav - Score: 2.149 (DTW: 2.149)
 
 
 長所が多いのに、彼女は自慢したがらなかった。
 ----------------------
-  1. mine            - Score: 1.146 (DTW: 1.146)
-  2. google_translate_wav - Score: 1.465 (DTW: 1.465)
-  3. ondoku_wav      - Score: 1.678 (DTW: 1.678)
+  1. ondoku_wav      - Score: 1.947 (DTW: 1.947)
+  2. mine            - Score: 1.962 (DTW: 1.962)
+  3. google_translate_wav - Score: 2.052 (DTW: 2.052)
+  4. eleven_labs_eiko_wav - Score: 2.417 (DTW: 2.417)
 
 
 雲がだんだん黒くなって、雨が降りそうです。
 ---------------------
-  1. mine            - Score: 1.866 (DTW: 1.866)
-  2. ondoku_wav      - Score: 1.943 (DTW: 1.943)
-  3. google_translate_wav - Score: 1.992 (DTW: 1.992)
+  1. ondoku_wav      - Score: 1.660 (DTW: 1.660)
+  2. google_translate_wav - Score: 1.785 (DTW: 1.785)
+  3. eleven_labs_eiko_wav - Score: 1.816 (DTW: 1.816)
+  4. mine            - Score: 1.993 (DTW: 1.993)
 
 ================================================================================
 

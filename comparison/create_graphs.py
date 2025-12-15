@@ -11,7 +11,7 @@ from pathlib import Path
 
 # Set style first
 plt.style.use('seaborn-v0_8-darkgrid')
-colors = ['#2ecc71', '#3498db', '#e74c3c']
+colors = ['#2ecc71', '#3498db', '#e74c3c', '#9b59b6']
 
 # Configure matplotlib to display Japanese characters AFTER setting style
 # Try to find a Japanese-compatible font
@@ -64,6 +64,7 @@ sentences = []
 mine_scores = []
 ondoku_scores = []
 google_scores = []
+eleven_labs_scores = []
 
 for sentence, comparisons in results.items():
     if comparisons:  # Skip sentences without comparisons
@@ -71,19 +72,26 @@ for sentence, comparisons in results.items():
         mine_scores.append(comparisons.get('mine', {}).get('dtw_distance', None))
         ondoku_scores.append(comparisons.get('ondoku_wav', {}).get('dtw_distance', None))
         google_scores.append(comparisons.get('google_translate_wav', {}).get('dtw_distance', None))
+        eleven_labs_scores.append(comparisons.get('eleven_labs_eiko_wav', {}).get('dtw_distance', None))
 
 # Calculate averages (excluding None values)
 mine_avg = np.mean([s for s in mine_scores if s is not None])
 ondoku_avg = np.mean([s for s in ondoku_scores if s is not None])
 google_avg = np.mean([s for s in google_scores if s is not None])
+eleven_labs_avg = np.mean([s for s in eleven_labs_scores if s is not None])
 
 # Graph 1: Overall Average Scores
-fig, ax = plt.subplots(figsize=(10, 6))
-sources = ['Your Recordings\n(mine)', 'Ondoku', 'Google Translate']
-averages = [mine_avg, ondoku_avg, google_avg]
+fig, ax = plt.subplots(figsize=(12, 6))
+sources = ['Your Recordings\n(mine)', 'Ondoku', 'Google Translate', 'Eleven Labs']
+averages = [mine_avg, ondoku_avg, google_avg, eleven_labs_avg]
 bars = ax.bar(sources, averages, color=colors, alpha=0.8, edgecolor='black', linewidth=1.5)
 
 # Add value labels on bars
+# Sort to determine ranks
+sorted_indices = sorted(range(len(averages)), key=lambda i: averages[i])
+rank_map = {idx: rank + 1 for rank, idx in enumerate(sorted_indices)}
+rank_emojis = {1: '🥇 1st', 2: '🥈 2nd', 3: '🥉 3rd', 4: '4th'}
+
 for i, (bar, avg) in enumerate(zip(bars, averages)):
     height = bar.get_height()
     ax.text(bar.get_x() + bar.get_width()/2., height,
@@ -91,9 +99,9 @@ for i, (bar, avg) in enumerate(zip(bars, averages)):
             ha='center', va='bottom', fontsize=14, fontweight='bold')
     
     # Add rank
-    ranks = ['🥈 2nd', '🥉 3rd', '🥇 1st']
+    rank = rank_map[i]
     ax.text(bar.get_x() + bar.get_width()/2., height * 0.5,
-            ranks[i],
+            rank_emojis[rank],
             ha='center', va='center', fontsize=16, fontweight='bold', color='white')
 
 ax.set_ylabel('Average DTW Distance', fontsize=12, fontweight='bold')
@@ -106,17 +114,18 @@ plt.savefig('comparison/graph_overall_averages.png', dpi=300, bbox_inches='tight
 print("✓ Created: graph_overall_averages.png")
 
 # Graph 2: Per-Sentence Comparison
-fig, ax = plt.subplots(figsize=(14, 8))
+fig, ax = plt.subplots(figsize=(16, 8))
 x = np.arange(len(sentences))
-width = 0.25
+width = 0.2
 
-bars1 = ax.bar(x - width, mine_scores, width, label='Your Recordings', color=colors[0], alpha=0.8)
-bars2 = ax.bar(x, ondoku_scores, width, label='Ondoku', color=colors[1], alpha=0.8)
-bars3 = ax.bar(x + width, google_scores, width, label='Google Translate', color=colors[2], alpha=0.8)
+bars1 = ax.bar(x - 1.5*width, mine_scores, width, label='Your Recordings', color=colors[0], alpha=0.8)
+bars2 = ax.bar(x - 0.5*width, ondoku_scores, width, label='Ondoku', color=colors[1], alpha=0.8)
+bars3 = ax.bar(x + 0.5*width, google_scores, width, label='Google Translate', color=colors[2], alpha=0.8)
+bars4 = ax.bar(x + 1.5*width, eleven_labs_scores, width, label='Eleven Labs', color=colors[3], alpha=0.8)
 
 # Highlight best scores per sentence
 for i in range(len(sentences)):
-    scores = [mine_scores[i], ondoku_scores[i], google_scores[i]]
+    scores = [mine_scores[i], ondoku_scores[i], google_scores[i], eleven_labs_scores[i]]
     if all(s is not None for s in scores):
         min_score = min(scores)
         if mine_scores[i] == min_score:
@@ -128,6 +137,9 @@ for i in range(len(sentences)):
         elif google_scores[i] == min_score:
             bars3[i].set_edgecolor('gold')
             bars3[i].set_linewidth(3)
+        elif eleven_labs_scores[i] == min_score:
+            bars4[i].set_edgecolor('gold')
+            bars4[i].set_linewidth(3)
 
 ax.set_xlabel('Sentences', fontsize=12, fontweight='bold')
 ax.set_ylabel('DTW Distance', fontsize=12, fontweight='bold')
@@ -147,14 +159,15 @@ plt.savefig('comparison/graph_by_sentence.png', dpi=300, bbox_inches='tight')
 print("✓ Created: graph_by_sentence.png")
 
 # Graph 3: Win Count (how many sentences each source won)
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(12, 6))
 
 mine_wins = 0
 ondoku_wins = 0
 google_wins = 0
+eleven_labs_wins = 0
 
 for i in range(len(sentences)):
-    scores = [mine_scores[i], ondoku_scores[i], google_scores[i]]
+    scores = [mine_scores[i], ondoku_scores[i], google_scores[i], eleven_labs_scores[i]]
     if all(s is not None for s in scores):
         min_score = min(scores)
         if mine_scores[i] == min_score:
@@ -163,8 +176,10 @@ for i in range(len(sentences)):
             ondoku_wins += 1
         elif google_scores[i] == min_score:
             google_wins += 1
+        elif eleven_labs_scores[i] == min_score:
+            eleven_labs_wins += 1
 
-wins = [mine_wins, ondoku_wins, google_wins]
+wins = [mine_wins, ondoku_wins, google_wins, eleven_labs_wins]
 bars = ax.bar(sources, wins, color=colors, alpha=0.8, edgecolor='black', linewidth=1.5)
 
 # Add value labels
@@ -185,12 +200,13 @@ plt.savefig('comparison/graph_win_count.png', dpi=300, bbox_inches='tight')
 print("✓ Created: graph_win_count.png")
 
 # Graph 4: Score Distribution (Box plot)
-fig, ax = plt.subplots(figsize=(10, 6))
+fig, ax = plt.subplots(figsize=(12, 6))
 
 data_to_plot = [
     [s for s in mine_scores if s is not None],
     [s for s in ondoku_scores if s is not None],
-    [s for s in google_scores if s is not None]
+    [s for s in google_scores if s is not None],
+    [s for s in eleven_labs_scores if s is not None]
 ]
 
 bp = ax.boxplot(data_to_plot, labels=sources, patch_artist=True,
@@ -214,12 +230,12 @@ plt.savefig('comparison/graph_distribution.png', dpi=300, bbox_inches='tight')
 print("✓ Created: graph_distribution.png")
 
 # Graph 5: Heatmap of scores
-fig, ax = plt.subplots(figsize=(12, 10))
+fig, ax = plt.subplots(figsize=(14, 10))
 
 # Create matrix for heatmap
 score_matrix = []
 for i in range(len(sentences)):
-    row = [mine_scores[i] or 0, ondoku_scores[i] or 0, google_scores[i] or 0]
+    row = [mine_scores[i] or 0, ondoku_scores[i] or 0, google_scores[i] or 0, eleven_labs_scores[i] or 0]
     score_matrix.append(row)
 
 score_matrix = np.array(score_matrix)
@@ -227,9 +243,9 @@ score_matrix = np.array(score_matrix)
 im = ax.imshow(score_matrix, cmap='RdYlGn_r', aspect='auto', vmin=0, vmax=2.5)
 
 # Set ticks
-ax.set_xticks(np.arange(3))
+ax.set_xticks(np.arange(4))
 ax.set_yticks(np.arange(len(sentences)))
-ax.set_xticklabels(['Your Recordings', 'Ondoku', 'Google Translate'], fontsize=11)
+ax.set_xticklabels(['Your Recordings', 'Ondoku', 'Google Translate', 'Eleven Labs'], fontsize=11)
 # Set Japanese text labels with explicit font
 if japanese_font:
     ax.set_yticklabels(sentences, fontsize=9, fontfamily=japanese_font)
@@ -241,7 +257,7 @@ plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
 # Add text annotations
 for i in range(len(sentences)):
-    for j in range(3):
+    for j in range(4):
         if score_matrix[i, j] > 0:
             text = ax.text(j, i, f'{score_matrix[i, j]:.2f}',
                           ha="center", va="center", color="black", fontsize=8, fontweight='bold')
