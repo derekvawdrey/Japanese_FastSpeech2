@@ -1,0 +1,264 @@
+{
+  "テニスにもあるけど、４大大会って何。": {
+    "mine": {
+      "dtw_distance": 1.9537032354763506,
+      "range_difference": 10.158956528739324,
+      "mean_difference": 1.4385593996541381,
+      "overall_score": 1.9537032354763506
+    },
+    "ondoku_wav": {
+      "dtw_distance": 2.38443490663508,
+      "range_difference": 14.2,
+      "mean_difference": 0.21298536035605953,
+      "overall_score": 2.38443490663508
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.7857642300257346,
+      "range_difference": 13.72089862975971,
+      "mean_difference": 2.017768246671064,
+      "overall_score": 1.7857642300257346
+    }
+  },
+  "ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。": {
+    "mine": {
+      "dtw_distance": 1.4463491006223406,
+      "range_difference": 10.1,
+      "mean_difference": 0.42960587938848976,
+      "overall_score": 1.4463491006223406
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.3988076354822159,
+      "range_difference": 10.0,
+      "mean_difference": 0.04414957967808664,
+      "overall_score": 1.3988076354822159
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.0600281908803393,
+      "range_difference": 13.13373803170078,
+      "mean_difference": 0.5005200892777896,
+      "overall_score": 1.0600281908803393
+    }
+  },
+  "私もパーティーに来るべきだ、と、彼はつけ加えた。": {},
+  "人犯は、もうすぐ自分の罪を白状するだろう。": {},
+  "今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。": {
+    "mine": {
+      "dtw_distance": 1.2954375332055346,
+      "range_difference": 9.0,
+      "mean_difference": 0.9796168179147625,
+      "overall_score": 1.2954375332055346
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.5741115650575435,
+      "range_difference": 11.399999999999997,
+      "mean_difference": 0.8563481344902075,
+      "overall_score": 1.5741115650575435
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.1525265577109118,
+      "range_difference": 12.238982859829164,
+      "mean_difference": 1.0261084673742786,
+      "overall_score": 1.1525265577109118
+    }
+  },
+  "北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。": {
+    "mine": {
+      "dtw_distance": 1.9171530073949468,
+      "range_difference": 12.000000000000004,
+      "mean_difference": 1.2058828301762614,
+      "overall_score": 1.9171530073949468
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.634667340084926,
+      "range_difference": 12.000000000000002,
+      "mean_difference": 1.522085504423806,
+      "overall_score": 1.634667340084926
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.661688014882629,
+      "range_difference": 15.014020569625309,
+      "mean_difference": 1.2613920848042213,
+      "overall_score": 1.661688014882629
+    }
+  },
+  "居酒屋で、変なおっさんにからまれた。": {
+    "mine": {
+      "dtw_distance": 1.276022470638313,
+      "range_difference": 5.799999999999999,
+      "mean_difference": 0.6085156687522747,
+      "overall_score": 1.276022470638313
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.405794226167172,
+      "range_difference": 6.099999999999998,
+      "mean_difference": 1.622564014179099,
+      "overall_score": 1.405794226167172
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.1394171055238242,
+      "range_difference": 7.099999999999998,
+      "mean_difference": 0.6638008417959059,
+      "overall_score": 1.1394171055238242
+    }
+  },
+  "母の死は、私の生涯に、大きな空白を残した。": {
+    "mine": {
+      "dtw_distance": 0.8273511424757038,
+      "range_difference": 8.568139214244777,
+      "mean_difference": 0.07873591511340472,
+      "overall_score": 0.8273511424757038
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.1475394523856357,
+      "range_difference": 12.19999999999999,
+      "mean_difference": 0.6944430661650473,
+      "overall_score": 1.1475394523856357
+    },
+    "google_translate_wav": {
+      "dtw_distance": 0.8103495996241774,
+      "range_difference": 11.299999999999992,
+      "mean_difference": 0.5269456603324376,
+      "overall_score": 0.8103495996241774
+    }
+  },
+  "母は私の望むものは、何でも言わなくてもかなえてくれる。": {
+    "mine": {
+      "dtw_distance": 0.5310509379322401,
+      "range_difference": 2.099999999999998,
+      "mean_difference": 0.6584842232344916,
+      "overall_score": 0.5310509379322401
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.0343939354250886,
+      "range_difference": 6.5000000000000036,
+      "mean_difference": 1.8140842299848985,
+      "overall_score": 1.0343939354250886
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.0432252724309283,
+      "range_difference": 8.300000000000008,
+      "mean_difference": 1.240508229213244,
+      "overall_score": 1.0432252724309283
+    }
+  },
+  "目先の利益だけにとらわれてはいけない。": {
+    "mine": {
+      "dtw_distance": 1.4293827999093438,
+      "range_difference": 4.699999999999996,
+      "mean_difference": 0.314647946438813,
+      "overall_score": 1.4293827999093438
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.41295526076794,
+      "range_difference": 6.299999999999997,
+      "mean_difference": 0.8643237202385463,
+      "overall_score": 1.41295526076794
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.2007357876145155,
+      "range_difference": 7.699999999999996,
+      "mean_difference": 1.4656664781434754,
+      "overall_score": 1.2007357876145155
+    }
+  },
+  "自制できるようにならねばならない。": {
+    "mine": {
+      "dtw_distance": 1.467903091002405,
+      "range_difference": 8.100000000000005,
+      "mean_difference": 0.4504805188380845,
+      "overall_score": 1.467903091002405
+    },
+    "ondoku_wav": {
+      "dtw_distance": 0.9552542704153661,
+      "range_difference": 7.800000000000001,
+      "mean_difference": 0.45408265761682287,
+      "overall_score": 0.9552542704153661
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.344643937739096,
+      "range_difference": 11.099711190280777,
+      "mean_difference": 0.1427288043322088,
+      "overall_score": 1.344643937739096
+    }
+  },
+  "身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。": {
+    "mine": {
+      "dtw_distance": 1.7601134003700405,
+      "range_difference": 11.299999999999997,
+      "mean_difference": 0.35715918209797426,
+      "overall_score": 1.7601134003700405
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.3204685503473528,
+      "range_difference": 10.100000000000001,
+      "mean_difference": 0.57333940651874,
+      "overall_score": 1.3204685503473528
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.5582267910345797,
+      "range_difference": 12.500000000000004,
+      "mean_difference": 0.6935606810167032,
+      "overall_score": 1.5582267910345797
+    }
+  },
+  "運転するときは、いくら注意してもしすぎることはありません。": {
+    "mine": {
+      "dtw_distance": 1.8571661155124424,
+      "range_difference": 11.800000000000004,
+      "mean_difference": 1.3599546752736145,
+      "overall_score": 1.8571661155124424
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.6401826510361281,
+      "range_difference": 8.299999999999997,
+      "mean_difference": 1.3205934367087222,
+      "overall_score": 1.6401826510361281
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.5968439073699783,
+      "range_difference": 12.500000000000004,
+      "mean_difference": 1.732996319227208,
+      "overall_score": 1.5968439073699783
+    }
+  },
+  "長所が多いのに、彼女は自慢したがらなかった。": {
+    "mine": {
+      "dtw_distance": 1.1461021311301012,
+      "range_difference": 11.700000000000006,
+      "mean_difference": 0.17273297816363564,
+      "overall_score": 1.1461021311301012
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.6782136392844837,
+      "range_difference": 12.400000000000002,
+      "mean_difference": 2.3527373346591625,
+      "overall_score": 1.6782136392844837
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.4650967691809036,
+      "range_difference": 14.000000000000004,
+      "mean_difference": 1.5602950293251574,
+      "overall_score": 1.4650967691809036
+    }
+  },
+  "雲がだんだん黒くなって、雨が降りそうです。": {
+    "mine": {
+      "dtw_distance": 1.8664745542406345,
+      "range_difference": 10.300000000000002,
+      "mean_difference": 3.07465708924438,
+      "overall_score": 1.8664745542406345
+    },
+    "ondoku_wav": {
+      "dtw_distance": 1.9431458063560738,
+      "range_difference": 10.3,
+      "mean_difference": 3.979430392267445,
+      "overall_score": 1.9431458063560738
+    },
+    "google_translate_wav": {
+      "dtw_distance": 1.992058181080338,
+      "range_difference": 13.300000000000006,
+      "mean_difference": 3.960883250388635,
+      "overall_score": 1.992058181080338
+    }
+  }
+}

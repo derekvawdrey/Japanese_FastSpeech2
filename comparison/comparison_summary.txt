@@ -1,0 +1,117 @@
+================================================================================
+PITCH ACCENT COMPARISON SUMMARY
+================================================================================
+
+OVERALL RANKINGS (lower score = better pitch accent match):
+--------------------------------------------------------------------------------
+1. google_translate_wav - Average Score: 1.370 (13 sentences)
+2. mine                 - Average Score: 1.444 (13 sentences)
+3. ondoku_wav           - Average Score: 1.502 (13 sentences)
+
+================================================================================
+DETAILED RESULTS BY SENTENCE
+================================================================================
+
+
+テニスにもあるけど、４大大会って何。
+------------------
+  1. google_translate_wav - Score: 1.786 (DTW: 1.786)
+  2. mine            - Score: 1.954 (DTW: 1.954)
+  3. ondoku_wav      - Score: 2.384 (DTW: 2.384)
+
+
+ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。
+-----------------------------
+  1. google_translate_wav - Score: 1.060 (DTW: 1.060)
+  2. ondoku_wav      - Score: 1.399 (DTW: 1.399)
+  3. mine            - Score: 1.446 (DTW: 1.446)
+
+
+私もパーティーに来るべきだ、と、彼はつけ加えた。
+------------------------
+
+
+人犯は、もうすぐ自分の罪を白状するだろう。
+---------------------
+
+
+今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。
+--------------------------------------
+  1. google_translate_wav - Score: 1.153 (DTW: 1.153)
+  2. mine            - Score: 1.295 (DTW: 1.295)
+  3. ondoku_wav      - Score: 1.574 (DTW: 1.574)
+
+
+北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。
+-------------------------------------
+  1. ondoku_wav      - Score: 1.635 (DTW: 1.635)
+  2. google_translate_wav - Score: 1.662 (DTW: 1.662)
+  3. mine            - Score: 1.917 (DTW: 1.917)
+
+
+居酒屋で、変なおっさんにからまれた。
+------------------
+  1. google_translate_wav - Score: 1.139 (DTW: 1.139)
+  2. mine            - Score: 1.276 (DTW: 1.276)
+  3. ondoku_wav      - Score: 1.406 (DTW: 1.406)
+
+
+母の死は、私の生涯に、大きな空白を残した。
+---------------------
+  1. google_translate_wav - Score: 0.810 (DTW: 0.810)
+  2. mine            - Score: 0.827 (DTW: 0.827)
+  3. ondoku_wav      - Score: 1.148 (DTW: 1.148)
+
+
+母は私の望むものは、何でも言わなくてもかなえてくれる。
+---------------------------
+  1. mine            - Score: 0.531 (DTW: 0.531)
+  2. ondoku_wav      - Score: 1.034 (DTW: 1.034)
+  3. google_translate_wav - Score: 1.043 (DTW: 1.043)
+
+
+目先の利益だけにとらわれてはいけない。
+-------------------
+  1. google_translate_wav - Score: 1.201 (DTW: 1.201)
+  2. ondoku_wav      - Score: 1.413 (DTW: 1.413)
+  3. mine            - Score: 1.429 (DTW: 1.429)
+
+
+自制できるようにならねばならない。
+-----------------
+  1. ondoku_wav      - Score: 0.955 (DTW: 0.955)
+  2. google_translate_wav - Score: 1.345 (DTW: 1.345)
+  3. mine            - Score: 1.468 (DTW: 1.468)
+
+
+身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。
+-----------------------------
+  1. ondoku_wav      - Score: 1.320 (DTW: 1.320)
+  2. google_translate_wav - Score: 1.558 (DTW: 1.558)
+  3. mine            - Score: 1.760 (DTW: 1.760)
+
+
+運転するときは、いくら注意してもしすぎることはありません。
+-----------------------------
+  1. google_translate_wav - Score: 1.597 (DTW: 1.597)
+  2. ondoku_wav      - Score: 1.640 (DTW: 1.640)
+  3. mine            - Score: 1.857 (DTW: 1.857)
+
+
+長所が多いのに、彼女は自慢したがらなかった。
+----------------------
+  1. mine            - Score: 1.146 (DTW: 1.146)
+  2. google_translate_wav - Score: 1.465 (DTW: 1.465)
+  3. ondoku_wav      - Score: 1.678 (DTW: 1.678)
+
+
+雲がだんだん黒くなって、雨が降りそうです。
+---------------------
+  1. mine            - Score: 1.866 (DTW: 1.866)
+  2. ondoku_wav      - Score: 1.943 (DTW: 1.943)
+  3. google_translate_wav - Score: 1.992 (DTW: 1.992)
+
+================================================================================
+
+NOTE: Scores are based on Dynamic Time Warping (DTW) distance.
+Lower scores indicate closer pitch accent match to the sample.
