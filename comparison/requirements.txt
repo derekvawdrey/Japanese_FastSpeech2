@@ -1,0 +1,6 @@
+# Requirements for pitch accent comparison tools
+
+requests>=2.28.0
+matplotlib>=3.5.0
+numpy>=1.21.0
+
