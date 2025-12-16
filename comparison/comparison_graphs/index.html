@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pitch Accent Comparison Graphs</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .sentence-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .sentence-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-left: 4px solid #4CAF50;
+        }
+        .model-comparison {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+        .model-name {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .model-stats {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .graph-container {
+            text-align: center;
+            margin: 10px 0;
+        }
+        .graph-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .error {
+            color: #d32f2f;
+            font-style: italic;
+        }
+        .success {
+            color: #388e3c;
+        }
+        .nav {
+            background: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .nav a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+        .nav a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 Pitch Accent Comparison Graphs</h1>
+    <div class="nav">
+        <a href="#top">Top</a>
+        <a href="#テニスにもあるけど、４大大会って何。">Sentence 1</a>
+        <a href="#ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。">Sentence 2</a>
+        <a href="#私もパーティーに来るべきだ、と、彼はつけ加えた。">Sentence 3</a>
+        <a href="#人犯は、もうすぐ自分の罪を白状するだろう。">Sentence 4</a>
+        <a href="#今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。">Sentence 5</a>
+        <a href="#北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。">Sentence 6</a>
+        <a href="#居酒屋で、変なおっさんにからまれた。">Sentence 7</a>
+        <a href="#母の死は、私の生涯に、大きな空白を残した。">Sentence 8</a>
+        <a href="#母は私の望むものは、何でも言わなくてもかなえてくれる。">Sentence 9</a>
+        <a href="#目先の利益だけにとらわれてはいけない。">Sentence 10</a>
+        <a href="#自制できるようにならねばならない。">Sentence 11</a>
+        <a href="#身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。">Sentence 12</a>
+        <a href="#運転するときは、いくら注意してもしすぎることはありません。">Sentence 13</a>
+        <a href="#長所が多いのに、彼女は自慢したがらなかった。">Sentence 14</a>
+        <a href="#雲がだんだん黒くなって、雨が降りそうです。">Sentence 15</a>
+    </div>
+    
+    <div class="sentence-section" id="テニスにもあるけど、４大大会って何。">
+        <div class="sentence-title">Sentence 1: テニスにもあるけど、４大大会って何。</div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>93%</strong> | Distance: <strong>0.0727</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="テニスにもあるけど、４大大会って何。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>92%</strong> | Distance: <strong>0.0864</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="テニスにもあるけど、４大大会って何。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>90%</strong> | Distance: <strong>0.1014</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="テニスにもあるけど、４大大会って何。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>88%</strong> | Distance: <strong>0.1266</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="テニスにもあるけど、４大大会って何。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。">
+        <div class="sentence-title">Sentence 2: ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。</div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>98%</strong> | Distance: <strong>0.0180</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>97%</strong> | Distance: <strong>0.0286</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>96%</strong> | Distance: <strong>0.0383</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0468</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="私もパーティーに来るべきだ、と、彼はつけ加えた。">
+        <div class="sentence-title">Sentence 3: 私もパーティーに来るべきだ、と、彼はつけ加えた。</div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>96%</strong> | Distance: <strong>0.0332</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="私もパーティーに来るべきだ、と、彼はつけ加えた。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0440</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="私もパーティーに来るべきだ、と、彼はつけ加えた。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>92%</strong> | Distance: <strong>0.0858</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="私もパーティーに来るべきだ、と、彼はつけ加えた。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>89%</strong> | Distance: <strong>0.1138</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="私もパーティーに来るべきだ、と、彼はつけ加えた。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="人犯は、もうすぐ自分の罪を白状するだろう。">
+        <div class="sentence-title">Sentence 4: 人犯は、もうすぐ自分の罪を白状するだろう。</div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>96%</strong> | Distance: <strong>0.0410</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="人犯は、もうすぐ自分の罪を白状するだろう。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0469</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="人犯は、もうすぐ自分の罪を白状するだろう。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0566</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="人犯は、もうすぐ自分の罪を白状するだろう。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>92%</strong> | Distance: <strong>0.0811</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="人犯は、もうすぐ自分の罪を白状するだろう。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。">
+        <div class="sentence-title">Sentence 5: 今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。</div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>98%</strong> | Distance: <strong>0.0189</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0512</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>93%</strong> | Distance: <strong>0.0642</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>90%</strong> | Distance: <strong>0.1044</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。">
+        <div class="sentence-title">Sentence 6: 北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。</div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>97%</strong> | Distance: <strong>0.0260</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>96%</strong> | Distance: <strong>0.0389</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0471</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0633</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="居酒屋で、変なおっさんにからまれた。">
+        <div class="sentence-title">Sentence 7: 居酒屋で、変なおっさんにからまれた。</div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0427</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="居酒屋で、変なおっさんにからまれた。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0430</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="居酒屋で、変なおっさんにからまれた。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0567</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="居酒屋で、変なおっさんにからまれた。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>91%</strong> | Distance: <strong>0.0949</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="居酒屋で、変なおっさんにからまれた。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="母の死は、私の生涯に、大きな空白を残した。">
+        <div class="sentence-title">Sentence 8: 母の死は、私の生涯に、大きな空白を残した。</div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>96%</strong> | Distance: <strong>0.0412</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母の死は、私の生涯に、大きな空白を残した。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0538</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母の死は、私の生涯に、大きな空白を残した。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>90%</strong> | Distance: <strong>0.1089</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母の死は、私の生涯に、大きな空白を残した。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>88%</strong> | Distance: <strong>0.1339</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母の死は、私の生涯に、大きな空白を残した。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="母は私の望むものは、何でも言わなくてもかなえてくれる。">
+        <div class="sentence-title">Sentence 9: 母は私の望むものは、何でも言わなくてもかなえてくれる。</div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0493</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母は私の望むものは、何でも言わなくてもかなえてくれる。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>92%</strong> | Distance: <strong>0.0807</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母は私の望むものは、何でも言わなくてもかなえてくれる。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>92%</strong> | Distance: <strong>0.0836</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母は私の望むものは、何でも言わなくてもかなえてくれる。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>91%</strong> | Distance: <strong>0.0900</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="母は私の望むものは、何でも言わなくてもかなえてくれる。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="目先の利益だけにとらわれてはいけない。">
+        <div class="sentence-title">Sentence 10: 目先の利益だけにとらわれてはいけない。</div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>97%</strong> | Distance: <strong>0.0299</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="目先の利益だけにとらわれてはいけない。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0528</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="目先の利益だけにとらわれてはいけない。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>93%</strong> | Distance: <strong>0.0669</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="目先の利益だけにとらわれてはいけない。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>91%</strong> | Distance: <strong>0.0889</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="目先の利益だけにとらわれてはいけない。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="自制できるようにならねばならない。">
+        <div class="sentence-title">Sentence 11: 自制できるようにならねばならない。</div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0507</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="自制できるようにならねばならない。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0567</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="自制できるようにならねばならない。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>93%</strong> | Distance: <strong>0.0669</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="自制できるようにならねばならない。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>93%</strong> | Distance: <strong>0.0696</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="自制できるようにならねばならない。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。">
+        <div class="sentence-title">Sentence 12: 身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。</div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0420</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0465</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0590</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>93%</strong> | Distance: <strong>0.0731</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="運転するときは、いくら注意してもしすぎることはありません。">
+        <div class="sentence-title">Sentence 13: 運転するときは、いくら注意してもしすぎることはありません。</div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>97%</strong> | Distance: <strong>0.0258</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="運転するときは、いくら注意してもしすぎることはありません。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0454</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="運転するときは、いくら注意してもしすぎることはありません。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>95%</strong> | Distance: <strong>0.0456</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="運転するときは、いくら注意してもしすぎることはありません。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>90%</strong> | Distance: <strong>0.1105</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="運転するときは、いくら注意してもしすぎることはありません。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="長所が多いのに、彼女は自慢したがらなかった。">
+        <div class="sentence-title">Sentence 14: 長所が多いのに、彼女は自慢したがらなかった。</div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>96%</strong> | Distance: <strong>0.0377</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="長所が多いのに、彼女は自慢したがらなかった。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>88%</strong> | Distance: <strong>0.1306</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="長所が多いのに、彼女は自慢したがらなかった。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>88%</strong> | Distance: <strong>0.1358</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="長所が多いのに、彼女は自慢したがらなかった。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>87%</strong> | Distance: <strong>0.1469</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="長所が多いのに、彼女は自慢したがらなかった。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+    </div>
+
+    <div class="sentence-section" id="雲がだんだん黒くなって、雨が降りそうです。">
+        <div class="sentence-title">Sentence 15: 雲がだんだん黒くなって、雨が降りそうです。</div>
+        <div class="model-comparison">
+            <div class="model-name">ElevenLabs Eiko</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>94%</strong> | Distance: <strong>0.0552</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="雲がだんだん黒くなって、雨が降りそうです。/ElevenLabs_Eiko.png" alt="ElevenLabs Eiko comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">FastSpeech2 (Mine)</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>91%</strong> | Distance: <strong>0.0924</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="雲がだんだん黒くなって、雨が降りそうです。/FastSpeech2_Mine.png" alt="FastSpeech2 (Mine) comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Ondoku</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>90%</strong> | Distance: <strong>0.1108</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="雲がだんだん黒くなって、雨が降りそうです。/Ondoku.png" alt="Ondoku comparison">
+            </div>
+        </div>
+        <div class="model-comparison">
+            <div class="model-name">Google Translate</div>
+            <div class="model-stats success">
+                ✓ Score: <strong>89%</strong> | Distance: <strong>0.1200</strong> (lower is better)
+            </div>
+            <div class="graph-container">
+                <img src="雲がだんだん黒くなって、雨が降りそうです。/Google_Translate.png" alt="Google Translate comparison">
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; text-align: center; color: #666;">
+        <p>Generated by Pitch Accent Comparison Tool</p>
+    </div>
+</body>
+</html>
