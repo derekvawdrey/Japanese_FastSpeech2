@@ -10,8 +10,55 @@ import sys
 from pathlib import Path
 from typing import Dict, List
 import matplotlib.pyplot as plt
+import matplotlib
 import numpy as np
 from matplotlib.patches import Rectangle
+
+# Configure matplotlib to support Japanese characters
+# Try to find a Japanese-capable font
+def setup_japanese_font():
+    """Configure matplotlib to use a font that supports Japanese characters"""
+    # List of fonts to try (in order of preference)
+    japanese_fonts = [
+        'Hiragino Sans',  # macOS default Japanese font
+        'Hiragino Sans GB',
+        'Arial Unicode MS',
+        'Noto Sans CJK JP',
+        'Yu Gothic',
+        'Meiryo',
+        'MS Gothic'
+    ]
+    
+    # Try to find an available font
+    available_fonts = [f.name for f in matplotlib.font_manager.fontManager.ttflist]
+    
+    for font in japanese_fonts:
+        if font in available_fonts:
+            matplotlib.rcParams['font.family'] = font
+            matplotlib.rcParams['font.sans-serif'] = [font] + matplotlib.rcParams['font.sans-serif']
+            print(f"Using font: {font}")
+            return font
+    
+    # If no Japanese font found, try to use a fallback
+    # On macOS, we can try to use the system default
+    try:
+        import platform
+        if platform.system() == 'Darwin':  # macOS
+            matplotlib.rcParams['font.family'] = 'Hiragino Sans'
+            matplotlib.rcParams['font.sans-serif'] = ['Hiragino Sans'] + matplotlib.rcParams['font.sans-serif']
+        else:
+            matplotlib.rcParams['font.family'] = 'DejaVu Sans'
+    except:
+        pass
+    
+    # Ensure we have a fallback for English characters
+    matplotlib.rcParams['font.sans-serif'] = matplotlib.rcParams['font.sans-serif'] + ['Arial', 'DejaVu Sans', 'sans-serif']
+    
+    print("Warning: No Japanese font found. Japanese characters may not display correctly.")
+    return None
+
+# Setup Japanese font support
+setup_japanese_font()
 
 
 def load_results(json_file: Path) -> Dict:
@@ -49,6 +96,7 @@ def plot_overall_comparison(results: Dict, output_dir: Path):
     bars1 = ax1.barh(models, avg_distances, color=colors)
     ax1.set_xlabel('Average Distance (lower is better)', fontsize=12, fontweight='bold')
     ax1.set_title('Pitch Accent Accuracy - Distance Metric', fontsize=14, fontweight='bold')
+    ax1.set_yticklabels(models, fontsize=10)
     ax1.invert_xaxis()  # Lower values on the right
     
     # Add value labels
@@ -60,20 +108,13 @@ def plot_overall_comparison(results: Dict, output_dir: Path):
     bars2 = ax2.barh(models, avg_scores, color=colors)
     ax2.set_xlabel('Average Score % (higher is better)', fontsize=12, fontweight='bold')
     ax2.set_title('Pitch Accent Accuracy - Score Metric', fontsize=14, fontweight='bold')
+    ax2.set_yticklabels(models, fontsize=10)
     ax2.set_xlim(0, 100)
     
     # Add value labels
     for bar, val in zip(bars2, avg_scores):
         ax2.text(val + 1, bar.get_y() + bar.get_height()/2, f'{val:.1f}%',
                 va='center', ha='left', fontsize=10, fontweight='bold')
-    
-    # Add medal emojis for top 3
-    medals = ['🥇', '🥈', '🥉']
-    for ax in [ax1, ax2]:
-        for i, model in enumerate(models[:3]):
-            y_pos = len(models) - 1 - i
-            ax.text(-0.15, y_pos, medals[i], transform=ax.get_yaxis_transform(),
-                   fontsize=20, va='center', ha='right')
     
     plt.tight_layout()
     output_file = output_dir / 'pitch_accent_overall_comparison.png'
@@ -109,13 +150,17 @@ def plot_per_sentence_heatmap(results: Dict, output_dir: Path):
     models = [models[i] for i in sorted_indices]
     distance_matrix = [distance_matrix[i] for i in sorted_indices]
     
-    # Create heatmap
-    fig, ax = plt.subplots(figsize=(16, len(models) * 0.5 + 2))
+    # Create heatmap with better sizing
+    # Calculate appropriate figure size: more height per model, adequate width for sentences
+    fig_height = max(8, len(models) * 0.8 + 3)  # At least 0.8 units per model, minimum 8
+    fig_width = max(18, len(sentences) * 1.2 + 2)  # At least 1.2 units per sentence, minimum 18
+    fig, ax = plt.subplots(figsize=(fig_width, fig_height))
     
     # Convert to numpy array
     data = np.array(distance_matrix)
     
     # Create custom colormap (green = good/low distance, red = bad/high distance)
+    # Use aspect='equal' or a fixed aspect ratio to prevent squishing
     im = ax.imshow(data, aspect='auto', cmap='RdYlGn_r', interpolation='nearest')
     
     # Set ticks and labels
@@ -123,9 +168,9 @@ def plot_per_sentence_heatmap(results: Dict, output_dir: Path):
     ax.set_yticks(np.arange(len(models)))
     
     # Truncate long sentences for display
-    sentence_labels = [s[:40] + '...' if len(s) > 40 else s for s in sentences]
-    ax.set_xticklabels(sentence_labels, rotation=45, ha='right', fontsize=8)
-    ax.set_yticklabels(models, fontsize=10)
+    sentence_labels = [s[:50] + '...' if len(s) > 50 else s for s in sentences]
+    ax.set_xticklabels(sentence_labels, rotation=45, ha='right', fontsize=9)
+    ax.set_yticklabels(models, fontsize=11)
     
     # Add colorbar
     cbar = plt.colorbar(im, ax=ax)
@@ -141,9 +186,10 @@ def plot_per_sentence_heatmap(results: Dict, output_dir: Path):
     ax.set_title('Pitch Accent Distance per Sentence (Heatmap)', 
                 fontsize=14, fontweight='bold', pad=20)
     
-    plt.tight_layout()
+    # Adjust layout with padding to prevent squishing
+    plt.tight_layout(pad=2.0)
     output_file = output_dir / 'pitch_accent_heatmap.png'
-    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.savefig(output_file, dpi=300, bbox_inches='tight', pad_inches=0.2)
     print(f"Saved: {output_file}")
     plt.close()
 
@@ -325,7 +371,7 @@ def main():
     json_file = script_dir / "pitch_accent_comparison_results.json"
     
     if not json_file.exists():
-        print(f"❌ Error: Results file not found: {json_file}")
+        print(f"Error: Results file not found: {json_file}")
         print()
         print("Please run the comparison first:")
         print("  python3 compare_pitch_accent.py")
