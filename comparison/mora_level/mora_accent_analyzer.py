@@ -127,7 +127,7 @@ def julius_phonemes_to_morae(phonemes: List[Tuple[float, float, str]]) -> List[M
     
     Japanese mora structure:
     - (C)(y)V: Optional consonant, optional glide, required vowel
-    - N: Moraic nasal (ん)
+    - N: Moraic nasal (ん) - In Julius, this is uppercase 'N' distinct from consonant 'n'
     - Q: Geminate consonant (っ)
     - Long vowels count as separate morae
     
@@ -148,8 +148,9 @@ def julius_phonemes_to_morae(phonemes: List[Tuple[float, float, str]]) -> List[M
             i += 1
             continue
         
-        # Check for moraic nasal (ん)
-        if phoneme.upper() == 'N' or phoneme == 'N':
+        # Check for moraic nasal (ん) - ONLY uppercase 'N' is the moraic nasal
+        # Lowercase 'n' is a consonant that combines with following vowel (な, に, etc.)
+        if phoneme == 'N':
             mora = Mora(
                 text='ん',
                 phonemes=[phoneme],
@@ -160,7 +161,7 @@ def julius_phonemes_to_morae(phonemes: List[Tuple[float, float, str]]) -> List[M
             i += 1
             continue
         
-        # Check for geminate (っ) - often marked as 'cl' or 'q'
+        # Check for geminate (っ) - often marked as 'cl' or 'q' or 'Q'
         if phoneme.lower() in {'cl', 'q'}:
             mora = Mora(
                 text='っ',
