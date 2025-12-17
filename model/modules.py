@@ -21,8 +21,13 @@ class VarianceAdaptor(nn.Module):
         super(VarianceAdaptor, self).__init__()
         self.duration_predictor = VariancePredictor(model_config)
         self.length_regulator = LengthRegulator()
-        self.pitch_predictor = VariancePredictor(model_config)
-        self.energy_predictor = VariancePredictor(model_config)
+        
+        # Check if pitch/energy prediction is enabled (default: True for backward compatibility)
+        self.use_pitch = model_config.get("variance_predictor", {}).get("use_pitch", True)
+        self.use_energy = model_config.get("variance_predictor", {}).get("use_energy", True)
+        
+        self.pitch_predictor = VariancePredictor(model_config) if self.use_pitch else None
+        self.energy_predictor = VariancePredictor(model_config) if self.use_energy else None
 
         self.pitch_feature_level = preprocess_config["preprocessing"]["pitch"][
             "feature"
@@ -45,39 +50,50 @@ class VarianceAdaptor(nn.Module):
             pitch_min, pitch_max = stats["pitch"][:2]
             energy_min, energy_max = stats["energy"][:2]
 
-        if pitch_quantization == "log":
-            self.pitch_bins = nn.Parameter(
-                torch.exp(
-                    torch.linspace(np.log(pitch_min), np.log(pitch_max), n_bins - 1)
-                ),
-                requires_grad=False,
+        if self.use_pitch:
+            if pitch_quantization == "log":
+                self.pitch_bins = nn.Parameter(
+                    torch.exp(
+                        torch.linspace(np.log(pitch_min), np.log(pitch_max), n_bins - 1)
+                    ),
+                    requires_grad=False,
+                )
+            else:
+                self.pitch_bins = nn.Parameter(
+                    torch.linspace(pitch_min, pitch_max, n_bins - 1),
+                    requires_grad=False,
+                )
+            self.pitch_embedding = nn.Embedding(
+                n_bins, model_config["transformer"]["encoder_hidden"]
             )
         else:
-            self.pitch_bins = nn.Parameter(
-                torch.linspace(pitch_min, pitch_max, n_bins - 1),
-                requires_grad=False,
-            )
-        if energy_quantization == "log":
-            self.energy_bins = nn.Parameter(
-                torch.exp(
-                    torch.linspace(np.log(energy_min), np.log(energy_max), n_bins - 1)
-                ),
-                requires_grad=False,
+            self.pitch_bins = None
+            self.pitch_embedding = None
+            
+        if self.use_energy:
+            if energy_quantization == "log":
+                self.energy_bins = nn.Parameter(
+                    torch.exp(
+                        torch.linspace(np.log(energy_min), np.log(energy_max), n_bins - 1)
+                    ),
+                    requires_grad=False,
+                )
+            else:
+                self.energy_bins = nn.Parameter(
+                    torch.linspace(energy_min, energy_max, n_bins - 1),
+                    requires_grad=False,
+                )
+            self.energy_embedding = nn.Embedding(
+                n_bins, model_config["transformer"]["encoder_hidden"]
             )
         else:
-            self.energy_bins = nn.Parameter(
-                torch.linspace(energy_min, energy_max, n_bins - 1),
-                requires_grad=False,
-            )
-
-        self.pitch_embedding = nn.Embedding(
-            n_bins, model_config["transformer"]["encoder_hidden"]
-        )
-        self.energy_embedding = nn.Embedding(
-            n_bins, model_config["transformer"]["encoder_hidden"]
-        )
+            self.energy_bins = None
+            self.energy_embedding = None
 
     def get_pitch_embedding(self, x, target, mask, control):
+        if not self.use_pitch:
+            # Return zeros when pitch is disabled
+            return torch.zeros(x.shape[:2], device=x.device), None
         prediction = self.pitch_predictor(x, mask)
         if target is not None:
             # Clamp bucketized values to valid range [0, n_bins-1]
@@ -93,6 +109,9 @@ class VarianceAdaptor(nn.Module):
         return prediction, embedding
 
     def get_energy_embedding(self, x, target, mask, control):
+        if not self.use_energy:
+            # Return zeros when energy is disabled
+            return torch.zeros(x.shape[:2], device=x.device), None
         prediction = self.energy_predictor(x, mask)
         if target is not None:
             # Clamp bucketized values to valid range [0, n_bins-1]
@@ -127,12 +146,14 @@ class VarianceAdaptor(nn.Module):
             pitch_prediction, pitch_embedding = self.get_pitch_embedding(
                 x, pitch_target, src_mask, p_control
             )
-            x = x + pitch_embedding
+            if pitch_embedding is not None:
+                x = x + pitch_embedding
         if self.energy_feature_level == "phoneme_level":
             energy_prediction, energy_embedding = self.get_energy_embedding(
                 x, energy_target, src_mask, p_control
             )
-            x = x + energy_embedding
+            if energy_embedding is not None:
+                x = x + energy_embedding
 
         if duration_target is not None:
             x, mel_len = self.length_regulator(x, duration_target, max_len)
@@ -186,12 +207,14 @@ class VarianceAdaptor(nn.Module):
             pitch_prediction, pitch_embedding = self.get_pitch_embedding(
                 x, pitch_target, mel_mask, p_control
             )
-            x = x + pitch_embedding
+            if pitch_embedding is not None:
+                x = x + pitch_embedding
         if self.energy_feature_level == "frame_level":
             energy_prediction, energy_embedding = self.get_energy_embedding(
                 x, energy_target, mel_mask, p_control
             )
-            x = x + energy_embedding
+            if energy_embedding is not None:
+                x = x + energy_embedding
 
         return (
             x,
