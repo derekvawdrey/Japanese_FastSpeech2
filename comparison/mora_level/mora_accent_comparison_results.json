@@ -4,14 +4,7 @@
     "successful_analyses": 19,
     "failed_analyses": 0,
     "pattern_match_rate": 0.05263157894736842,
-    "accent_type_accuracy": 0.7368421052631579,
-    "accent_position_accuracy": 0.42105263157894735,
     "average_mora_accuracy": 0.7429417863620806,
-    "accuracy_by_type": {
-      "NAKADAKA": 1.0,
-      "ATAMADAKA": 0.0,
-      "HEIBAN": 0.0
-    },
     "results": [
       {
         "model_name": "FastSpeech2_Mine",
@@ -400,14 +393,7 @@
     "successful_analyses": 19,
     "failed_analyses": 0,
     "pattern_match_rate": 0.05263157894736842,
-    "accent_type_accuracy": 0.631578947368421,
-    "accent_position_accuracy": 0.15789473684210525,
     "average_mora_accuracy": 0.631134875234396,
-    "accuracy_by_type": {
-      "NAKADAKA": 0.8571428571428571,
-      "ATAMADAKA": 0.0,
-      "HEIBAN": 0.0
-    },
     "results": [
       {
         "model_name": "ElevenLabs_Eiko",
@@ -796,14 +782,7 @@
     "successful_analyses": 19,
     "failed_analyses": 0,
     "pattern_match_rate": 0.05263157894736842,
-    "accent_type_accuracy": 0.7368421052631579,
-    "accent_position_accuracy": 0.5263157894736842,
     "average_mora_accuracy": 0.7539800971900794,
-    "accuracy_by_type": {
-      "NAKADAKA": 1.0,
-      "ATAMADAKA": 0.0,
-      "HEIBAN": 0.0
-    },
     "results": [
       {
         "model_name": "Google_Translate",
@@ -1192,14 +1171,7 @@
     "successful_analyses": 19,
     "failed_analyses": 0,
     "pattern_match_rate": 0.10526315789473684,
-    "accent_type_accuracy": 0.7368421052631579,
-    "accent_position_accuracy": 0.5789473684210527,
     "average_mora_accuracy": 0.7305729898694231,
-    "accuracy_by_type": {
-      "NAKADAKA": 1.0,
-      "ATAMADAKA": 0.0,
-      "HEIBAN": 0.0
-    },
     "results": [
       {
         "model_name": "Ondoku",

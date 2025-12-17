@@ -56,12 +56,6 @@ COLORS = {
     'Reference': '#34495e',              # Dark gray
 }
 
-ACCENT_TYPE_COLORS = {
-    'HEIBAN': '#3498db',      # Blue
-    'ATAMADAKA': '#e74c3c',   # Red
-    'NAKADAKA': '#f39c12',    # Orange
-    'ODAKA': '#9b59b6',       # Purple
-}
 
 
 def load_results(json_path: Path) -> Dict:
@@ -72,91 +66,39 @@ def load_results(json_path: Path) -> Dict:
 
 def plot_overall_accuracy(results: Dict, output_dir: Path) -> None:
     """Create bar chart of overall accuracy metrics"""
-    fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
     
     models = list(results.keys())
-    
-    # Accent Position Accuracy
-    ax1 = axes[0]
-    values = [results[m]['accent_position_accuracy'] * 100 for m in models]
     colors = [COLORS.get(m, '#95a5a6') for m in models]
+    
+    # Mora-Level H/L Accuracy (main metric)
+    ax1 = axes[0]
+    values = [results[m]['average_mora_accuracy'] * 100 for m in models]
     bars = ax1.bar(models, values, color=colors)
     ax1.set_ylabel('Accuracy (%)')
-    ax1.set_title('Accent Position Accuracy')
+    ax1.set_title('Mora H/L Accuracy (Main Metric)')
     ax1.set_ylim(0, 100)
     ax1.tick_params(axis='x', rotation=45)
     for bar, val in zip(bars, values):
         ax1.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
                 f'{val:.1f}%', ha='center', va='bottom', fontsize=9)
     
-    # Accent Type Accuracy
+    # Exact Pattern Match Rate
     ax2 = axes[1]
-    values = [results[m]['accent_type_accuracy'] * 100 for m in models]
+    values = [results[m]['pattern_match_rate'] * 100 for m in models]
     bars = ax2.bar(models, values, color=colors)
-    ax2.set_ylabel('Accuracy (%)')
-    ax2.set_title('Accent Type Accuracy')
+    ax2.set_ylabel('Match Rate (%)')
+    ax2.set_title('Exact Pattern Match Rate')
     ax2.set_ylim(0, 100)
     ax2.tick_params(axis='x', rotation=45)
     for bar, val in zip(bars, values):
         ax2.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
                 f'{val:.1f}%', ha='center', va='bottom', fontsize=9)
     
-    # Mora-Level Accuracy
-    ax3 = axes[2]
-    values = [results[m]['average_mora_accuracy'] * 100 for m in models]
-    bars = ax3.bar(models, values, color=colors)
-    ax3.set_ylabel('Accuracy (%)')
-    ax3.set_title('Average Mora H/L Accuracy')
-    ax3.set_ylim(0, 100)
-    ax3.tick_params(axis='x', rotation=45)
-    for bar, val in zip(bars, values):
-        ax3.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 1,
-                f'{val:.1f}%', ha='center', va='bottom', fontsize=9)
-    
     plt.tight_layout()
     plt.savefig(output_dir / 'mora_accent_overall_accuracy.png', dpi=150, bbox_inches='tight')
     plt.close()
     print(f"Saved: {output_dir / 'mora_accent_overall_accuracy.png'}")
-
-
-def plot_accuracy_by_accent_type(results: Dict, output_dir: Path) -> None:
-    """Create grouped bar chart of accuracy by accent type"""
-    fig, ax = plt.subplots(figsize=(12, 6))
-    
-    models = list(results.keys())
-    
-    # Collect all accent types
-    all_types = set()
-    for m in models:
-        all_types.update(results[m].get('accuracy_by_type', {}).keys())
-    all_types = sorted(all_types)
-    
-    if not all_types:
-        print("No accent type breakdown available")
-        return
-    
-    x = np.arange(len(all_types))
-    width = 0.8 / len(models)
-    
-    for i, model in enumerate(models):
-        accuracy_by_type = results[model].get('accuracy_by_type', {})
-        values = [accuracy_by_type.get(t, 0) * 100 for t in all_types]
-        offset = (i - len(models)/2 + 0.5) * width
-        bars = ax.bar(x + offset, values, width, label=model, 
-                     color=COLORS.get(model, '#95a5a6'))
-    
-    ax.set_ylabel('Accuracy (%)')
-    ax.set_title('Accuracy by Accent Type')
-    ax.set_xticks(x)
-    ax.set_xticklabels(all_types)
-    ax.set_ylim(0, 100)
-    ax.legend(loc='upper right')
-    ax.grid(axis='y', alpha=0.3)
-    
-    plt.tight_layout()
-    plt.savefig(output_dir / 'mora_accent_by_type.png', dpi=150, bbox_inches='tight')
-    plt.close()
-    print(f"Saved: {output_dir / 'mora_accent_by_type.png'}")
 
 
 def plot_pattern_comparison_heatmap(results: Dict, output_dir: Path) -> None:
@@ -362,7 +304,6 @@ def create_all_visualizations(json_path: Path, output_dir: Path) -> None:
     output_dir.mkdir(parents=True, exist_ok=True)
     
     plot_overall_accuracy(results, output_dir)
-    plot_accuracy_by_accent_type(results, output_dir)
     plot_pattern_comparison_heatmap(results, output_dir)
     plot_pattern_examples(results, output_dir)
     plot_success_failure_breakdown(results, output_dir)

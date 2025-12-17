@@ -91,13 +91,8 @@ class MoraAccentModelStats:
     failed_analyses: int
     
     # Accuracy metrics
-    pattern_match_rate: float
-    accent_type_accuracy: float
-    accent_position_accuracy: float
-    average_mora_accuracy: float
-    
-    # Breakdown by accent type
-    accuracy_by_type: Dict[str, float]
+    pattern_match_rate: float       # Exact H/L pattern match rate
+    average_mora_accuracy: float    # Per-mora H/L accuracy (main metric)
     
     # Individual results
     results: List[MoraAccentResult]
@@ -334,25 +329,10 @@ class MoraAccentComparatorAPI:
         
         if successful:
             pattern_match_rate = sum(1 for r in successful if r.patterns_match) / len(successful)
-            accent_type_accuracy = sum(1 for r in successful if r.accent_type_match) / len(successful)
-            accent_position_accuracy = sum(1 for r in successful if r.accent_position_match) / len(successful)
             average_mora_accuracy = sum(r.mora_accuracy for r in successful) / len(successful)
-            
-            by_type = defaultdict(list)
-            for r in successful:
-                if r.reference_accent_type:
-                    by_type[r.reference_accent_type].append(r.accent_type_match)
-            
-            accuracy_by_type = {
-                t: sum(matches) / len(matches) if matches else 0.0
-                for t, matches in by_type.items()
-            }
         else:
             pattern_match_rate = 0.0
-            accent_type_accuracy = 0.0
-            accent_position_accuracy = 0.0
             average_mora_accuracy = 0.0
-            accuracy_by_type = {}
         
         return MoraAccentModelStats(
             model_name=model_name,
@@ -360,10 +340,7 @@ class MoraAccentComparatorAPI:
             successful_analyses=len(successful),
             failed_analyses=len(results) - len(successful),
             pattern_match_rate=pattern_match_rate,
-            accent_type_accuracy=accent_type_accuracy,
-            accent_position_accuracy=accent_position_accuracy,
             average_mora_accuracy=average_mora_accuracy,
-            accuracy_by_type=accuracy_by_type,
             results=results
         )
     
@@ -394,12 +371,12 @@ class MoraAccentComparatorAPI:
         lines.append("")
         
         # Overall rankings
-        lines.append("OVERALL RANKINGS (by Accent Position Accuracy)")
+        lines.append("OVERALL RANKINGS (by Mora H/L Accuracy)")
         lines.append("-" * 80)
         
         ranked = sorted(
             all_stats.items(),
-            key=lambda x: x[1].accent_position_accuracy,
+            key=lambda x: x[1].average_mora_accuracy,
             reverse=True
         )
         
@@ -407,9 +384,8 @@ class MoraAccentComparatorAPI:
             medal = "🥇" if rank == 1 else "🥈" if rank == 2 else "🥉" if rank == 3 else f"{rank}."
             lines.append(
                 f"{medal} {model_name:25s} | "
-                f"Position Acc: {stats.accent_position_accuracy:.1%} | "
-                f"Type Acc: {stats.accent_type_accuracy:.1%} | "
-                f"Mora Acc: {stats.average_mora_accuracy:.1%}"
+                f"Mora Acc: {stats.average_mora_accuracy:.1%} | "
+                f"Pattern Match: {stats.pattern_match_rate:.1%}"
             )
         
         lines.append("")
@@ -427,16 +403,8 @@ class MoraAccentComparatorAPI:
             lines.append(f"  Successful Analyses:       {stats.successful_analyses}")
             lines.append(f"  Failed Analyses:           {stats.failed_analyses}")
             lines.append("")
-            lines.append(f"  Accent Position Accuracy:  {stats.accent_position_accuracy:.1%}")
-            lines.append(f"  Accent Type Accuracy:      {stats.accent_type_accuracy:.1%}")
+            lines.append(f"  Average Mora H/L Accuracy: {stats.average_mora_accuracy:.1%}")
             lines.append(f"  Exact Pattern Match Rate:  {stats.pattern_match_rate:.1%}")
-            lines.append(f"  Average Mora Accuracy:     {stats.average_mora_accuracy:.1%}")
-            
-            if stats.accuracy_by_type:
-                lines.append("")
-                lines.append("  Accuracy by Accent Type:")
-                for accent_type, accuracy in stats.accuracy_by_type.items():
-                    lines.append(f"    {accent_type:15s}: {accuracy:.1%}")
         
         # Per-sentence breakdown
         lines.append("")
@@ -457,7 +425,7 @@ class MoraAccentComparatorAPI:
             ref_shown = False
             for model_name, result in results:
                 if result.success and result.reference_pattern and not ref_shown:
-                    lines.append(f"  Reference: {result.reference_pattern} ({result.reference_accent_type})")
+                    lines.append(f"  Reference: {result.reference_pattern}")
                     ref_shown = True
                     break
             
@@ -500,10 +468,7 @@ class MoraAccentComparatorAPI:
                 'successful_analyses': stats.successful_analyses,
                 'failed_analyses': stats.failed_analyses,
                 'pattern_match_rate': stats.pattern_match_rate,
-                'accent_type_accuracy': stats.accent_type_accuracy,
-                'accent_position_accuracy': stats.accent_position_accuracy,
                 'average_mora_accuracy': stats.average_mora_accuracy,
-                'accuracy_by_type': stats.accuracy_by_type,
                 'results': [asdict(r) for r in stats.results]
             }
         
