@@ -49,6 +49,8 @@ TTS_MODELS = {
     "ElevenLabs_Eiko": VOICE_SPLITS_DIR / "eleven_labs_eiko_wav",
     "Google_Translate": VOICE_SPLITS_DIR / "google_translate_wav",
     "Ondoku": VOICE_SPLITS_DIR / "ondoku_wav",
+    "Suzuki Kun": VOICE_SPLITS_DIR / "suzuki_kun",
+    "Style-Bert-VITS2": VOICE_SPLITS_DIR / "style_bert_vits2",
 }
 
 
