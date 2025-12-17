@@ -4,58 +4,58 @@ PITCH ACCENT COMPARISON REPORT
 
 OVERALL RANKINGS (by Average Distance - Lower is Better)
 --------------------------------------------------------------------------------
-🥇 FastSpeech2 (Mine)             | Avg Distance: 0.0518 | Avg Score: 94.6%
-🥈 ElevenLabs Eiko                | Avg Distance: 0.0657 | Avg Score: 93.5%
-🥉 Google Translate               | Avg Distance: 0.0787 | Avg Score: 92.2%
-4. Ondoku                         | Avg Distance: 0.0792 | Avg Score: 92.3%
+🥇 ElevenLabs Eiko                | Avg Distance: 0.0903 | Avg Score: 91.5%
+🥈 FastSpeech2 (Mine)             | Avg Distance: 0.0938 | Avg Score: 91.5%
+🥉 Google Translate               | Avg Distance: 0.1114 | Avg Score: 89.8%
+4. Ondoku                         | Avg Distance: 0.1123 | Avg Score: 89.9%
 
 
 DETAILED STATISTICS
 ================================================================================
 
-Model: FastSpeech2 (Mine)
---------------------------------------------------------------------------------
-  Total Sentences:       16
-  Successful:            16
-  Failed:                0
-  Average Distance:      0.0518
-  Std Deviation:         0.0221
-  Min Distance:          0.0180
-  Max Distance:          0.0924
-  Average Score:         94.6%
-
 Model: ElevenLabs Eiko
 --------------------------------------------------------------------------------
-  Total Sentences:       16
-  Successful:            16
+  Total Sentences:       19
+  Successful:            19
   Failed:                0
-  Average Distance:      0.0657
-  Std Deviation:         0.0341
+  Average Distance:      0.0903
+  Std Deviation:         0.0661
   Min Distance:          0.0258
-  Max Distance:          0.1358
-  Average Score:         93.5%
+  Max Distance:          0.2214
+  Average Score:         91.5%
+
+Model: FastSpeech2 (Mine)
+--------------------------------------------------------------------------------
+  Total Sentences:       19
+  Successful:            19
+  Failed:                0
+  Average Distance:      0.0938
+  Std Deviation:         0.1017
+  Min Distance:          0.0180
+  Max Distance:          0.3179
+  Average Score:         91.5%
 
 Model: Google Translate
 --------------------------------------------------------------------------------
-  Total Sentences:       16
-  Successful:            16
+  Total Sentences:       19
+  Successful:            19
   Failed:                0
-  Average Distance:      0.0787
-  Std Deviation:         0.0366
+  Average Distance:      0.1114
+  Std Deviation:         0.0845
   Min Distance:          0.0260
-  Max Distance:          0.1469
-  Average Score:         92.2%
+  Max Distance:          0.2858
+  Average Score:         89.8%
 
 Model: Ondoku
 --------------------------------------------------------------------------------
-  Total Sentences:       16
-  Successful:            16
+  Total Sentences:       19
+  Successful:            19
   Failed:                0
-  Average Distance:      0.0792
-  Std Deviation:         0.0298
+  Average Distance:      0.1123
+  Std Deviation:         0.0833
   Min Distance:          0.0286
-  Max Distance:          0.1306
-  Average Score:         92.3%
+  Max Distance:          0.2893
+  Average Score:         89.9%
 
 
 PER-SENTENCE BREAKDOWN
@@ -173,5 +173,26 @@ Sentence: 台風の影響で、えーちょっと夕方から風が強く
   Ondoku                         | Distance: 0.0701 | Score: 93%
   Google Translate               | Distance: 0.1283 | Score: 88%
 
+Sentence: なんで_tokyo
+--------------------------------------------------------------------------------
+  ElevenLabs Eiko                | Distance: 0.2214 | Score: 81%
+  Google Translate               | Distance: 0.2858 | Score: 77%
+  Ondoku                         | Distance: 0.2893 | Score: 77%
+  FastSpeech2 (Mine)             | Distance: 0.3179 | Score: 75%
 
-Total comparison time: 158.2 seconds
+Sentence: なんで_kyoto
+--------------------------------------------------------------------------------
+  ElevenLabs Eiko                | Distance: 0.2214 | Score: 81%
+  Google Translate               | Distance: 0.2858 | Score: 77%
+  Ondoku                         | Distance: 0.2893 | Score: 77%
+  FastSpeech2 (Mine)             | Distance: 0.3179 | Score: 75%
+
+Sentence: なんで_shizuoka
+--------------------------------------------------------------------------------
+  ElevenLabs Eiko                | Distance: 0.2214 | Score: 81%
+  Google Translate               | Distance: 0.2858 | Score: 77%
+  Ondoku                         | Distance: 0.2893 | Score: 77%
+  FastSpeech2 (Mine)             | Distance: 0.3179 | Score: 75%
+
+
+Total comparison time: 178.2 seconds

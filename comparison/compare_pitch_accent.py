@@ -71,7 +71,8 @@ class PitchAccentComparator:
         """Load Japanese sentences from text file"""
         with open(SAMPLE_TEXT_FILE, 'r', encoding='utf-8') as f:
             sentences = [line.strip() for line in f if line.strip()]
-            return [sentence.split('_')[0] for sentence in sentences]
+            # Keep full sentence name including accent variants (e.g., "なんで_tokyo")
+            return sentences
     
     def check_api_health(self) -> bool:
         """Check if the Onsei API is running"""
@@ -139,8 +140,27 @@ class PitchAccentComparator:
             reference_file = SAMPLE_DIR / filename
             test_file = model_dir / filename
             
-            # Check if both files exist
-            if not reference_file.exists():
+            # If reference file doesn't exist and this is an accent variant, try base sentence
+            if not reference_file.exists() and '_' in sentence:
+                base_sentence = sentence.split('_')[0]
+                base_filename = f"{base_sentence}.wav"
+                base_reference_file = SAMPLE_DIR / base_filename
+                if base_reference_file.exists():
+                    reference_file = base_reference_file
+                    print(f"[{i}/{len(self.sentences)}] ⚠️  Using base reference for accent variant: {base_filename}")
+                else:
+                    print(f"[{i}/{len(self.sentences)}] ⚠️  Reference file not found: {filename} (also tried {base_filename})")
+                    results.append(ComparisonResult(
+                        model_name=model_name,
+                        sentence=sentence,
+                        filename=filename,
+                        score=None,
+                        mean_distance=None,
+                        success=False,
+                        error="Reference file not found"
+                    ))
+                    continue
+            elif not reference_file.exists():
                 print(f"[{i}/{len(self.sentences)}] ⚠️  Reference file not found: {filename}")
                 results.append(ComparisonResult(
                     model_name=model_name,
@@ -167,9 +187,11 @@ class PitchAccentComparator:
                 continue
             
             # Compare the files
+            # Extract base sentence (without accent variant) for API call
+            base_sentence = sentence.split('_')[0] if '_' in sentence else sentence
             print(f"[{i}/{len(self.sentences)}] Comparing: {sentence[:50]}...")
             score, mean_distance, error = self.compare_audio_files(
-                reference_file, test_file, sentence
+                reference_file, test_file, base_sentence
             )
             
             if error:

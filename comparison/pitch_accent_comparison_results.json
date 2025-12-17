@@ -1,14 +1,14 @@
 {
   "FastSpeech2 (Mine)": {
     "model_name": "FastSpeech2 (Mine)",
-    "total_sentences": 16,
-    "successful_comparisons": 16,
+    "total_sentences": 19,
+    "successful_comparisons": 19,
     "failed_comparisons": 0,
-    "average_score": 94.625,
-    "average_distance": 0.05175366601456248,
-    "std_distance": 0.02214095915813505,
+    "average_score": 91.52631578947368,
+    "average_distance": 0.09376991876690763,
+    "std_distance": 0.10171957674628852,
     "min_distance": 0.01796634796811875,
-    "max_distance": 0.09237618058620227,
+    "max_distance": 0.3178566001127484,
     "results": [
       {
         "model_name": "FastSpeech2 (Mine)",
@@ -153,19 +153,46 @@
         "mean_distance": 0.06998648657510619,
         "success": true,
         "error": null
+      },
+      {
+        "model_name": "FastSpeech2 (Mine)",
+        "sentence": "なんで_tokyo",
+        "filename": "なんで_tokyo.wav",
+        "score": 75,
+        "mean_distance": 0.3178566001127484,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "FastSpeech2 (Mine)",
+        "sentence": "なんで_kyoto",
+        "filename": "なんで_kyoto.wav",
+        "score": 75,
+        "mean_distance": 0.3178566001127484,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "FastSpeech2 (Mine)",
+        "sentence": "なんで_shizuoka",
+        "filename": "なんで_shizuoka.wav",
+        "score": 75,
+        "mean_distance": 0.3178566001127484,
+        "success": true,
+        "error": null
       }
     ]
   },
   "ElevenLabs Eiko": {
     "model_name": "ElevenLabs Eiko",
-    "total_sentences": 16,
-    "successful_comparisons": 16,
+    "total_sentences": 19,
+    "successful_comparisons": 19,
     "failed_comparisons": 0,
-    "average_score": 93.5,
-    "average_distance": 0.06574225700259902,
-    "std_distance": 0.03411935610475061,
+    "average_score": 91.52631578947368,
+    "average_distance": 0.09032627820455712,
+    "std_distance": 0.06612496540312142,
     "min_distance": 0.025759571023273208,
-    "max_distance": 0.13575582061142,
+    "max_distance": 0.22144105794833366,
     "results": [
       {
         "model_name": "ElevenLabs Eiko",
@@ -310,19 +337,46 @@
         "mean_distance": 0.06383034021098943,
         "success": true,
         "error": null
+      },
+      {
+        "model_name": "ElevenLabs Eiko",
+        "sentence": "なんで_tokyo",
+        "filename": "なんで_tokyo.wav",
+        "score": 81,
+        "mean_distance": 0.22144105794833366,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "ElevenLabs Eiko",
+        "sentence": "なんで_kyoto",
+        "filename": "なんで_kyoto.wav",
+        "score": 81,
+        "mean_distance": 0.22144105794833366,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "ElevenLabs Eiko",
+        "sentence": "なんで_shizuoka",
+        "filename": "なんで_shizuoka.wav",
+        "score": 81,
+        "mean_distance": 0.22144105794833366,
+        "success": true,
+        "error": null
       }
     ]
   },
   "Google Translate": {
     "model_name": "Google Translate",
-    "total_sentences": 16,
-    "successful_comparisons": 16,
+    "total_sentences": 19,
+    "successful_comparisons": 19,
     "failed_comparisons": 0,
-    "average_score": 92.25,
-    "average_distance": 0.0786968143281099,
-    "std_distance": 0.03663898634099014,
+    "average_score": 89.84210526315789,
+    "average_distance": 0.11140196214437491,
+    "std_distance": 0.08450018675019302,
     "min_distance": 0.026003055749291397,
-    "max_distance": 0.1469427187900261,
+    "max_distance": 0.2858294171644549,
     "results": [
       {
         "model_name": "Google Translate",
@@ -467,19 +521,46 @@
         "mean_distance": 0.12827081624295836,
         "success": true,
         "error": null
+      },
+      {
+        "model_name": "Google Translate",
+        "sentence": "なんで_tokyo",
+        "filename": "なんで_tokyo.wav",
+        "score": 77,
+        "mean_distance": 0.2858294171644549,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "Google Translate",
+        "sentence": "なんで_kyoto",
+        "filename": "なんで_kyoto.wav",
+        "score": 77,
+        "mean_distance": 0.2858294171644549,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "Google Translate",
+        "sentence": "なんで_shizuoka",
+        "filename": "なんで_shizuoka.wav",
+        "score": 77,
+        "mean_distance": 0.2858294171644549,
+        "success": true,
+        "error": null
       }
     ]
   },
   "Ondoku": {
     "model_name": "Ondoku",
-    "total_sentences": 16,
-    "successful_comparisons": 16,
+    "total_sentences": 19,
+    "successful_comparisons": 19,
     "failed_comparisons": 0,
-    "average_score": 92.3125,
-    "average_distance": 0.0791668532408484,
-    "std_distance": 0.029774087514817704,
+    "average_score": 89.89473684210526,
+    "average_distance": 0.11234553466994196,
+    "std_distance": 0.08328255152144297,
     "min_distance": 0.028609175239608556,
-    "max_distance": 0.13063619565208343,
+    "max_distance": 0.28929850229177423,
     "results": [
       {
         "model_name": "Ondoku",
@@ -622,6 +703,33 @@
         "filename": "台風の影響で、えーちょっと夕方から風が強く.wav",
         "score": 93,
         "mean_distance": 0.07012166034705983,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "Ondoku",
+        "sentence": "なんで_tokyo",
+        "filename": "なんで_tokyo.wav",
+        "score": 77,
+        "mean_distance": 0.28929850229177423,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "Ondoku",
+        "sentence": "なんで_kyoto",
+        "filename": "なんで_kyoto.wav",
+        "score": 77,
+        "mean_distance": 0.28929850229177423,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "Ondoku",
+        "sentence": "なんで_shizuoka",
+        "filename": "なんで_shizuoka.wav",
+        "score": 77,
+        "mean_distance": 0.28929850229177423,
         "success": true,
         "error": null
       }
