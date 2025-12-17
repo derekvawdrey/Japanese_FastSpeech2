@@ -25,3 +25,5 @@ conda install -c conda-forge pyworld
 ```
 mfa model download acoustic japanese_mfa
 ```
+
+3. Activate the environment and you should be good to go. But there are some really finicky steps you must do.

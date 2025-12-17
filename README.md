@@ -2,6 +2,21 @@
 
 A PyTorch implementation of FastSpeech 2, a fast, robust, and controllable neural text-to-speech (TTS) model, specifically adapted for Japanese speech synthesis. This implementation uses the Kokoro dataset and supports multi-speaker TTS with controllable pitch, energy, and duration.
 
+## Datasets and model links
+
+### IMPORTANT: YOU WILL NEED TO MODIFY THE CONFIG FILES TO POINT TOWARDS THE FILES ON YOUR MACHINE.
+
+**Datasets:**
+https://drive.google.com/drive/folders/1oklNXKZJgAjQm12OB8PNXuArHaMAaJx3?usp=sharing
+- For any raw_data zip, you will need to create a raw_data folder at the root of the repository, and then extract it within the raw_data folder.
+- For any preprocessed_data zip files, you will need to create a preprocessed_data folder, and then extract it within the preprocessed_data folder.
+
+**Models:**
+https://drive.google.com/file/d/1B3UDk4EhAqPBc5cyiFb2Gi1q0B4dR5Ih/view?usp=drive_link
+- Simply extract this zip file in the root of your file project. It should contain all necessary trained models to synthesize.
+
+
+
 ## Overview
 
 FastSpeech 2 is a non-autoregressive TTS model that generates mel-spectrograms directly from text, enabling fast and parallel synthesis. This implementation includes:
@@ -158,14 +173,7 @@ python evaluate.py \
 Synthesize a single Japanese sentence:
 
 ```bash
-python synthesize.py \
-    --mode single \
-    --text "こんにちは、これはテストです。" \
-    --restore_step 30000 \
-    -p config/kokoro/preprocess.yaml \
-    -m config/kokoro/model.yaml \
-    -t config/kokoro/train.yaml \
-    --speaker_id 0
+python synthesize.py --speaker_id 0 --restore_step 30000 --mode single --text "私もパーティーに来るべきだ、と、彼はつけ加えた。" -p config/male_and_female/preprocess.yaml -m config/male_and_female/model.yaml -t config/male_and_female/train.yaml
 ```
 
 #### Batch Synthesis
