@@ -1,0 +1,237 @@
+================================================================================
+MORA-LEVEL PITCH ACCENT COMPARISON REPORT
+================================================================================
+
+This report uses linguistically-motivated mora-level analysis
+comparing HIGH/LOW pitch patterns rather than continuous F0 curves.
+
+OVERALL RANKINGS (by Accent Position Accuracy)
+--------------------------------------------------------------------------------
+🥇 Ondoku                    | Position Acc: 57.9% | Type Acc: 73.7% | Mora Acc: 73.1%
+🥈 Google_Translate          | Position Acc: 52.6% | Type Acc: 73.7% | Mora Acc: 75.4%
+🥉 FastSpeech2_Mine          | Position Acc: 42.1% | Type Acc: 73.7% | Mora Acc: 74.3%
+4. ElevenLabs_Eiko           | Position Acc: 15.8% | Type Acc: 63.2% | Mora Acc: 63.1%
+
+
+DETAILED STATISTICS
+================================================================================
+
+Model: Ondoku
+--------------------------------------------------------------------------------
+  Total Sentences:           19
+  Successful Analyses:       19
+  Failed Analyses:           0
+
+  Accent Position Accuracy:  57.9%
+  Accent Type Accuracy:      73.7%
+  Exact Pattern Match Rate:  10.5%
+  Average Mora Accuracy:     73.1%
+
+  Accuracy by Accent Type:
+    NAKADAKA       : 100.0%
+    ATAMADAKA      : 0.0%
+    HEIBAN         : 0.0%
+
+Model: Google_Translate
+--------------------------------------------------------------------------------
+  Total Sentences:           19
+  Successful Analyses:       19
+  Failed Analyses:           0
+
+  Accent Position Accuracy:  52.6%
+  Accent Type Accuracy:      73.7%
+  Exact Pattern Match Rate:  5.3%
+  Average Mora Accuracy:     75.4%
+
+  Accuracy by Accent Type:
+    NAKADAKA       : 100.0%
+    ATAMADAKA      : 0.0%
+    HEIBAN         : 0.0%
+
+Model: FastSpeech2_Mine
+--------------------------------------------------------------------------------
+  Total Sentences:           19
+  Successful Analyses:       19
+  Failed Analyses:           0
+
+  Accent Position Accuracy:  42.1%
+  Accent Type Accuracy:      73.7%
+  Exact Pattern Match Rate:  5.3%
+  Average Mora Accuracy:     74.3%
+
+  Accuracy by Accent Type:
+    NAKADAKA       : 100.0%
+    ATAMADAKA      : 0.0%
+    HEIBAN         : 0.0%
+
+Model: ElevenLabs_Eiko
+--------------------------------------------------------------------------------
+  Total Sentences:           19
+  Successful Analyses:       19
+  Failed Analyses:           0
+
+  Accent Position Accuracy:  15.8%
+  Accent Type Accuracy:      63.2%
+  Exact Pattern Match Rate:  5.3%
+  Average Mora Accuracy:     63.1%
+
+  Accuracy by Accent Type:
+    NAKADAKA       : 85.7%
+    ATAMADAKA      : 0.0%
+    HEIBAN         : 0.0%
+
+
+PER-SENTENCE BREAKDOWN
+================================================================================
+
+Sentence: テニスにもあるけど、４大大会って何。
+--------------------------------------------------------------------------------
+  Reference: HHHHHLLLLLLLHHHHHHLLLLLLL (NAKADAKA)
+  ✓ Google_Translate          | Pattern: HHHHHLLLLLLHHHHHHLLLLLLLL | Mora Acc: 92%
+  ✗ FastSpeech2_Mine          | Pattern: LHHHHHLLLLLLHHHHHLLLLLLLL | Mora Acc: 88%
+  ✓ Ondoku                    | Pattern: HHHHHLLLHLLHHHHHHLLLLLLLL | Mora Acc: 88%
+  ✗ ElevenLabs_Eiko           | Pattern: HHHHLLLHLLLLLLHHLLLLLLHLL | Mora Acc: 72%
+
+Sentence: ホイッスルの音を聞くやいなや、彼らは、全速力で走りだした。
+--------------------------------------------------------------------------------
+  Reference: HHHHHLLLHLLHHLLLLLLLLHHHHHLLLLHLLL (NAKADAKA)
+  ✓ Google_Translate          | Pattern: LHHHHLLLHLLHHLLHLLHLLLHHHHLLLLLHHL | Mora Acc: 79%
+  ✓ Ondoku                    | Pattern: HHHHHLLLHLLLHHLLLLHLLLLHHHHLLLLLHL | Mora Acc: 76%
+  ✗ FastSpeech2_Mine          | Pattern: HHHHHHHHHHHHLLLLLLHLLLHHHHHLLLLLLL | Mora Acc: 71%
+  ✗ ElevenLabs_Eiko           | Pattern: HHHHHHHHHHHHLHLLLLLLLLHLLHLLLHLLLL | Mora Acc: 65%
+
+Sentence: 私もパーティーに来るべきだ、と、彼はつけ加えた。
+--------------------------------------------------------------------------------
+  Reference: LHHHHHHHLLHHHLLLLHHLLHHHLL (NAKADAKA)
+  ✓ Google_Translate          | Pattern: LHHHHHHHLLHHHHLLLHHLLLLHLL | Mora Acc: 88%
+  ✓ FastSpeech2_Mine          | Pattern: LHHHHHHHLLLLLLLLLHHLLLLLLL | Mora Acc: 77%
+  ✓ Ondoku                    | Pattern: LHHHHHHHLLLHHHLLLLLLLLLLLL | Mora Acc: 73%
+  ✗ ElevenLabs_Eiko           | Pattern: LLLLLLHHHHHHHHHLLLLLLLLHHH | Mora Acc: 42%
+
+Sentence: 人犯は、もうすぐ自分の罪を白状するだろう。
+--------------------------------------------------------------------------------
+  Reference: HLLLLLHHLLHHHHHHLHHHLLLLLL (ATAMADAKA)
+  ✗ ElevenLabs_Eiko           | Pattern: LLLLHLHLLLHHHHHHLHHLLLHHLL | Mora Acc: 77%
+  ✗ Ondoku                    | Pattern: HHHLLLLHLLLHHHHHLLHHHLLLLL | Mora Acc: 77%
+  ✗ FastSpeech2_Mine          | Pattern: HHHLLLLHHLLHHHHHLLHHHLLLLL | Mora Acc: 73%
+  ✗ Google_Translate          | Pattern: LHHLLLHHHLLLLLHHLLHHLLLLLL | Mora Acc: 65%
+
+Sentence: 今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。
+--------------------------------------------------------------------------------
+  Reference: HLHHHHHHLLHLLHHHLLLLHHHLLLLLLLLLLHHHLLLLHHHHLLLHH (ATAMADAKA)
+  ✗ Google_Translate          | Pattern: LLHHHHHLLLHLLLHLLLLLHHHHLLLHLLHLLHHHLLLHHHHHLLLLL | Mora Acc: 80%
+  ✗ Ondoku                    | Pattern: HHLLHHHHLLHLLLHHLLLLHHHHLLLLLHHLLHHHLLLHLHHHLLLLL | Mora Acc: 78%
+  ✗ FastSpeech2_Mine          | Pattern: HHHHHHHLLLLLLLLLLLLLHHHLLLLLLLLHHHHHLLLHHHHHHLLLL | Mora Acc: 76%
+  ✗ ElevenLabs_Eiko           | Pattern: HHHHHHHHHHHLLLHLLLLHHHHHLLLHLLHHHLLLLLLLLHLLHLLHH | Mora Acc: 63%
+
+Sentence: 北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。
+--------------------------------------------------------------------------------
+  Reference: LLHHHHLLLLLHHLHLLHHLLLLLHHLLLLLLLLHHHLLHHHLL (NAKADAKA)
+  ✓ Google_Translate          | Pattern: LLHHHHLLLLHLLLHLLHHHLLLLHHHLLLLLLLHHHLLLHLLL | Mora Acc: 84%
+  ✓ FastSpeech2_Mine          | Pattern: LLHHHHLLLLLLLLLLLHHHHHHLLLLLLLLLLLHHHLLHHLLL | Mora Acc: 77%
+  ✓ Ondoku                    | Pattern: LLHHHHLLLLHLLLHLLHHHHLLLLHHLLLLLLLLHHLLLHLLL | Mora Acc: 77%
+  ✗ ElevenLabs_Eiko           | Pattern: HHLLLLLLLLHLLLHLLHHHHLLLHHHLLLLLLHLLHHHHHLLL | Mora Acc: 59%
+
+Sentence: 居酒屋で、変なおっさんにからまれた。
+--------------------------------------------------------------------------------
+  Reference: LLLLLHHHHLLHHHHHHHHL (NAKADAKA)
+  ✗ ElevenLabs_Eiko           | Pattern: LLLLLHHHHHHHLLHHHHLL | Mora Acc: 75%
+  ✗ Google_Translate          | Pattern: LHHHHHHHLLLHHHHLLHLL | Mora Acc: 60%
+  ✗ FastSpeech2_Mine          | Pattern: LHHHLHHHLLLHHHLLLLLL | Mora Acc: 55%
+  ✓ Ondoku                    | Pattern: LLHHHHHHHLLLLLLLLHLL | Mora Acc: 50%
+
+Sentence: 母の死は、私の生涯に、大きな空白を残した。
+--------------------------------------------------------------------------------
+  Reference: HHHLLLLHHHHHHLLLLHHLLLHHHHLLLLL (NAKADAKA)
+  ✓ Google_Translate          | Pattern: HHHLLLLLHHHHHLLLLHHLLLLHHHLLHHL | Mora Acc: 87%
+  ✗ FastSpeech2_Mine          | Pattern: HHHHLLLHHHHHHLLLLHHLLLLLLLLLHLL | Mora Acc: 81%
+  ✗ Ondoku                    | Pattern: HHHHLLLLHHHHHLLLLHHHLLLLHLLLHHL | Mora Acc: 74%
+  ✗ ElevenLabs_Eiko           | Pattern: HHHHHLLHLLLLHHLLLLLLLLLHHHHHLLL | Mora Acc: 61%
+
+Sentence: 母は私の望むものは、何でも言わなくてもかなえてくれる。
+--------------------------------------------------------------------------------
+  Reference: HHLLHHHHLLHHHHLLLHHHHLLHHHHLLLLHLLLLL (NAKADAKA)
+  ✗ FastSpeech2_Mine          | Pattern: HHHLHHHHHHHHHLLLLLHHLLLHHHHLLLLHHLLLL | Mora Acc: 81%
+  ✗ ElevenLabs_Eiko           | Pattern: LHHHHHLLLLHHHLLLLHHLLLLHHHHHLLLHLLLLL | Mora Acc: 76%
+  ✓ Google_Translate          | Pattern: HHLLLHHHHHHHHHHLLLHHHHHHHHHLLLLLHLLLL | Mora Acc: 76%
+  ✓ Ondoku                    | Pattern: HHLLLHHHHHHHHHHLLLHHHHHHHHHLLLLHHLLLH | Mora Acc: 76%
+
+Sentence: 目先の利益だけにとらわれてはいけない。
+--------------------------------------------------------------------------------
+  Reference: LHHHHHHLLLLLLHHHLLLLLLL (NAKADAKA)
+  ✗ Google_Translate          | Pattern: LHHHHHHHLLLLLLHHLLLLLLL | Mora Acc: 91%
+  ✓ FastSpeech2_Mine          | Pattern: HHHHHHHLLLLLLLHLLLLLLLL | Mora Acc: 87%
+  ✓ ElevenLabs_Eiko           | Pattern: HHHHHHHLLLLLLLLLLLLLLLL | Mora Acc: 83%
+  ✗ Ondoku                    | Pattern: HHHHLLHHLHLLLLHHLLLLLLL | Mora Acc: 74%
+
+Sentence: 自制できるようにならねばならない。
+--------------------------------------------------------------------------------
+  Reference: LHHHHHHHLLLLHHHLLLLLLL (NAKADAKA)
+  ✓ Ondoku                    | Pattern: LHHHHHHHLLLLHHHLLLLLLL | Mora Acc: 100%
+  ✓ FastSpeech2_Mine          | Pattern: LHHHHHHHLLLLLHHLLLLLLL | Mora Acc: 95%
+  ✓ Google_Translate          | Pattern: LHHHHHHHLLLLLHHLLLLLLL | Mora Acc: 95%
+  ✗ ElevenLabs_Eiko           | Pattern: LHLLHHLLLLLLHHHHLLHHLL | Mora Acc: 68%
+
+Sentence: 身を切るような寒い中で、わざわざ遊ばなくてもいいじゃない。
+--------------------------------------------------------------------------------
+  Reference: LHHHHHLLLHHLLLLHHLLLHHHHHLLLHLLL (NAKADAKA)
+  ✓ Ondoku                    | Pattern: LHHHHHLLLLHLLLLLHLLLLHHHHHLLHLLL | Mora Acc: 88%
+  ✓ FastSpeech2_Mine          | Pattern: HHHHHHLLLLHLLLLLHHLLHHHHHLLHLLLL | Mora Acc: 81%
+  ✗ Google_Translate          | Pattern: LHHHHHHLLHHLLLLLLHHLLHHHHHLLLLLL | Mora Acc: 75%
+  ✗ ElevenLabs_Eiko           | Pattern: HLHHLLLLHHLHHHLLLHLLHLLHHHLHLLLL | Mora Acc: 47%
+
+Sentence: 運転するときは、いくら注意してもしすぎることはありません。
+--------------------------------------------------------------------------------
+  Reference: LHHHHHHLLLHHLHLLLLLHHHLLLLLLLL (NAKADAKA)
+  ✓ FastSpeech2_Mine          | Pattern: HHHHHHHLLHHHLLLLLLLHHHLLLLLLLL | Mora Acc: 90%
+  ✗ Google_Translate          | Pattern: LHHHHHHHLLHHHHHLLLLLHHLLLLLLLL | Mora Acc: 87%
+  ✗ Ondoku                    | Pattern: LLHLLHHHLLHHHHHLHLLLHHLLLLLLLL | Mora Acc: 73%
+  ✓ ElevenLabs_Eiko           | Pattern: HHHHHHHLLLLLLHHLLHHLLLLHLLLLLL | Mora Acc: 67%
+
+Sentence: 長所が多いのに、彼女は自慢したがらなかった。
+--------------------------------------------------------------------------------
+  Reference: HHHLHHLLLLLHLLLLLHLHHHHHLLL (NAKADAKA)
+  ✗ FastSpeech2_Mine          | Pattern: HHHHHHLLLLHHHLLLLHLHHHHHLLL | Mora Acc: 89%
+  ✓ Ondoku                    | Pattern: HHHLHHLLLLLLHLLLLHHHHHHHHLL | Mora Acc: 85%
+  ✓ Google_Translate          | Pattern: HHHLHHLLLLHHHLLLHHHLLHHLLLL | Mora Acc: 74%
+  ✗ ElevenLabs_Eiko           | Pattern: HHLLHHLLLHHLLLLLHHHHHHHHHHH | Mora Acc: 67%
+
+Sentence: 雲がだんだん黒くなって、雨が降りそうです。
+--------------------------------------------------------------------------------
+  Reference: HHLLHHHHHLLLLLHHHLLHLLL (NAKADAKA)
+  ✓ Ondoku                    | Pattern: HHLLHHHHHHLLLLHHLLLLLLL | Mora Acc: 87%
+  ✓ FastSpeech2_Mine          | Pattern: HHLLHHHHHHLLLLLHLLLLLLL | Mora Acc: 83%
+  ✓ Google_Translate          | Pattern: HHLLHHHHHHLLLLLHLLLHHLL | Mora Acc: 83%
+  ✗ ElevenLabs_Eiko           | Pattern: HLLLHHHHHHHHLLLLLLLHLLL | Mora Acc: 70%
+
+Sentence: 台風の影響で、えーちょっと夕方から風が強く
+--------------------------------------------------------------------------------
+  Reference: HLLHHHLLLHHLHHHLHLLHHHHHLHL (ATAMADAKA)
+  ✗ Google_Translate          | Pattern: LHHHHLLLLLLLLHLLLHHLLLLHHHL | Mora Acc: 41%
+  ✗ Ondoku                    | Pattern: LHHHHLLLLLLLLHLLLHHLLLLHHHH | Mora Acc: 37%
+  ✗ FastSpeech2_Mine          | Pattern: LHHHHHHHHLLLHHLLLHHLLLLLLLL | Mora Acc: 33%
+  ✗ ElevenLabs_Eiko           | Pattern: HHHHLLHHHLLLLHLLHHHLLHLLHHL | Mora Acc: 33%
+
+Sentence: なんで_tokyo
+--------------------------------------------------------------------------------
+  Reference: LHHL (NAKADAKA)
+  ✓ FastSpeech2_Mine          | Pattern: LHHL       | Mora Acc: 100%
+  ✓ ElevenLabs_Eiko           | Pattern: LHHL       | Mora Acc: 100%
+  ✓ Google_Translate          | Pattern: LHHL       | Mora Acc: 100%
+  ✓ Ondoku                    | Pattern: LHHL       | Mora Acc: 100%
+
+Sentence: なんで_kyoto
+--------------------------------------------------------------------------------
+  Reference: LLLH (HEIBAN)
+  ✗ FastSpeech2_Mine          | Pattern: LHHL       | Mora Acc: 25%
+  ✗ ElevenLabs_Eiko           | Pattern: LHHL       | Mora Acc: 25%
+  ✗ Google_Translate          | Pattern: LHHL       | Mora Acc: 25%
+  ✗ Ondoku                    | Pattern: LHHL       | Mora Acc: 25%
+
+Sentence: なんで_shizuoka
+--------------------------------------------------------------------------------
+  Reference: LLHH (HEIBAN)
+  ✗ FastSpeech2_Mine          | Pattern: LHHL       | Mora Acc: 50%
+  ✗ ElevenLabs_Eiko           | Pattern: LHHL       | Mora Acc: 50%
+  ✗ Google_Translate          | Pattern: LHHL       | Mora Acc: 50%
+  ✗ Ondoku                    | Pattern: LHHL       | Mora Acc: 50%
