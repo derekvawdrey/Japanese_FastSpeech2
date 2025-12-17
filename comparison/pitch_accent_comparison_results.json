@@ -1,12 +1,12 @@
 {
   "FastSpeech2 (Mine)": {
     "model_name": "FastSpeech2 (Mine)",
-    "total_sentences": 15,
-    "successful_comparisons": 15,
+    "total_sentences": 16,
+    "successful_comparisons": 16,
     "failed_comparisons": 0,
-    "average_score": 94.73333333333333,
-    "average_distance": 0.05053814464385956,
-    "std_distance": 0.022358655974812954,
+    "average_score": 94.625,
+    "average_distance": 0.05175366601456248,
+    "std_distance": 0.02214095915813505,
     "min_distance": 0.01796634796811875,
     "max_distance": 0.09237618058620227,
     "results": [
@@ -144,17 +144,26 @@
         "mean_distance": 0.09237618058620227,
         "success": true,
         "error": null
+      },
+      {
+        "model_name": "FastSpeech2 (Mine)",
+        "sentence": "台風の影響で、えーちょっと夕方から風が強く",
+        "filename": "台風の影響で、えーちょっと夕方から風が強く.wav",
+        "score": 93,
+        "mean_distance": 0.06998648657510619,
+        "success": true,
+        "error": null
       }
     ]
   },
   "ElevenLabs Eiko": {
     "model_name": "ElevenLabs Eiko",
-    "total_sentences": 15,
-    "successful_comparisons": 15,
+    "total_sentences": 16,
+    "successful_comparisons": 16,
     "failed_comparisons": 0,
-    "average_score": 93.53333333333333,
-    "average_distance": 0.06586971812203965,
-    "std_distance": 0.03531294561708128,
+    "average_score": 93.5,
+    "average_distance": 0.06574225700259902,
+    "std_distance": 0.03411935610475061,
     "min_distance": 0.025759571023273208,
     "max_distance": 0.13575582061142,
     "results": [
@@ -292,17 +301,26 @@
         "mean_distance": 0.055165283620623784,
         "success": true,
         "error": null
+      },
+      {
+        "model_name": "ElevenLabs Eiko",
+        "sentence": "台風の影響で、えーちょっと夕方から風が強く",
+        "filename": "台風の影響で、えーちょっと夕方から風が強く.wav",
+        "score": 93,
+        "mean_distance": 0.06383034021098943,
+        "success": true,
+        "error": null
       }
     ]
   },
   "Google Translate": {
     "model_name": "Google Translate",
-    "total_sentences": 15,
-    "successful_comparisons": 15,
+    "total_sentences": 16,
+    "successful_comparisons": 16,
     "failed_comparisons": 0,
-    "average_score": 92.53333333333333,
-    "average_distance": 0.07539188086712001,
-    "std_distance": 0.035370295606273076,
+    "average_score": 92.25,
+    "average_distance": 0.0786968143281099,
+    "std_distance": 0.03663898634099014,
     "min_distance": 0.026003055749291397,
     "max_distance": 0.1469427187900261,
     "results": [
@@ -440,17 +458,26 @@
         "mean_distance": 0.12000673262018755,
         "success": true,
         "error": null
+      },
+      {
+        "model_name": "Google Translate",
+        "sentence": "台風の影響で、えーちょっと夕方から風が強く",
+        "filename": "台風の影響で、えーちょっと夕方から風が強く.wav",
+        "score": 88,
+        "mean_distance": 0.12827081624295836,
+        "success": true,
+        "error": null
       }
     ]
   },
   "Ondoku": {
     "model_name": "Ondoku",
-    "total_sentences": 15,
-    "successful_comparisons": 15,
+    "total_sentences": 16,
+    "successful_comparisons": 16,
     "failed_comparisons": 0,
-    "average_score": 92.26666666666667,
-    "average_distance": 0.07976986610043431,
-    "std_distance": 0.03071781059439309,
+    "average_score": 92.3125,
+    "average_distance": 0.0791668532408484,
+    "std_distance": 0.029774087514817704,
     "min_distance": 0.028609175239608556,
     "max_distance": 0.13063619565208343,
     "results": [
@@ -586,6 +613,15 @@
         "filename": "雲がだんだん黒くなって、雨が降りそうです。.wav",
         "score": 90,
         "mean_distance": 0.1108103258644827,
+        "success": true,
+        "error": null
+      },
+      {
+        "model_name": "Ondoku",
+        "sentence": "台風の影響で、えーちょっと夕方から風が強く",
+        "filename": "台風の影響で、えーちょっと夕方から風が強く.wav",
+        "score": 93,
+        "mean_distance": 0.07012166034705983,
         "success": true,
         "error": null
       }

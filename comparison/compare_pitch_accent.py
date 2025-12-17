@@ -70,7 +70,8 @@ class PitchAccentComparator:
     def _load_sentences(self) -> List[str]:
         """Load Japanese sentences from text file"""
         with open(SAMPLE_TEXT_FILE, 'r', encoding='utf-8') as f:
-            return [line.strip() for line in f if line.strip()]
+            sentences = [line.strip() for line in f if line.strip()]
+            return [sentence.split('_')[0] for sentence in sentences]
     
     def check_api_health(self) -> bool:
         """Check if the Onsei API is running"""
@@ -100,6 +101,7 @@ class PitchAccentComparator:
                     'teacher_audio_file': (reference_file.name, ref_f, 'audio/wav'),
                     'student_audio_file': (test_file.name, test_f, 'audio/wav'),
                 }
+
                 data = {
                     'sentence': sentence,
                     'align_audios': 'true',
