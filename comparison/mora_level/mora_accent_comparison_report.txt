@@ -10,7 +10,8 @@ OVERALL RANKINGS (by Mora H/L Accuracy)
 🥇 Google_Translate          | Mora Acc: 75.4% | Pattern Match: 5.3%
 🥈 FastSpeech2_Mine          | Mora Acc: 74.3% | Pattern Match: 5.3%
 🥉 Ondoku                    | Mora Acc: 73.1% | Pattern Match: 10.5%
-4. ElevenLabs_Eiko           | Mora Acc: 63.1% | Pattern Match: 5.3%
+4. FastSpeech2_Mine_NoPitch  | Mora Acc: 71.9% | Pattern Match: 5.3%
+5. ElevenLabs_Eiko           | Mora Acc: 63.1% | Pattern Match: 5.3%
 
 
 DETAILED STATISTICS
@@ -43,6 +44,15 @@ Model: Ondoku
   Average Mora H/L Accuracy: 73.1%
   Exact Pattern Match Rate:  10.5%
 
+Model: FastSpeech2_Mine_NoPitch
+--------------------------------------------------------------------------------
+  Total Sentences:           19
+  Successful Analyses:       19
+  Failed Analyses:           0
+
+  Average Mora H/L Accuracy: 71.9%
+  Exact Pattern Match Rate:  5.3%
+
 Model: ElevenLabs_Eiko
 --------------------------------------------------------------------------------
   Total Sentences:           19
@@ -61,6 +71,7 @@ Sentence: テニスにもあるけど、４大大会って何。
   Reference: HHHHHLLLLLLLHHHHHHLLLLLLL
   ✓ Google_Translate          | Pattern: HHHHHLLLLLLHHHHHHLLLLLLLL | Mora Acc: 92%
   ✗ FastSpeech2_Mine          | Pattern: LHHHHHLLLLLLHHHHHLLLLLLLL | Mora Acc: 88%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHHHHLLLLLHHHHHHLLLLLLLL | Mora Acc: 88%
   ✓ Ondoku                    | Pattern: HHHHHLLLHLLHHHHHHLLLLLLLL | Mora Acc: 88%
   ✗ ElevenLabs_Eiko           | Pattern: HHHHLLLHLLLLLLHHLLLLLLHLL | Mora Acc: 72%
 
@@ -70,6 +81,7 @@ Sentence: ホイッスルの音を聞くやいなや、彼らは、全速力で�
   ✓ Google_Translate          | Pattern: LHHHHLLLHLLHHLLHLLHLLLHHHHLLLLLHHL | Mora Acc: 79%
   ✓ Ondoku                    | Pattern: HHHHHLLLHLLLHHLLLLHLLLLHHHHLLLLLHL | Mora Acc: 76%
   ✗ FastSpeech2_Mine          | Pattern: HHHHHHHHHHHHLLLLLLHLLLHHHHHLLLLLLL | Mora Acc: 71%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHHHHHHHHHLLLLLLHLLLLHHHHLLLLLLLL | Mora Acc: 71%
   ✗ ElevenLabs_Eiko           | Pattern: HHHHHHHHHHHHLHLLLLLLLLHLLHLLLHLLLL | Mora Acc: 65%
 
 Sentence: 私もパーティーに来るべきだ、と、彼はつけ加えた。
@@ -77,6 +89,7 @@ Sentence: 私もパーティーに来るべきだ、と、彼はつけ加えた�
   Reference: LHHHHHHHLLHHHLLLLHHLLHHHLL
   ✓ Google_Translate          | Pattern: LHHHHHHHLLHHHHLLLHHLLLLHLL | Mora Acc: 88%
   ✓ FastSpeech2_Mine          | Pattern: LHHHHHHHLLLLLLLLLHHLLLLLLL | Mora Acc: 77%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: LHHHHHHHLLLLLLLLLHHLLLLLLL | Mora Acc: 77%
   ✓ Ondoku                    | Pattern: LHHHHHHHLLLHHHLLLLLLLLLLLL | Mora Acc: 73%
   ✗ ElevenLabs_Eiko           | Pattern: LLLLLLHHHHHHHHHLLLLLLLLHHH | Mora Acc: 42%
 
@@ -86,6 +99,7 @@ Sentence: 人犯は、もうすぐ自分の罪を白状するだろう。
   ✗ ElevenLabs_Eiko           | Pattern: LLLLHLHLLLHHHHHHLHHLLLHHLL | Mora Acc: 77%
   ✗ Ondoku                    | Pattern: HHHLLLLHLLLHHHHHLLHHHLLLLL | Mora Acc: 77%
   ✗ FastSpeech2_Mine          | Pattern: HHHLLLLHHLLHHHHHLLHHHLLLLL | Mora Acc: 73%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHLLLLHLLLHHHHHLLHHHHHLLL | Mora Acc: 69%
   ✗ Google_Translate          | Pattern: LHHLLLHHHLLLLLHHLLHHLLLLLL | Mora Acc: 65%
 
 Sentence: 今片思いの人がいるのですが、片思いの人は今忙しくて、メールが返ってきません。
@@ -94,12 +108,14 @@ Sentence: 今片思いの人がいるのですが、片思いの人は今忙し�
   ✗ Google_Translate          | Pattern: LLHHHHHLLLHLLLHLLLLLHHHHLLLHLLHLLHHHLLLHHHHHLLLLL | Mora Acc: 80%
   ✗ Ondoku                    | Pattern: HHLLHHHHLLHLLLHHLLLLHHHHLLLLLHHLLHHHLLLHLHHHLLLLL | Mora Acc: 78%
   ✗ FastSpeech2_Mine          | Pattern: HHHHHHHLLLLLLLLLLLLLHHHLLLLLLLLHHHHHLLLHHHHHHLLLL | Mora Acc: 76%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHHHLHHHLLLLHHLLLLLHHHHHLLLLLLHHLLLLLLHLHHHHLLHL | Mora Acc: 67%
   ✗ ElevenLabs_Eiko           | Pattern: HHHHHHHHHHHLLLHLLLLHHHHHLLLHLLHHHLLLLLLLLHLLHLLHH | Mora Acc: 63%
 
 Sentence: 北海道に行ったら、やっぱり、海の幸を食べないと、行った意味がないでしょう。
 --------------------------------------------------------------------------------
   Reference: LLHHHHLLLLLHHLHLLHHLLLLLHHLLLLLLLLHHHLLHHHLL
   ✓ Google_Translate          | Pattern: LLHHHHLLLLHLLLHLLHHHLLLLHHHLLLLLLLHHHLLLHLLL | Mora Acc: 84%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHHHHHLLLLLLLLLHHHLLLLLHHLLLLLLLLHHHLLHHLLL | Mora Acc: 82%
   ✓ FastSpeech2_Mine          | Pattern: LLHHHHLLLLLLLLLLLHHHHHHLLLLLLLLLLLHHHLLHHLLL | Mora Acc: 77%
   ✓ Ondoku                    | Pattern: LLHHHHLLLLHLLLHLLHHHHLLLLHHLLLLLLLLHHLLLHLLL | Mora Acc: 77%
   ✗ ElevenLabs_Eiko           | Pattern: HHLLLLLLLLHLLLHLLHHHHLLLHHHLLLLLLHLLHHHHHLLL | Mora Acc: 59%
@@ -108,6 +124,7 @@ Sentence: 居酒屋で、変なおっさんにからまれた。
 --------------------------------------------------------------------------------
   Reference: LLLLLHHHHLLHHHHHHHHL
   ✗ ElevenLabs_Eiko           | Pattern: LLLLLHHHHHHHLLHHHHLL | Mora Acc: 75%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: LHHLLHHHLLLHHHHLLLLL | Mora Acc: 65%
   ✗ Google_Translate          | Pattern: LHHHHHHHLLLHHHHLLHLL | Mora Acc: 60%
   ✗ FastSpeech2_Mine          | Pattern: LHHHLHHHLLLHHHLLLLLL | Mora Acc: 55%
   ✓ Ondoku                    | Pattern: LLHHHHHHHLLLLLLLLHLL | Mora Acc: 50%
@@ -118,12 +135,14 @@ Sentence: 母の死は、私の生涯に、大きな空白を残した。
   ✓ Google_Translate          | Pattern: HHHLLLLLHHHHHLLLLHHLLLLHHHLLHHL | Mora Acc: 87%
   ✗ FastSpeech2_Mine          | Pattern: HHHHLLLHHHHHHLLLLHHLLLLLLLLLHLL | Mora Acc: 81%
   ✗ Ondoku                    | Pattern: HHHHLLLLHHHHHLLLLHHHLLLLHLLLHHL | Mora Acc: 74%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHHLLLLHHHHLLLLLHHHHLLLLLLLLLL | Mora Acc: 71%
   ✗ ElevenLabs_Eiko           | Pattern: HHHHHLLHLLLLHHLLLLLLLLLHHHHHLLL | Mora Acc: 61%
 
 Sentence: 母は私の望むものは、何でも言わなくてもかなえてくれる。
 --------------------------------------------------------------------------------
   Reference: HHLLHHHHLLHHHHLLLHHHHLLHHHHLLLLHLLLLL
   ✗ FastSpeech2_Mine          | Pattern: HHHLHHHHHHHHHLLLLLHHLLLHHHHLLLLHHLLLL | Mora Acc: 81%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: HHLLLHHHHHHHHHHLLHHHLLHHHHHLLLLLHLLLL | Mora Acc: 78%
   ✗ ElevenLabs_Eiko           | Pattern: LHHHHHLLLLHHHLLLLHHLLLLHHHHHLLLHLLLLL | Mora Acc: 76%
   ✓ Google_Translate          | Pattern: HHLLLHHHHHHHHHHLLLHHHHHHHHHLLLLLHLLLL | Mora Acc: 76%
   ✓ Ondoku                    | Pattern: HHLLLHHHHHHHHHHLLLHHHHHHHHHLLLLHHLLLH | Mora Acc: 76%
@@ -135,12 +154,14 @@ Sentence: 目先の利益だけにとらわれてはいけない。
   ✓ FastSpeech2_Mine          | Pattern: HHHHHHHLLLLLLLHLLLLLLLL | Mora Acc: 87%
   ✓ ElevenLabs_Eiko           | Pattern: HHHHHHHLLLLLLLLLLLLLLLL | Mora Acc: 83%
   ✗ Ondoku                    | Pattern: HHHHLLHHLHLLLLHHLLLLLLL | Mora Acc: 74%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHLLLHHLHHHLLHHLLLLLLL | Mora Acc: 61%
 
 Sentence: 自制できるようにならねばならない。
 --------------------------------------------------------------------------------
   Reference: LHHHHHHHLLLLHHHLLLLLLL
   ✓ Ondoku                    | Pattern: LHHHHHHHLLLLHHHLLLLLLL | Mora Acc: 100%
   ✓ FastSpeech2_Mine          | Pattern: LHHHHHHHLLLLLHHLLLLLLL | Mora Acc: 95%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: LHHHHHHHLLLLLHHLLLLLLL | Mora Acc: 95%
   ✓ Google_Translate          | Pattern: LHHHHHHHLLLLLHHLLLLLLL | Mora Acc: 95%
   ✗ ElevenLabs_Eiko           | Pattern: LHLLHHLLLLLLHHHHLLHHLL | Mora Acc: 68%
 
@@ -149,12 +170,14 @@ Sentence: 身を切るような寒い中で、わざわざ遊ばなくてもい�
   Reference: LHHHHHLLLHHLLLLHHLLLHHHHHLLLHLLL
   ✓ Ondoku                    | Pattern: LHHHHHLLLLHLLLLLHLLLLHHHHHLLHLLL | Mora Acc: 88%
   ✓ FastSpeech2_Mine          | Pattern: HHHHHHLLLLHLLLLLHHLLHHHHHLLHLLLL | Mora Acc: 81%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: HHHHHHLLLLHHLLLLHLLHHLHHHLLLLLLL | Mora Acc: 78%
   ✗ Google_Translate          | Pattern: LHHHHHHLLHHLLLLLLHHLLHHHHHLLLLLL | Mora Acc: 75%
   ✗ ElevenLabs_Eiko           | Pattern: HLHHLLLLHHLHHHLLLHLLHLLHHHLHLLLL | Mora Acc: 47%
 
 Sentence: 運転するときは、いくら注意してもしすぎることはありません。
 --------------------------------------------------------------------------------
   Reference: LHHHHHHLLLHHLHLLLLLHHHLLLLLLLL
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: HHHHHHHLLHHHLHLLLLLHHHLLLLLLLL | Mora Acc: 93%
   ✓ FastSpeech2_Mine          | Pattern: HHHHHHHLLHHHLLLLLLLHHHLLLLLLLL | Mora Acc: 90%
   ✗ Google_Translate          | Pattern: LHHHHHHHLLHHHHHLLLLLHHLLLLLLLL | Mora Acc: 87%
   ✗ Ondoku                    | Pattern: LLHLLHHHLLHHHHHLHLLLHHLLLLLLLL | Mora Acc: 73%
@@ -165,6 +188,7 @@ Sentence: 長所が多いのに、彼女は自慢したがらなかった。
   Reference: HHHLHHLLLLLHLLLLLHLHHHHHLLL
   ✗ FastSpeech2_Mine          | Pattern: HHHHHHLLLLHHHLLLLHLHHHHHLLL | Mora Acc: 89%
   ✓ Ondoku                    | Pattern: HHHLHHLLLLLLHLLLLHHHHHHHHLL | Mora Acc: 85%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: HHHLLLLLLLHHHLLLLHHHHHHHLLL | Mora Acc: 81%
   ✓ Google_Translate          | Pattern: HHHLHHLLLLHHHLLLHHHLLHHLLLL | Mora Acc: 74%
   ✗ ElevenLabs_Eiko           | Pattern: HHLLHHLLLHHLLLLLHHHHHHHHHHH | Mora Acc: 67%
 
@@ -174,11 +198,13 @@ Sentence: 雲がだんだん黒くなって、雨が降りそうです。
   ✓ Ondoku                    | Pattern: HHLLHHHHHHLLLLHHLLLLLLL | Mora Acc: 87%
   ✓ FastSpeech2_Mine          | Pattern: HHLLHHHHHHLLLLLHLLLLLLL | Mora Acc: 83%
   ✓ Google_Translate          | Pattern: HHLLHHHHHHLLLLLHLLLHHLL | Mora Acc: 83%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: HHLLHHHHHHHHHLLHLLLLLLL | Mora Acc: 70%
   ✗ ElevenLabs_Eiko           | Pattern: HLLLHHHHHHHHLLLLLLLHLLL | Mora Acc: 70%
 
 Sentence: 台風の影響で、えーちょっと夕方から風が強く
 --------------------------------------------------------------------------------
   Reference: HLLHHHLLLHHLHHHLHLLHHHHHLHL
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: HHHHLLLHHLLLHHHLLHHLLHHLLLL | Mora Acc: 44%
   ✗ Google_Translate          | Pattern: LHHHHLLLLLLLLHLLLHHLLLLHHHL | Mora Acc: 41%
   ✗ Ondoku                    | Pattern: LHHHHLLLLLLLLHLLLHHLLLLHHHH | Mora Acc: 37%
   ✗ FastSpeech2_Mine          | Pattern: LHHHHHHHHLLLHHLLLHHLLLLLLLL | Mora Acc: 33%
@@ -188,6 +214,7 @@ Sentence: なんで_tokyo
 --------------------------------------------------------------------------------
   Reference: LHHL
   ✓ FastSpeech2_Mine          | Pattern: LHHL       | Mora Acc: 100%
+  ✓ FastSpeech2_Mine_NoPitch  | Pattern: LHHL       | Mora Acc: 100%
   ✓ ElevenLabs_Eiko           | Pattern: LHHL       | Mora Acc: 100%
   ✓ Google_Translate          | Pattern: LHHL       | Mora Acc: 100%
   ✓ Ondoku                    | Pattern: LHHL       | Mora Acc: 100%
@@ -196,6 +223,7 @@ Sentence: なんで_kyoto
 --------------------------------------------------------------------------------
   Reference: LLLH
   ✗ FastSpeech2_Mine          | Pattern: LHHL       | Mora Acc: 25%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: LHHL       | Mora Acc: 25%
   ✗ ElevenLabs_Eiko           | Pattern: LHHL       | Mora Acc: 25%
   ✗ Google_Translate          | Pattern: LHHL       | Mora Acc: 25%
   ✗ Ondoku                    | Pattern: LHHL       | Mora Acc: 25%
@@ -204,6 +232,7 @@ Sentence: なんで_shizuoka
 --------------------------------------------------------------------------------
   Reference: LLHH
   ✗ FastSpeech2_Mine          | Pattern: LHHL       | Mora Acc: 50%
+  ✗ FastSpeech2_Mine_NoPitch  | Pattern: LHHL       | Mora Acc: 50%
   ✗ ElevenLabs_Eiko           | Pattern: LHHL       | Mora Acc: 50%
   ✗ Google_Translate          | Pattern: LHHL       | Mora Acc: 50%
   ✗ Ondoku                    | Pattern: LHHL       | Mora Acc: 50%

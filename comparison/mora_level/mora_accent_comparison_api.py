@@ -45,6 +45,7 @@ SAMPLE_TEXT_FILE = VOICE_SPLITS_DIR / "sample_text.txt"
 # TTS models to evaluate
 TTS_MODELS = {
     "FastSpeech2_Mine": VOICE_SPLITS_DIR / "mine",
+    "FastSpeech2_Mine_NoPitch": VOICE_SPLITS_DIR / "mine_no_pitch",
     "ElevenLabs_Eiko": VOICE_SPLITS_DIR / "eleven_labs_eiko_wav",
     "Google_Translate": VOICE_SPLITS_DIR / "google_translate_wav",
     "Ondoku": VOICE_SPLITS_DIR / "ondoku_wav",
