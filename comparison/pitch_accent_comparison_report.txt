@@ -195,4 +195,4 @@ Sentence: なんで_shizuoka
   FastSpeech2 (Mine)             | Distance: 0.3179 | Score: 75%
 
 
-Total comparison time: 178.2 seconds
+Total comparison time: 179.6 seconds
